@@ -1,0 +1,40 @@
+{"ability":{
+	"Temperment": ["Happy", "Perterbed", "Placid"],
+	"Chaotic":["Good","Nutral","Evil"],
+	"Nutral":["Good","Nutral","Evil"],
+	"lawful":["Good","Nutral","Evil"]
+},
+"weapons":{
+	"club":["1d4","light"],
+	"dagger":["1d4","light","finesse","thrown","range (20,60)"],
+	"Scimatar":["1d6","light","finesse"],
+	"shortsword":["1d6","light","finesse"],
+	"crossbow,hand":["1d6","light","range (30,120)","ammunition","loading"],
+	"dart":["1d4","finesse","thrown","range (20,60)"],
+	"whip":["1d4","finesse","reach"],
+	"Greatsword":["2d6","heavy","two-handed"],
+	"Maul":["2d6","heavy","two-handed"],
+	"crossbow,heavy":["1d10","heavy","range (100,400)","two-handed","ammunition","loading"],
+	"longbow":["1d8","range (150,600)","two-handed","ammunition"],
+	"spear":["1d6","thrown","versatile 1d8","range (20,60)"],
+	"net":["1","thrown"],
+	"Battleaxe":["1d8","versatile 1d10"],
+	"Longsword":["1d8","versatile 1d10"],
+	"warhammer":["1d8","versatile 1d10"],
+	"sling":["1d4","range (30,120)","ammunition"],
+	"shortbow":["1d6","range (80,320)","two-handed","ammunition"],
+	"Blowgun":["1","range (25,100)","ammunition","loading"],
+	"crossbow,light":["1d8","two-handed","ammunition","loading"],
+	"bodyslam":["1d4","natural"],
+	"claws":["1d4","natural"],
+	"bite":["1d4","natural"],
+	"tail":["1d4","natural"],
+	"throw":["1d4","natural"]
+	},
+"misc_actions":{
+	"Terrible Truth":["players",";-",";-",";The NPC reviels a terrible truth","twist"],
+	"A Boon":["players",";-",";-",";The NPC Grants a boon to the players","boon"],
+	"Crime":["players",";-",";-",";The NPC is a part of some oranized crime","twist"],
+	"Pick up":["players",";-",";-",";I have a quest to pick something up","quest"]
+}
+}

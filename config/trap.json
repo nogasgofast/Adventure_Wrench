@@ -1,0 +1,62 @@
+{"ability":{
+	"senses": [
+		    "darkvision",
+		    "tremorsense",
+		    "telepath",
+		    "Pressure Plates"],
+	"Resistance to":[
+		    "blunt",
+		    "piercing",
+		    "slashing",
+		    "fire",
+		    "cold",
+		    "poison",
+		    "radient",
+		    "necrotic"],
+	"Vulnerable to":[
+		    "blunt",
+		    "piercing",
+		    "slashing",
+		    "fire",
+		    "cold",
+		    "poison",
+		    "radient",
+		    "necrotic"]
+},
+"weapons":{
+	"Scimatar":["1d6","light","finesse"],
+	"crossbow,hand":["1d6","light","range (30,120)","ammunition","loading"],
+	"dart":["1d4","finesse","thrown","range (20,60)"],
+	"crossbow,heavy":["1d10","heavy","range (100,400)","two-handed","ammunition","loading"],
+	"spear":["1d6","thrown","versatile 1d8","range (20,60)"],
+	"Battleaxe":["1d8","versatile 1d10"],
+	"Longsword":["1d8","versatile 1d10"],
+	"warhammer":["1d8","versatile 1d10"],
+	"sling":["1d4","range (30,120)","ammunition"],
+	"shortbow":["1d6","range (80,320)","two-handed","ammunition"],
+	"Blowgun":["1","range (25,100)","ammunition","loading"]
+	},
+"misc_actions":{
+	"Flame Thrower":[
+	    "cone",
+		"3d8",
+	    "fire",
+	    "Target makes a Dex save",
+	    "recharge (5,6)",
+	    "lvl 1"],
+	"Magic Arrows":[
+		"range 30ft",
+		"3d4",
+        "Blunt",
+        "This attack always Hits",
+        ";'blue missiles seek out an object or creatures of your choosing'",
+        "lvl 3"],
+    "Arrows":[
+		"range 15ft",
+		"3d4",
+        "Piercing",
+        "Ranged Attack",
+        ";'Arrows loose towards the direction of the trigger'",
+        "lvl 1"]
+	}
+}
