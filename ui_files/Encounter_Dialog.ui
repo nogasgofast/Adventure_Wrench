@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>891</width>
-    <height>684</height>
+    <width>925</width>
+    <height>683</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QListWidget" name="listWidget_Display">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>20</y>
-     <width>591</width>
-     <height>641</height>
+     <width>601</width>
+     <height>591</height>
     </rect>
    </property>
    <property name="showDropIndicator" stdset="0">
@@ -43,27 +43,14 @@
     <rect>
      <x>630</x>
      <y>10</y>
-     <width>241</width>
-     <height>651</height>
+     <width>287</width>
+     <height>670</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="sizeConstraint">
      <enum>QLayout::SetMinimumSize</enum>
     </property>
-    <item>
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
     <item>
      <widget class="QLabel" name="label_13">
       <property name="text">
@@ -73,7 +60,13 @@
     </item>
     <item>
      <widget class="QLineEdit" name="lineEdit_Name">
+      <property name="inputMask">
+       <string/>
+      </property>
       <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
        <string>***</string>
       </property>
      </widget>
@@ -274,6 +267,24 @@
      </widget>
     </item>
     <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_7">
+      <item>
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>Group of:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinBox_group">
+        <property name="value">
+         <number>1</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
        <widget class="QLabel" name="label_4">
@@ -295,39 +306,27 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_7">
-      <item>
-       <widget class="QLabel" name="label_14">
-        <property name="text">
-         <string>Group of:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="spinBox_group">
-        <property name="value">
-         <number>1</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_Summon">
+     <widget class="QPushButton" name="pushButton_create">
+      <property name="toolTip">
+       <string>Add an Item with these stats to this window.</string>
+      </property>
       <property name="text">
-       <string>Summon!</string>
+       <string>Create!</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton_UnSummon">
+     <widget class="QPushButton" name="pushButton_delete">
+      <property name="toolTip">
+       <string>Remove from this window and all others.</string>
+      </property>
       <property name="text">
-       <string>Un-Summon!</string>
+       <string>Delete</string>
       </property>
      </widget>
     </item>
     <item>
-     <spacer name="verticalSpacer_2">
+     <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
@@ -335,6 +334,98 @@
        <size>
         <width>20</width>
         <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string>(Encounter Builder Only)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_9">
+      <item>
+       <widget class="QPushButton" name="pushButton_load">
+        <property name="toolTip">
+         <string>Load Encounter file</string>
+        </property>
+        <property name="text">
+         <string>Load</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_save">
+        <property name="toolTip">
+         <string>Save Encounter File</string>
+        </property>
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>619</y>
+     <width>611</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_8">
+    <item>
+     <widget class="QPushButton" name="pushButton_back">
+      <property name="toolTip">
+       <string>Go back to your encounter</string>
+      </property>
+      <property name="text">
+       <string>⇦ Back (Esc)</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_Summon">
+      <property name="toolTip">
+       <string>Add Selected Items to Encounter</string>
+      </property>
+      <property name="text">
+       <string>Summon</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_UnSummon">
+      <property name="toolTip">
+       <string>Remove Selected items from your Encounter</string>
+      </property>
+      <property name="text">
+       <string>Un-Summon</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
        </size>
       </property>
      </spacer>

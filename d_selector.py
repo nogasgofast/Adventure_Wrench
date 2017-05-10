@@ -32,13 +32,17 @@ class Ui_Selector(object):
         self.listWidget_Plugins.setStyleSheet(_fromUtf8("font: 75 12pt \"Cantarell\";\n"
 "font-weight: bold;"))
         self.listWidget_Plugins.setAlternatingRowColors(True)
-        self.listWidget_Plugins.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.listWidget_Plugins.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         self.listWidget_Plugins.setObjectName(_fromUtf8("listWidget_Plugins"))
         self.gridLayout.addWidget(self.listWidget_Plugins, 0, 0, 1, 1)
+        self.pushButton = QtGui.QPushButton(Selector)
+        self.pushButton.setObjectName(_fromUtf8("pushButton"))
+        self.gridLayout.addWidget(self.pushButton, 1, 0, 1, 1)
 
         self.retranslateUi(Selector)
         QtCore.QMetaObject.connectSlotsByName(Selector)
 
     def retranslateUi(self, Selector):
         Selector.setWindowTitle(_translate("Selector", "Dialog", None))
+        self.pushButton.setText(_translate("Selector", "⇦ Done (Esc)", None))
 

@@ -23,7 +23,8 @@ class dice:
         
     def parse(self):
         #regex match each die and replace with this function
-        self.string = re.sub(r'\d*d\d+',lambda x: self.gen_die(x),self.string)
+        self.string = re.sub(r'\d*d\d+',
+                             lambda x: self.gen_die(x),self.string)
         if self.debug:
             print "|%s|"% self.string
 

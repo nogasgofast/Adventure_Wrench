@@ -10,7 +10,10 @@ class Encounter():
             'atk_weapon': [],
             'atkBonus' : 0,
             'attacks' : [],
+            'bs' : 0,
             'cond_immunity' : [],
+            'DSF' : 0,
+            'DSS' : 0,
             'dam_resistance' : [],
             'dam_vulnerable' : [],
             'dam_immunity' : [],
@@ -39,7 +42,8 @@ class Encounter():
                         'WIS':8,
                         'INT':8,
                         'CHA':8},
-            'type' : 'creature'}
+            'type' : 'creature',
+            'ws':0}
 
     def copy(self):
         'copy is a value copy instead of a reference copy'
@@ -82,7 +86,7 @@ class Encounter():
                 if pos_actions in misc_actions[action]:
                     self.import_misc_actions(action)
                     flag = True
-            if flag == False:
+            if not flag:
                 raise ValueError('Invalid creature option %s' % opt)
     
     def print_self(self):
@@ -170,7 +174,7 @@ class Encounter():
         '%50 instability use largest die value possible.'
         # if this function is called with no arguments
         # we are asking for this items to_dice() string.
-        if Max == False:
+        if not Max:
             Max = self.get_option('maxHP')
         elif Max < 2:
             return Max
