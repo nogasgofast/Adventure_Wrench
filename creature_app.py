@@ -310,7 +310,7 @@ class MyWindow(QMainWindow):
                     order.append(item)
                     break
         for item in order:
-            E.add_item(item)
+            E.addItem(item)
 
 class MyPlayer(QDialog):
     def __init__(self, parent=None):
@@ -684,22 +684,21 @@ class MySelector(QDialog):
         self.ui.listWidget_Plugins.clear()
         ol = option_list()
         enc_type = self.encounter.ui.comboBox_type.currentText()
-        abilities = ol.get_options(enc_type, 'ability')
-        attacks = ol.get_options(enc_type, 'weapons')
-        spells  = ol.get_options(enc_type, 'misc_actions')
-        for options in sorted(abilities.keys()):
-            for option in abilities[options]:
-                item = QListWidgetItem("%s: %s" % (options,option))
-                (red,green,blue)=(166, 244, 175)
-                painter = QBrush(QColor(red,green,blue))
-                item.setBackground(painter)
-                self.ui.listWidget_Plugins.addItem(item)
+        attribute = ol.get_options(enc_type, 'attribute')
+        attacks = ol.get_options(enc_type, 'weapon')
+        misc  = ol.get_options(enc_type, 'misc')
+        for options in sorted(attribute, key=lambda x: x[0]):
+            item = QListWidgetItem("%s" % (options[0]))
+            (red,green,blue)=(166, 244, 175)
+            painter = QBrush(QColor(red,green,blue))
+            item.setBackground(painter)
+            self.ui.listWidget_Plugins.addItem(item)
         weapon_catagories = {}
-        for weapon in attacks.keys():
-            for i in attacks[weapon][1:]:
+        
+        for weapon in attacks:
+            for i in weapon[2:]:
                 weapon_catagories[i] = 1
         if weapon_catagories.keys() > 0:
-            # print weapon_catagories.keys()
             for catagory in sorted(weapon_catagories.keys()):
                 item = QListWidgetItem("%s weapons" % catagory)
                 item.catagory = catagory
@@ -707,15 +706,15 @@ class MySelector(QDialog):
                 painter = QBrush(QColor(red,green,blue))
                 item.setBackground(painter)
                 self.ui.listWidget_Plugins.addItem(item)
-        spell_catagories = {}
-        for spell in spells.keys():
-            for i in spells[spell][1:]:
+        misc_catagories = {}
+        for thing in misc:
+            for i in thing[2:]:
                 if ';' not in i:
-                    spell_catagories[i] = 1
-        if spell_catagories.keys() > 0:
+                    misc_catagories[i] = 1
+        if misc_catagories.keys() > 0:
             # print weapon_catagories.keys()
-            for catagory in sorted(spell_catagories.keys()):
-                item = QListWidgetItem("%s spells" % catagory)
+            for catagory in sorted(misc_catagories.keys()):
+                item = QListWidgetItem("%s misc" % catagory)
                 item.catagory = catagory
                 (red,green,blue)=(166, 179, 244)
                 painter = QBrush(QColor(red,green,blue))

@@ -34,5 +34,9 @@ TODO.txt
 ::DONE::Reduce display to just names with tool tip for stats and number of instances that thing appears in the main window. Actually just make encounters roll-ups that unroll on dubble-click?
 ::DONE::Additional Markers for things like knock-out, save-throw success, save-throw fail. Could just be symbols. 
 9. Implement Editor for spells,attacks,abilities.
+I want to have the ability to apply attack templates. i.e. multi-attack:3 spear,club for soldier template
+I want to be able to add a few attacks or spells by feel alone very quickly.
+I want to be able to add a class of attacks, or all attacks with a perticular attribute.
+I want to be able to define templates that create creature types. e.g. creatures that do poison damage should have an attribute that allows you to apply poison damage to any attack you want to seperately. Con save or full poison damamge. Dex save or full lightining/fire damage. 
 
 

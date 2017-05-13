@@ -5,7 +5,7 @@ import json
 class Encounter():
     def __init__(self):
         self.data = {
-            'abilities' : {},
+            'abilities' : [],
             'ac' : 10,
             'atk_weapon': [],
             'atkBonus' : 0,
@@ -61,33 +61,21 @@ class Encounter():
     def import_options(self,options):
         'imports from lists of optional changes to this encounter'
         enc_type = self.data['type']
-        abilities = option_list().get_options(enc_type,'ability')
-        attacks = option_list().get_options(enc_type,'weapons')
-        misc_actions  = option_list().get_options(enc_type,'misc_actions')
-
+        attributes = option_list().get_options(enc_type,'attribute')
+        attacks = option_list().get_options(enc_type,'weapon')
+        misc  = option_list().get_options(enc_type,'misc')
         for opt in options:
-            flag = False
-            for ability in abilities.keys():
-                if ability in opt:
-                    for qualia in abilities[ability]:
-                        if qualia in opt:
-                            try:
-                                self.data['abilities'][ability].append(qualia)
-                            except KeyError:
-                                self.data['abilities'][ability] = [qualia,]
-                            flag = True
+            for attribute in attributes:
+                if opt in attribute[0]:
+                    self.data['abilities'].append(attribute[0])
             pos_atk = opt[0:-8]
-            for weapon in attacks.keys():
-                if pos_atk in attacks[weapon]:
+            for weapon in attacks:
+                if pos_atk in weapon[2:]:
                     self.import_attacks(weapon)
-                    flag = True
-            pos_actions = opt[0:-7]
-            for action in misc_actions.keys():
-                if pos_actions in misc_actions[action]:
+            pos_misc = opt[0:-5]
+            for action in misc:
+                if pos_misc in action[2:]:
                     self.import_misc_actions(action)
-                    flag = True
-            if not flag:
-                raise ValueError('Invalid creature option %s' % opt)
     
     def print_self(self):
         print json.dumps(self.data,sort_keys=True, indent=4, separators=(',', ': '))
@@ -99,14 +87,12 @@ class Encounter():
         return self.data[option]
 
     def import_attacks(self,opt):
-        opt = str(opt)
         if not opt in self.data['atk_weapon']:
             self.data['atk_weapon'].append(opt)
 
-    def import_misc_actions(self,spell):
-        opt = str(spell)
-        if not spell in self.data['misc_actions']:
-            self.data['misc_actions'].append(opt)
+    def import_misc_actions(self,misc):
+        if not misc in self.data['misc_actions']:
+            self.data['misc_actions'].append(misc)
 
     def import_stats(self,STR,DEX,CON,WIS,INT,CHA):
         self.data['stats'] = {'STR':STR,
@@ -128,8 +114,6 @@ class Encounter():
         features = []
         # a list of weapons I can attack with
         num_attacks = len(self.data['atk_weapon'])
-        weapons = option_list().get_options(self.data['type'], 'weapons')
-        spells  = option_list().get_options(self.data['type'], 'misc_actions')
         damage = 0
         if num_attacks > 0 and num_attacks < 4:
             damage = int(self.get_option('damPerRound')) / num_attacks
@@ -139,21 +123,22 @@ class Encounter():
             actions.append('MultiAttack 3')
         damage = self.to_dice(damage * size)
         for weapon in self.data['atk_weapon']:
-            features = weapons[weapon][1:]
-            damage_die = weapons[weapon][0]
+            features = weapon[2:]
+            damage_die = weapon[2]
             #TODO if damage_die == -1 : then don't have damage?
-            actions.append('%s Attack: +%s damage: %s (%s)' % (weapon,
+            actions.append('%s Attack: +%s damage: %s (%s)' % (weapon[0],
                                     attack,
                                     damage,
                                     ', '.join(features)
                                     ))
             features = []
 
-        for spell in self.data['misc_actions']:
-            spell_data = spells[spell]
+        for misc in self.data['misc_actions']:
+            spell_data = misc
             #remove ; from data before parsing.
             spell_data = [s.replace(';','') for s in spell_data]
-            name = spell
+            name = spell_data.pop(0)
+            spell_data.pop(0)
             target = spell_data.pop(0)
             damage_die = spell_data.pop(0)
             damage_type = spell_data.pop(0)
@@ -209,9 +194,8 @@ class Encounter():
                     catagory,
                     self.data[catagory]))
         for ability in self.data['abilities']:
-            # print self.data['abilities'][ability]
-            line = '%s: %s' % (ability, ", ".join(self.data['abilities'][ability]))
-            options.append(line)
+            options.append(ability)
+        #print self.data['actions']
         if self.get_option('type') == 'creature': 
             return (
                 'Name: %s\n'
@@ -376,6 +360,10 @@ class option_list():
         for config in config_files:
             self.data[config] = json.loads(open('config/%s.json'%config).read()) 
 
-    def get_options(self,types,options):
-        return self.data[str(types)][options]
+    def get_options(self,enc_type,option):
+        ans = []
+        for row in self.data[str(enc_type)]:
+            if row[1] == option:
+                ans.append(row)
+        return ans
     
