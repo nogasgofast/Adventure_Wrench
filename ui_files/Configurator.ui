@@ -65,7 +65,14 @@
     <item>
      <widget class="QPushButton" name="pushButton_misc">
       <property name="text">
-       <string>Misc_Actions</string>
+       <string>Misc.</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_add">
+      <property name="text">
+       <string>Add</string>
       </property>
      </widget>
     </item>
@@ -83,7 +90,7 @@
      </spacer>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="pushButton_reset">
       <property name="text">
        <string>Reset</string>
       </property>
@@ -91,7 +98,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="pushButton_back">
    <property name="geometry">
     <rect>
      <x>10</x>
