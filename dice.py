@@ -4,6 +4,9 @@ import random
 
 
 class dice:
+#Never expose this class through a service. Its too insecure.
+#But you can use it safely with known input values. Or as a part 
+#of a client application with known input values like in this case.
     def __init__(self, str_in=False):
         self.debug = False
         if str_in:

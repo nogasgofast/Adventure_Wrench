@@ -6,7 +6,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from w_main import Ui_MainWindow
 from d_encounter import Ui_Encounter
-from d_selector import Ui_Selector
+from d_configurator import Ui_configurator
 from d_player import Ui_Player
 from encounter import Encounter, option_list
 from display_utils import update_text
@@ -675,24 +675,50 @@ class MySelector(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.encounter = parent
-        self.ui = Ui_Selector()
+        self.ui = Ui_configurator()
         self.ui.setupUi(self)
         self.update_options_list()
-        self.ui.pushButton.clicked.connect(self.close)
+        self.ui.pushButton_back.clicked.connect(self.close)
+        self.ui.listWidget_catagory.clicked.connect(self.show_hide_options)
+
+    def show_hide_options(self):
+        ol = option_list()
+        attribute = ol.get_options(enc_type, 'attribute')
+        attacks = ol.get_options(enc_type, 'weapon')
+        misc  = ol.get_options(enc_type, 'misc')
+        selection = []
+        for row in range(0,len(self.ui.listWidget_catagory)):
+            if self.ui.listWidget_catagory.isItemSelected(
+              self.ui.listWidget_catagory.item(row)):
+                selection.append(self.ui.listWidget_catagory.item(row).text())
+        pass
 
     def update_options_list(self):
-        self.ui.listWidget_Plugins.clear()
+        self.ui.listWidget_catagory.clear()
         ol = option_list()
         enc_type = self.encounter.ui.comboBox_type.currentText()
         attribute = ol.get_options(enc_type, 'attribute')
         attacks = ol.get_options(enc_type, 'weapon')
         misc  = ol.get_options(enc_type, 'misc')
+        
+        for eachthing in attribute:
+            name = QTableWidgetItem(eachthing[0])
+            attrstring = ', '.join(eachthing[1:])
+            attribs = QTableWidgetItem(attrstring)
+            self.ui.tableWidget_options.insertRow(0)
+            self.ui.tableWidget_options.setItem(0,0,name)
+            self.ui.tableWidget_options.setItem(0,1,attribs)
+
+        header = self.ui.tableWidget_options.horizontalHeader()
+        header.setResizeMode(1, QHeaderView.ResizeToContents)
+        header.setResizeMode(0, QHeaderView.Stretch)
+        
         for options in sorted(attribute, key=lambda x: x[0]):
             item = QListWidgetItem("%s" % (options[0]))
             (red,green,blue)=(166, 244, 175)
             painter = QBrush(QColor(red,green,blue))
             item.setBackground(painter)
-            self.ui.listWidget_Plugins.addItem(item)
+            self.ui.listWidget_catagory.addItem(item)
         weapon_catagories = {}
         
         for weapon in attacks:
@@ -705,7 +731,7 @@ class MySelector(QDialog):
                 (red,green,blue)=(244, 178, 166)
                 painter = QBrush(QColor(red,green,blue))
                 item.setBackground(painter)
-                self.ui.listWidget_Plugins.addItem(item)
+                self.ui.listWidget_catagory.addItem(item)
         misc_catagories = {}
         for thing in misc:
             for i in thing[2:]:
@@ -719,17 +745,17 @@ class MySelector(QDialog):
                 (red,green,blue)=(166, 179, 244)
                 painter = QBrush(QColor(red,green,blue))
                 item.setBackground(painter)
-                self.ui.listWidget_Plugins.addItem(item)
+                self.ui.listWidget_catagory.addItem(item)
 
     def help_collect_options(self):
         rlist = []
         option_list = []
-        for row in range(0,len(self.ui.listWidget_Plugins)):
-            if self.ui.listWidget_Plugins.isItemSelected(
-            self.ui.listWidget_Plugins.item(row)):
+        for row in range(0,len(self.ui.listWidget_catagory)):
+            if self.ui.listWidget_catagory.isItemSelected(
+            self.ui.listWidget_catagory.item(row)):
                 rlist.append(row)
         for row in rlist:
-            option_list.append(self.ui.listWidget_Plugins.item(row).text())
+            option_list.append(self.ui.listWidget_catagory.item(row).text())
         return option_list
 
 
