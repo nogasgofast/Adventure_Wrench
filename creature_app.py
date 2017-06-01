@@ -683,6 +683,7 @@ class MySelector(QDialog):
 
     def show_hide_options(self):
         ol = option_list()
+        enc_type = self.encounter.ui.comboBox_type.currentText()
         attribute = ol.get_options(enc_type, 'attribute')
         attacks = ol.get_options(enc_type, 'weapon')
         misc  = ol.get_options(enc_type, 'misc')
@@ -690,8 +691,16 @@ class MySelector(QDialog):
         for row in range(0,len(self.ui.listWidget_catagory)):
             if self.ui.listWidget_catagory.isItemSelected(
               self.ui.listWidget_catagory.item(row)):
-                selection.append(self.ui.listWidget_catagory.item(row).text())
-        pass
+                selection.append((self.ui.listWidget_catagory.item(row).text(),
+                                  self.ui.listWidget_catagory.item(row).background())
+                                )
+        
+        self.ui.listWidget_options.clear()
+        for (eachthing,background) in selection:
+            item = QListWidgetItem(eachthing)
+            #print background
+            item.setBackground(background)
+            self.ui.listWidget_options.addItem(item)
 
     def update_options_list(self):
         self.ui.listWidget_catagory.clear()
@@ -701,20 +710,8 @@ class MySelector(QDialog):
         attacks = ol.get_options(enc_type, 'weapon')
         misc  = ol.get_options(enc_type, 'misc')
         
-        for eachthing in attribute:
-            name = QTableWidgetItem(eachthing[0])
-            attrstring = ', '.join(eachthing[1:])
-            attribs = QTableWidgetItem(attrstring)
-            self.ui.tableWidget_options.insertRow(0)
-            self.ui.tableWidget_options.setItem(0,0,name)
-            self.ui.tableWidget_options.setItem(0,1,attribs)
-
-        header = self.ui.tableWidget_options.horizontalHeader()
-        header.setResizeMode(1, QHeaderView.ResizeToContents)
-        header.setResizeMode(0, QHeaderView.Stretch)
-        
         for options in sorted(attribute, key=lambda x: x[0]):
-            item = QListWidgetItem("%s" % (options[0]))
+            item = QListWidgetItem(" ".join(options))
             (red,green,blue)=(166, 244, 175)
             painter = QBrush(QColor(red,green,blue))
             item.setBackground(painter)
@@ -738,7 +735,7 @@ class MySelector(QDialog):
                 if ';' not in i:
                     misc_catagories[i] = 1
         if misc_catagories.keys() > 0:
-            # print weapon_catagories.keys()
+            #print weapon_catagories.keys()
             for catagory in sorted(misc_catagories.keys()):
                 item = QListWidgetItem("%s misc" % catagory)
                 item.catagory = catagory
