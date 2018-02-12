@@ -679,14 +679,38 @@ class MySelector(QDialog):
         self.ui.setupUi(self)
         self.update_options_list()
         self.ui.pushButton_back.clicked.connect(self.close)
-        self.ui.listWidget_catagory.clicked.connect(self.show_hide_options)
+        self.ui.listWidget_catagory.itemSelectionChanged.connect(self.show_hide_options)
+        self.ui.lineEdit_search.textChanged.connect(self.auto_search)
+        self.ui.pushButton_reset.clicked.connect(self.reset_selected)
+
+    def reset_selected(self):
+        for row in range(0,len(self.ui.listWidget_catagory)):
+            item = self.ui.listWidget_catagory.item(row)
+            if self.ui.listWidget_catagory.isItemSelected(item):
+                self.ui.listWidget_catagory.setItemSelected(item,False)
+        self.ui.listWidget_options.clear()
+
+    def auto_search(self):
+        items = []
+        if len(self.ui.lineEdit_search.text()) > 3:
+            items = self.ui.listWidget_catagory.findItems(
+                             self.ui.lineEdit_search.text(),
+                             Qt.MatchFlags(1))
+        if items:
+            for row in range(0,len(self.ui.listWidget_catagory)):
+                item = self.ui.listWidget_catagory.item(row)
+                if not item in items:
+                    self.ui.listWidget_catagory.setItemHidden(item,True)
+                else:
+                    self.ui.listWidget_catagory.setItemHidden(item,False)
+        else:
+            for row in range(0,len(self.ui.listWidget_catagory)):
+                item = self.ui.listWidget_catagory.item(row)
+                self.ui.listWidget_catagory.setItemHidden(item,False)
 
     def show_hide_options(self):
         ol = option_list()
         enc_type = self.encounter.ui.comboBox_type.currentText()
-        attribute = ol.get_options(enc_type, 'attribute')
-        attacks = ol.get_options(enc_type, 'weapon')
-        misc  = ol.get_options(enc_type, 'misc')
         selection = []
         for row in range(0,len(self.ui.listWidget_catagory)):
             if self.ui.listWidget_catagory.isItemSelected(
@@ -716,6 +740,7 @@ class MySelector(QDialog):
             painter = QBrush(QColor(red,green,blue))
             item.setBackground(painter)
             self.ui.listWidget_catagory.addItem(item)
+
         weapon_catagories = {}
         
         for weapon in attacks:
@@ -729,11 +754,13 @@ class MySelector(QDialog):
                 painter = QBrush(QColor(red,green,blue))
                 item.setBackground(painter)
                 self.ui.listWidget_catagory.addItem(item)
+
         misc_catagories = {}
         for thing in misc:
             for i in thing[2:]:
                 if ';' not in i:
                     misc_catagories[i] = 1
+
         if misc_catagories.keys() > 0:
             #print weapon_catagories.keys()
             for catagory in sorted(misc_catagories.keys()):
