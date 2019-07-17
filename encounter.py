@@ -35,13 +35,12 @@ class Encounter():
             'senses' : [],
             'size' : [],
             'speed': 30,
-            'stats' : {
-                        'STR':8,
-                        'DEX':8,
-                        'CON':8,
-                        'WIS':8,
-                        'INT':8,
-                        'CHA':8},
+            'STR':8,
+            'DEX':8,
+            'CON':8,
+            'WIS':8,
+            'INT':8,
+            'CHA':8,
             'type' : 'creature',
             'ws':0}
 
@@ -51,19 +50,19 @@ class Encounter():
         XEncounter.data = self.data.copy()
         return XEncounter
 
-    def import_cr(self,TargetCR):
+    def import_cr_dissabled(self,TargetCR):
         'import from a template main stats for this TargetCR'
         template = challengRating()
         stats = template.get(TargetCR)
         for stat in template.breakDown:
             self.data[stat] = stats[stat]
 
-    def import_options(self,options):
+    def import_options_dissabled(self,options):
         'imports from lists of optional changes to this encounter'
         enc_type = self.data['type']
-        attributes = option_list().get_options(enc_type,'attribute')
-        attacks = option_list().get_options(enc_type,'weapon')
-        misc  = option_list().get_options(enc_type,'misc')
+        attributes = preset_data().get_options(enc_type,'attribute')
+        attacks = preset_data().get_options(enc_type,'weapon')
+        misc  = preset_data().get_options(enc_type,'misc')
         for opt in options:
             for attribute in attributes:
                 if opt in attribute[0]:
@@ -82,19 +81,19 @@ class Encounter():
     
     def set_option(self,option,val):
         self.data[option] = val
-        
+
     def get_option(self,option):
         return self.data[option]
 
-    def import_attacks(self,opt):
+    def import_attacks_dissabled(self,opt):
         if not opt in self.data['atk_weapon']:
             self.data['atk_weapon'].append(opt)
 
-    def import_misc_actions(self,misc):
+    def import_misc_actions_dissabled(self,misc):
         if not misc in self.data['misc_actions']:
             self.data['misc_actions'].append(misc)
 
-    def import_stats(self,STR,DEX,CON,WIS,INT,CHA):
+    def import_stats_dissabled(self,STR,DEX,CON,WIS,INT,CHA):
         self.data['stats'] = {'STR':STR,
                           'DEX':DEX,
                           'CON':CON,
@@ -105,23 +104,23 @@ class Encounter():
     def gen_actions(self):
         actions = []
         # attack bonus from cr
-        size = 2
-        if self.get_option('size') == 'large':
-            size = 3
-        elif self.get_option('size') == 'gargantuan':
+        size = 1
+        if self.data['size'] == 'tiny':
+            size = 0.25
+        if self.data['size'] == 'small':
+            size = 0.50
+        if self.data['size'] == 'large':
+            size = 2
+        if self.data['size'] == 'gargantuan':
             size = 4
         attack = self.data['atkBonus']
+        attacksPerRound = 1
+        damage = self.data['damPerRound'] / self.data['groupOf']
+        damage = damage / attacksPerRound
+        damage = int(damage * size)
+        damage = self.to_dice(damage)
         features = []
         # a list of weapons I can attack with
-        num_attacks = len(self.data['atk_weapon'])
-        damage = 0
-        if num_attacks > 0 and num_attacks < 4:
-            damage = int(self.get_option('damPerRound')) / num_attacks
-            actions.append('MultiAttack %s' % num_attacks) 
-        elif num_attacks > 3:
-            damage = int(self.get_option('damPerRound')) / 3
-            actions.append('MultiAttack 3')
-        damage = self.to_dice(damage * size)
         for weapon in self.data['atk_weapon']:
             features = weapon[2:]
             damage_die = weapon[2]
@@ -155,6 +154,12 @@ class Encounter():
         self.data['actions'] = actions
         #self.print_self()
 
+    def sqrt(self,num):
+        if (num / 2) > 1:
+            return num / 2
+        else:
+            return 0
+
     def to_dice(self,Max=False):
         '%50 instability use largest die value possible.'
         # if this function is called with no arguments
@@ -169,9 +174,9 @@ class Encounter():
         rolls = []
         for die in dice:
             die_val = (die // 2) + 1
-            numDice = myHalf // die_val
+            numDice = myHalf / die_val
             if numDice >= 1:
-                myHalf = myHalf - die_val * numDice 
+                myHalf = myHalf - (die_val * numDice) 
                 rolls.append('%sd%s'%(numDice,die))
         rolls.append('%s'%(myHalf+Half))
         return '+'.join(rolls)
@@ -221,18 +226,18 @@ class Encounter():
                 self.to_dice(self.data['maxHP']),
                 self.data['speed'],
                 ', '.join(self.data['locomotion']),
-                self.data['stats']['STR'],
-                ((self.data['stats']['STR'] - 10) / 2),
-                self.data['stats']['DEX'],
-                ((self.data['stats']['DEX'] - 10) / 2),
-                self.data['stats']['CON'],
-                ((self.data['stats']['CON'] - 10) / 2),
-                self.data['stats']['WIS'],
-                ((self.data['stats']['WIS'] - 10) / 2),
-                self.data['stats']['INT'],
-                ((self.data['stats']['INT'] - 10) / 2),
-                self.data['stats']['CHA'],
-                ((self.data['stats']['CHA'] - 10) / 2),
+                self.data['STR'],
+                ((self.data['STR'] - 10) / 2),
+                self.data['DEX'],
+                ((self.data['DEX'] - 10) / 2),
+                self.data['CON'],
+                ((self.data['CON'] - 10) / 2),
+                self.data['WIS'],
+                ((self.data['WIS'] - 10) / 2),
+                self.data['INT'],
+                ((self.data['INT'] - 10) / 2),
+                self.data['CHA'],
+                ((self.data['CHA'] - 10) / 2),
                 ' \n'.join(options),
                 ' \n'.join(self.data['actions'])))
         elif self.get_option('type') == 'trap':
@@ -282,26 +287,31 @@ class Encounter():
                 self.to_dice(self.data['maxHP']),
                 self.data['speed'],
                 ', '.join(self.data['locomotion']),
-                self.data['stats']['STR'],
-                ((self.data['stats']['STR'] - 10) / 2),
-                self.data['stats']['DEX'],
-                ((self.data['stats']['DEX'] - 10) / 2),
-                self.data['stats']['CON'],
-                ((self.data['stats']['CON'] - 10) / 2),
-                self.data['stats']['WIS'],
-                ((self.data['stats']['WIS'] - 10) / 2),
-                self.data['stats']['INT'],
-                ((self.data['stats']['INT'] - 10) / 2),
-                self.data['stats']['CHA'],
-                ((self.data['stats']['CHA'] - 10) / 2),
+                self.data['STR'],
+                ((self.data['STR'] - 10) / 2),
+                self.data['DEX'],
+                ((self.data['DEX'] - 10) / 2),
+                self.data['CON'],
+                ((self.data['CON'] - 10) / 2),
+                self.data['WIS'],
+                ((self.data['WIS'] - 10) / 2),
+                self.data['INT'],
+                ((self.data['INT'] - 10) / 2),
+                self.data['CHA'],
+                ((self.data['CHA'] - 10) / 2),
                 ' \n'.join(options),
                 ' \n'.join(self.data['actions'])))
         else:
             return 'to_string() does not know what type this is.'
 
 
-class challengRating():
+#class option_list():
+class preset_data():
     def __init__(self):
+        config_files = ['creature','trap','social']
+        self.data = {}
+        for config in config_files:
+            self.data[config] = json.loads(open('config/%s.json'%config).read())
         self.cr = [
             (2,10,6,3,1,13,10),
             (2,13,85,3,14,13,200),
@@ -352,18 +362,9 @@ class challengRating():
             i += 1
         return stats
 
-
-class option_list():
-    def __init__(self):
-        config_files = ['creature','trap','social']
-        self.data = {}
-        for config in config_files:
-            self.data[config] = json.loads(open('config/%s.json'%config).read()) 
-
     def get_options(self,enc_type,option):
         ans = []
         for row in self.data[str(enc_type)]:
             if row[1] == option:
                 ans.append(row)
         return ans
-    

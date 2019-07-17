@@ -8,18 +8,18 @@ from w_main import Ui_MainWindow
 from d_encounter import Ui_Encounter
 from d_configurator import Ui_configurator
 from d_player import Ui_Player
-from encounter import Encounter, option_list
+from encounter import Encounter, preset_data
 from display_utils import update_text
 
-class MyWindow(QMainWindow):
+class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.ui_e = MyDialog(self)
+        self.ui_e = EncounterDialog(self)
         self.ui_e.setModal(True)
         self.ui.pushButton_Encounter.clicked.connect(self.ui_e.show)
-        self.ui_p = MyPlayer(self)
+        self.ui_p = PlayerDialog(self)
         self.ui_p.setModal(True)
         self.ui.pushButton_Players.clicked.connect(self.ui_p.show)
         self.ui.pushButton_Inititave.clicked.connect(self.advance_initiative)
@@ -312,7 +312,7 @@ class MyWindow(QMainWindow):
         for item in order:
             E.addItem(item)
 
-class MyPlayer(QDialog):
+class PlayerDialog(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.main = parent
@@ -366,13 +366,13 @@ class MyPlayer(QDialog):
         self.ui.comboBox_name.removeItem(self.ui.comboBox_name.currentIndex())
 
 
-class MyDialog(QDialog):
+class EncounterDialog(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.main = parent    
         self.ui = Ui_Encounter()
         self.ui.setupUi(self)
-        self.ui_s = MySelector(self)
+        self.ui_s = EncounterSelectorDialog(self)
         self.ui_s.setModal(True)
         self.ui.pushButton_Summon.clicked.connect(self.summon_item)
         self.ui.pushButton_UnSummon.clicked.connect(self.unsummon_item)
@@ -547,6 +547,12 @@ class MyDialog(QDialog):
 
     def gen_creature(self):
         new_creature = Encounter()
+        template = preset_data()
+        enc_type = self.ui.comboBox_type.itemText(
+            self.ui.comboBox_type.currentIndex())
+        attributes = template.get_options(enc_type,'attribute')
+        attacks = template.get_options(enc_type,'weapon')
+        misc  = template.get_options(enc_type,'misc')
         cr_from_ui = self.ui.spinBox_CR.value()
         num_in_group = self.ui.spinBox_group.value()
         TargetCR = cr_from_ui - self.sqrt(num_in_group)
@@ -555,15 +561,36 @@ class MyDialog(QDialog):
             self.ui.comboBox_size.currentIndex())))
         new_creature.set_option('name', str(self.ui.lineEdit_Name.text()))
         new_creature.set_option('groupOf', int(self.ui.spinBox_group.value()))
-        new_creature.import_cr(TargetCR)
-        new_creature.import_options(self.ui_s.help_collect_options())
-        new_creature.import_stats(
-            self.ui.spinBox_STR.value(),
-            self.ui.spinBox_DEX.value(),
-            self.ui.spinBox_CON.value(),
-            self.ui.spinBox_WIS.value(),
-            self.ui.spinBox_INT.value(),
-            self.ui.spinBox_CHA.value())
+        new_creature.set_option('cr', TargetCR)
+        stats = template.get(TargetCR)
+        for stat in stats.keys():
+            new_creature.set_option(stat, stats[stat])
+        options = self.ui_s.help_collect_options()
+        for opt in options:
+            for attribute in attributes:
+                if opt in attribute[0]:
+                    self.data['abilities'].append(attribute[0])
+            pos_atk = opt[0:-8]
+            for weapon in attacks:
+                if pos_atk in weapon[2:]:
+                    attacks = new_creature.get_option('atk_weapon')
+                    if not weapon in attacks:
+                        attacks.append(weapon)
+                        new_creature.set_option('atk_weapon', attacks)
+            pos_misc = opt[0:-5]
+            for action in misc:
+                if pos_misc in action[2:]:
+                    misc_actions = new_creature.get_option('misc_actions')
+                    if not misc in misc_actions:
+                        misc_actions.append(misc)
+                        new_creature.set_option('misc_actions',
+                                                 misc_actions)    
+        new_creature.set_option('STR',self.ui.spinBox_STR.value())
+        new_creature.set_option('DEX',self.ui.spinBox_DEX.value())
+        new_creature.set_option('CON',self.ui.spinBox_CON.value())
+        new_creature.set_option('WIS',self.ui.spinBox_WIS.value())
+        new_creature.set_option('INT',self.ui.spinBox_INT.value())
+        new_creature.set_option('CHA',self.ui.spinBox_CHA.value())
         new_creature.gen_actions()
         return new_creature
 
@@ -572,7 +599,7 @@ class MyDialog(QDialog):
             dice_caddy = dice.dice()
             encounter = self.gen_creature()
             #roll initiatives
-            dex_mod = (encounter.data['stats']['DEX'] - 10) / 2
+            dex_mod = (encounter.get_option('DEX') - 10) / 2
             encounter.set_option('initiative',
                                 dice_caddy.roll('1d20+%s' % (dex_mod)))
             groupHP = []
@@ -671,7 +698,7 @@ class MyDialog(QDialog):
         self.ui.spinBox_CHA.setProperty("value", 10)
 
 
-class MySelector(QDialog):
+class EncounterSelectorDialog(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.encounter = parent
@@ -709,7 +736,6 @@ class MySelector(QDialog):
                 self.ui.listWidget_catagory.setItemHidden(item,False)
 
     def show_hide_options(self):
-        ol = option_list()
         enc_type = self.encounter.ui.comboBox_type.currentText()
         selection = []
         for row in range(0,len(self.ui.listWidget_catagory)):
@@ -728,11 +754,11 @@ class MySelector(QDialog):
 
     def update_options_list(self):
         self.ui.listWidget_catagory.clear()
-        ol = option_list()
+        pd = preset_data()
         enc_type = self.encounter.ui.comboBox_type.currentText()
-        attribute = ol.get_options(enc_type, 'attribute')
-        attacks = ol.get_options(enc_type, 'weapon')
-        misc  = ol.get_options(enc_type, 'misc')
+        attribute = pd.get_options(enc_type, 'attribute')
+        attacks = pd.get_options(enc_type, 'weapon')
+        misc  = pd.get_options(enc_type, 'misc')
         
         for options in sorted(attribute, key=lambda x: x[0]):
             item = QListWidgetItem(" ".join(options))
@@ -785,8 +811,8 @@ class MySelector(QDialog):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    mainWindow = MyWindow()
-    mainWindow.load_session()
-    mainWindow.show()
+    MW = MainWindow()
+    MW.load_session()
+    MW.show()
     sys.exit(app.exec_())
         
