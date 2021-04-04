@@ -2,13 +2,8 @@
 <ui version="4.0">
  <class>Player</class>
  <widget class="QDialog" name="Player">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>629</width>
-    <height>115</height>
-   </rect>
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
   </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -28,8 +23,14 @@
     <height>115</height>
    </size>
   </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::DefaultContextMenu</enum>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Add/Remove Players or Simple NPCs</string>
+  </property>
+  <property name="modal">
+   <bool>false</bool>
   </property>
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">

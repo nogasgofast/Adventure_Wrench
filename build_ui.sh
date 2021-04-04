@@ -1,6 +1,7 @@
 #!/bin/sh
 
-pyuic4 -o d_configurator.py ui_files/Configurator.ui
-pyuic4 -o d_player.py ui_files/Player_Dialog.ui
-pyuic4 -o d_encounter.py ui_files/Encounter_Dialog.ui
-pyuic4 -o w_main.py ui_files/Main_Window.ui
+python3 -m PyQt5.uic.pyuic ui_files/Configurator.ui -o d_configurator.py
+python3 -m PyQt5.uic.pyuic ui_files/Player_Dialog.ui -o d_player.py
+python3 -m PyQt5.uic.pyuic ui_files/Vault_Dialog.ui -o d_vault.py
+python3 -m PyQt5.uic.pyuic ui_files/Main_Window.ui -o w_main.py
+

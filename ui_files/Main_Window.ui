@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Ugin's 5e Encounters</string>
+   <string>Adventure Wrench</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -58,14 +58,14 @@
         <item>
          <widget class="QPushButton" name="pushButton_Players">
           <property name="text">
-           <string>Add/Remove Players</string>
+           <string>Edit Players</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_Encounter">
           <property name="text">
-           <string>Add/Remove Encounter</string>
+           <string>DM Vault</string>
           </property>
          </widget>
         </item>

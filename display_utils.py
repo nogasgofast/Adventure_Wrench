@@ -1,5 +1,5 @@
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 
 
 def get_health_color(item):
@@ -13,16 +13,16 @@ def get_health_color(item):
         (red,green,blue)=(255,255,255)
         return (red,green,blue)
     else:
-        maxhp = item.encounter.get_option('maxHP') 
+        maxhp = item.encounter.get_option('maxHP')
         green = int(255 * (float(hp) / float(maxhp)))
         #print "green1=%s"%green
         green = green if green > 0 else 0
         green = green if green < 255 else 255
-        #print "green2=%s"%green 
+        #print "green2=%s"%green
         red =  255 - green
         #print "red=%s"% red
         blue = 0
-        return (red,green,blue) 
+        return (red,green,blue)
 
 def update_text(item):
     if item.encounter.get_option('groupOf') > 1:
@@ -56,6 +56,3 @@ def update_text(item):
         # item.setForeground(painter)
     if item.encounter.get_option('id') != -1:
         item.setToolTip("%s" % item.encounter.to_string())
-
-
- 

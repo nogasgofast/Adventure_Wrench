@@ -1,5 +1,5 @@
 #!/usr/bin/python
- 
+
 import json
 
 class Encounter():
@@ -24,7 +24,7 @@ class Encounter():
             'groupHP' : [],
             'maxHP' : 1,
             'hp' : 1,
-            'initiative' : 1,        
+            'initiative' : 1,
             'locomotion' : [],
             'loot' : [],
             'misc_actions':[],
@@ -36,7 +36,7 @@ class Encounter():
             'size' : [],
             'speed': 30,
             'STR':8,
-            'DEX':8,
+            'DEX':8,}
             'CON':8,
             'WIS':8,
             'INT':8,
@@ -75,10 +75,10 @@ class Encounter():
             for action in misc:
                 if pos_misc in action[2:]:
                     self.import_misc_actions(action)
-    
+
     def print_self(self):
-        print json.dumps(self.data,sort_keys=True, indent=4, separators=(',', ': '))
-    
+        print( json.dumps(self.data,sort_keys=True, indent=4, separators=(',', ': ')))
+
     def set_option(self,option,val):
         self.data[option] = val
 
@@ -100,7 +100,7 @@ class Encounter():
                           'WIS':WIS,
                           'INT':INT,
                           'CHA':CHA}
-    
+
     def gen_actions(self):
         actions = []
         # attack bonus from cr
@@ -132,25 +132,26 @@ class Encounter():
                                     ))
             features = []
 
-        for misc in self.data['misc_actions']:
-            spell_data = misc
-            #remove ; from data before parsing.
-            spell_data = [s.replace(';','') for s in spell_data]
-            name = spell_data.pop(0)
-            spell_data.pop(0)
-            target = spell_data.pop(0)
-            damage_die = spell_data.pop(0)
-            damage_type = spell_data.pop(0)
-            success_type = spell_data.pop(0)
-            actions.append('%s:\n'
-                           '\tTarget: %s \n' \
-                           '\tDamage: %s %s \n' \
-                           '\t%s \n' \
-                           '\t%s' % (name, target,
-                                     damage_die, damage_type,
-                                     success_type,
-                                     ', \n\t'.join(spell_data)))
-            features = []
+        for spell_group in self.data['misc_actions']:
+            for spell in spell_group:
+                #remove ; from data before parsing.
+                print(spell)
+                spell_data = [s.replace(';','') for s in spell]
+                name = spell_data.pop(0)
+                spell_data.pop(0)
+                target = spell_data.pop(0)
+                damage_die = spell_data.pop(0)
+                damage_type = spell_data.pop(0)
+                success_type = spell_data.pop(0)
+                actions.append('%s:\n'
+                               '\tTarget: %s \n' \
+                               '\tDamage: %s %s \n' \
+                               '\t%s \n' \
+                               '\t%s' % (name, target,
+                                         damage_die, damage_type,
+                                         success_type,
+                                         ', \n\t'.join(spell_data)))
+                features = []
         self.data['actions'] = actions
         #self.print_self()
 
@@ -168,15 +169,15 @@ class Encounter():
             Max = self.get_option('maxHP')
         elif Max < 2:
             return Max
-        Half = (Max / 2)
-        myHalf = (Max / 2)
+        Half = (Max // 2)
+        myHalf = (Max // 2)
         dice = (100,20,12,10,8,6,4)
         rolls = []
         for die in dice:
             die_val = (die // 2) + 1
-            numDice = myHalf / die_val
+            numDice = myHalf // die_val
             if numDice >= 1:
-                myHalf = myHalf - (die_val * numDice) 
+                myHalf = myHalf - (die_val * numDice)
                 rolls.append('%sd%s'%(numDice,die))
         rolls.append('%s'%(myHalf+Half))
         return '+'.join(rolls)
@@ -201,7 +202,7 @@ class Encounter():
         for ability in self.data['abilities']:
             options.append(ability)
         #print self.data['actions']
-        if self.get_option('type') == 'creature': 
+        if self.get_option('type') == 'creature':
             return (
                 'Name: %s\n'
                 'size: %s\n' \
@@ -295,7 +296,7 @@ class Encounter():
                 ((self.data['CON'] - 10) / 2),
                 self.data['WIS'],
                 ((self.data['WIS'] - 10) / 2),
-                self.data['INT'],
+                self.data['INT'],}
                 ((self.data['INT'] - 10) / 2),
                 self.data['CHA'],
                 ((self.data['CHA'] - 10) / 2),
