@@ -36,7 +36,7 @@ class Encounter():
             'size' : [],
             'speed': 30,
             'STR':8,
-            'DEX':8,}
+            'DEX':8,
             'CON':8,
             'WIS':8,
             'INT':8,
@@ -296,7 +296,7 @@ class Encounter():
                 ((self.data['CON'] - 10) / 2),
                 self.data['WIS'],
                 ((self.data['WIS'] - 10) / 2),
-                self.data['INT'],}
+                self.data['INT'],
                 ((self.data['INT'] - 10) / 2),
                 self.data['CHA'],
                 ((self.data['CHA'] - 10) / 2),
