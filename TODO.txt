@@ -1,42 +1,51 @@
 TODO.txt
 
-::DONE::Give Inititive to items in initive window.
-::DONE::Automaticly roll health for encounters.
-::DONE::Group health display : Sum:[] High:[] Low:[]
-::DONE::Modifying health on the group affects the group as a whole. 
-::DONE::Killing creatures damanged in a group if they drop below 0. (removes from list)
-::DONE::Expanding should make one creature per hp in a group.
-::DONE::Collapes should correctly summerize but keep hp's seperate. 
-::DONE::A breakout button to expand and reduce a group should be available.
-::DONE::Format text better on iniative tracker.
-::DONE::Have buttons to change health (roller updated on select) or 1,3,5,10 buttons.
-::DONE::Have a button to modify inititive of a selected item (roller)
-::FIXED::BUG: Collapsing a group causes the description of the creature goes away.
-::DONE::A config file for all modules for Attacks.
-::DONE::A config file for Possible conditions or status
-::DONE::Upgrade player app to also allow deletion of players
-::DONE::Bifercate the stat blocks generated for each encounter to have differnt types.
-::DONE::Recombine config files into catagories. (creature,trap,social)
-::DONE::Rewrite Abilties to be more turse and easier to read.
-::DONE::Seperate Caracteristics of a Encounter with colors for Abilities, and Attacks.
-::DONE::Multiattack is not properly applied to encounters for Damange per round requirements.
-::DONE:::BUG:'QColor::setRgb: RGB parameters out of range' When advancing inititive after adding a player. 
-::DONE::duplicate everything showing up in ACtions
-::DONE::refactoring spells into misc_actions
-::DONE::Fixed minor issue where EncounterId was seperate from encounter data. Now the id is rolled up into the encounter on every item in every list. This makes session saving easier.
-::DONE::Implement session saving and loading as well as a default persistance.
-::DONE::Add "DONE" button and "Back" Button to encounter builder applet and sub-aplet
-::DONE::Add "Kill" button to Main application. Second click removes?
-::DONE::Add a way to remove dead things from Main application.
-::DONE::Rename Summon to "Create", Make a new Summon button that works from selected creatures in creature builder app.
-::DONE::Have the program clear out old data before importing new data. Can not rely on the possiblity that nothing exists prior to the user clikcing the open button.
-::DONE::Add a save/load button specificly for creatures in the encounter builder.
-::DONE::Reduce display to just names with tool tip for stats and number of instances that thing appears in the main window. Actually just make encounters roll-ups that unroll on dubble-click?
-::DONE::Additional Markers for things like knock-out, save-throw success, save-throw fail. Could just be symbols. 
-9. Implement Editor for spells,attacks,abilities.
+Attribute Templates are responsible for tokenizing and computing cascading layouts
+for creatures. I.E. applying the brute layout template will add 1d3 random simple weapon layouts,
+ and give resitance to piercing damage. And these templates will be what shows up in the
+attribute selector. Ideally a preview button will show you what these attributes do.
+
+Implement Editor for spells,attacks,abilities.
 I want to have the ability to apply attack templates. i.e. multi-attack:3 spear,club for soldier template
 I want to be able to add a few attacks or spells by feel alone very quickly.
 I want to be able to add a class of attacks, or all attacks with a perticular attribute.
-I want to be able to define templates that create creature types. e.g. creatures that do poison damage should have an attribute that allows you to apply poison damage to any attack you want to seperately. Con save or full poison damamge. Dex save or full lightining/fire damage. 
 
 
+# Notation Documentation
+The file format is a simple INI File Structure as created by python3 configparser.
+This library allows the abstraction of those into a GUI. INI file format was chosen as it makes very readable and easy to edit config files. Even if you
+say want to edit them by hand.
+
+
+# ALL things have:
+1. import <template>: import a template
+2. CR [ + | - ]<number>: cr +1, cr -1, cr 4
+3. roll
+
+# creatures and NPCs
+1. Armor class
+2. Hit Points
+3. Speed
+4. abilities
+   a. skill
+   b. proficencies
+   c. bonus save
+   d. senses
+   e. language
+   f. saving throws
+   g. carry items
+
+# traps
+1. complexity successes/failures
+2. trigger
+3. abilities
+4. weapon table
+5. spell table
+
+# encounters
+1. traps
+2. NPCs
+3. creatures
+
+
+x I want to be able to define templates that create creature types. e.g. creatures that do poison damage should have an attribute that allows you to apply poison damage to any attack you want to seperately. Con save or full poison damamge. Dex save or full lightining/fire damage.

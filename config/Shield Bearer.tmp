@@ -1,0 +1,42 @@
+[template]
+name=Shield Bearer
+type=monster,npc
+[attributes]
+Resistance to blunt, piercing, slashing
+STR+1
+DEX-2
+
+[items]
+Shield
+plate mail
+talisman (10gp)
+
+[actions]
+multiattack=claws,bite,short sword
+short sword=attack a{}, melee, d{1d6} slashing damage
+dagger=attack a{}, melee, d{1d4} slashing damage
+war hammer=attack a{}, melee, d{1d6} blunt damage
+barbed tail=attack a{}, recharge: 5-6, melee, d{3d6} piercing damage
+    target makes a dc{} con save, on failure they take e{3d8}
+    poison damage and become paralyzed, on failure they take
+    half of the poison damage.
+claws=attack a{}, melee, d{2d6} slashing damage.
+bite=attack a{}, melee, d{1d8} piercing damage.
+
+[spells]
+fireball 3=vsm,
+    Time: Action
+    You focus your spell into a glowing orange pearl and throw it at your enemies.
+    Upon contact it explodes into a 10ft radius sphere of fire. Creatures must make
+    a dc{} saving throw or take 3d8 fire damage.
+fly 0=vsm,
+    Time: Action
+    lasts: 60 minutes, Concentration
+    Focusing your mind you become able to fly in any direction at the same
+    speed you walk.
+darkness 1=vm,
+    Time: Reaction
+    lasts: 1 action
+    A bubble of magical darkness appears in an area. It affects a 10ft cubic
+    area, blinding anyone inside. Magical light of the level this spell was
+    cast at or higher can counter spell this effect.
