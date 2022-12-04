@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>596</height>
+    <height>585</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,19 +16,39 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout_head">
+      <item>
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>## Current Encounter</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::MarkdownText</enum>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_content_2">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Current Encounter</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
         <item>
          <widget class="QListWidget" name="listWidget_Encounter">
           <property name="styleSheet">
@@ -42,7 +62,7 @@
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
         <property name="spacing">
          <number>6</number>
         </property>
@@ -55,34 +75,6 @@
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item>
-         <widget class="QPushButton" name="pushButton_Players">
-          <property name="text">
-           <string>Edit Players</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_Encounter">
-          <property name="text">
-           <string>DM Vault</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_toggle_expand">
-          <property name="text">
-           <string>Expand/Collapse</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_Inititave">
-          <property name="text">
-           <string>Advance Inititave</string>
-          </property>
-         </widget>
-        </item>
         <item>
          <spacer name="verticalSpacer">
           <property name="orientation">
@@ -97,12 +89,42 @@
          </spacer>
         </item>
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>Quick Change</string>
+           <string>### Add Stuff</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::MarkdownText</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_Players">
+          <property name="text">
+           <string>Players</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_Encounter">
+          <property name="text">
+           <string>The Vault</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_quick_change">
+          <property name="text">
+           <string>### Quick Change</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::MarkdownText</enum>
+          </property>
+          <property name="scaledContents">
+           <bool>false</bool>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -128,7 +150,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinBox_main_initiative"/>
+           <widget class="QSpinBox" name="spinBox_main_initiative">
+            <property name="maximum">
+             <number>999</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -157,15 +183,18 @@
          </layout>
         </item>
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="label_damage">
           <property name="styleSheet">
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Damage</string>
+           <string>### Damage</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::MarkdownText</enum>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -260,6 +289,33 @@
          </widget>
         </item>
         <item>
+         <widget class="QLabel" name="label_markers">
+          <property name="text">
+           <string>### Tools</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::MarkdownText</enum>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_toggle_expand">
+          <property name="text">
+           <string>Expand/Collapse</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_Inititave">
+          <property name="text">
+           <string>Advance Inititave</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
            <widget class="QPushButton" name="pushButton_cross">
@@ -333,24 +389,6 @@
            </size>
           </property>
          </spacer>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <item>
-           <widget class="QPushButton" name="pushButton_open">
-            <property name="text">
-             <string>Open</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_save">
-            <property name="text">
-             <string>Save</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
         </item>
        </layout>
       </item>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>template_attributes</class>
+ <widget class="QWidget" name="template_attributes">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>526</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="3" column="1">
+    <widget class="QLabel" name="label_name">
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLineEdit" name="lineEdit_name"/>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLabel" name="label_description">
+     <property name="text">
+      <string>description (optional)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QLineEdit" name="lineEdit_description"/>
+   </item>
+   <item row="7" column="1">
+    <widget class="QPushButton" name="pushButton_add">
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="QLineEdit" name="lineEdit_dice_roll"/>
+   </item>
+   <item row="10" column="1">
+    <widget class="QPushButton" name="pushButton_roll_table">
+     <property name="text">
+      <string>Add roll table</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="1">
+    <widget class="QPushButton" name="pushButton_random_table">
+     <property name="text">
+      <string>Add random table</string>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="1">
+    <widget class="QTreeView" name="treeView"/>
+   </item>
+   <item row="8" column="1">
+    <widget class="QLabel" name="label_roll_table">
+     <property name="text">
+      <string>Dice roll</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="1">
+    <widget class="QPushButton" name="pushButton_delete">
+     <property name="text">
+      <string>Delete</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

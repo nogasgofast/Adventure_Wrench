@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 
-import dice
+import lib.dice
 import random
 import configparser
 import json

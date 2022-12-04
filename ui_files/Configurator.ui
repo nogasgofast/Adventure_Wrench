@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>794</width>
-    <height>668</height>
+    <height>304</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -64,7 +64,12 @@
           <widget class="QComboBox" name="comboBox_type">
            <item>
             <property name="text">
-             <string>monster</string>
+             <string extracomment="Base Encounters Have no stats but can take on templates.">encounter</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="A base or skeleton of a monster that will take templates later.">monster</string>
             </property>
            </item>
            <item>
@@ -224,24 +229,32 @@
         </layout>
        </item>
        <item>
-        <widget class="QRadioButton" name="radioButton_CR">
-         <property name="text">
-          <string>Calculate Damage Using CR</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="radioButton_size">
-         <property name="toolTip">
-          <string>Increases damage die for large, huge, gargantuan creatures</string>
-         </property>
-         <property name="text">
-          <string>Calculate Damage Using Size</string>
-         </property>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QPushButton" name="pushButton_back">
+             <property name="text">
+              <string>Back (Esc)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
@@ -394,107 +407,6 @@
          </property>
         </spacer>
        </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Templates:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEdit_search">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>1</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>452</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="baseSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="placeholderText">
-            <string>Search</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QListWidget" name="listWidget_catagory">
-         <property name="selectionMode">
-          <enum>QAbstractItemView::MultiSelection</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_create_example">
-         <property name="text">
-          <string>Create selection and add to test chamber</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <spacer name="verticalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Maximum</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>0</width>
-         <height>350</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QLabel" name="label_selection">
-         <property name="text">
-          <string>Test Chamber: Hover mouse over to see details</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QListWidget" name="listWidget_options">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QpushButton { margin-left: 25px; }</string>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::MultiSelection</enum>
-         </property>
-        </widget>
-       </item>
        <item>
         <widget class="QPushButton" name="pushButton_create">
          <property name="toolTip">
@@ -506,40 +418,6 @@
         </widget>
        </item>
       </layout>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="pushButton_back">
-       <property name="text">
-        <string>Back (Esc)</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_add">
-       <property name="toolTip">
-        <string>Add an item to the list</string>
-       </property>
-       <property name="text">
-        <string>make new template</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>

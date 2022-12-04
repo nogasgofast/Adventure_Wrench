@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>925</width>
-    <height>723</height>
+    <height>583</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,34 +18,36 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_10">
+    <layout class="QHBoxLayout" name="horizontalLayout_header">
      <item>
-      <widget class="QListWidget" name="listWidget_Display">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>1</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <widget class="QPushButton" name="pushButton_back">
+       <property name="toolTip">
+        <string>Go back to your encounter</string>
        </property>
-       <property name="showDropIndicator" stdset="0">
-        <bool>false</bool>
-       </property>
-       <property name="dragDropMode">
-        <enum>QAbstractItemView::NoDragDrop</enum>
-       </property>
-       <property name="defaultDropAction">
-        <enum>Qt::IgnoreAction</enum>
-       </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::ExtendedSelection</enum>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
+       <property name="text">
+        <string>⇦ Back (Esc)</string>
        </property>
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_content">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_menu">
        <property name="sizeConstraint">
         <enum>QLayout::SetMinimumSize</enum>
        </property>
@@ -53,22 +55,23 @@
         <number>0</number>
        </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_6"/>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_New">
+        <widget class="QPushButton" name="pushButton_adventure">
          <property name="text">
-          <string>New</string>
+          <string>Create New Thingy</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_delete">
-         <property name="toolTip">
-          <string>Remove selected from current Encounter as well as DM Vault.</string>
-         </property>
+        <widget class="QPushButton" name="pushButton">
          <property name="text">
-          <string>Delete</string>
+          <string>Apply Template</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_toggle_expand">
+         <property name="text">
+          <string>Expand/Collapse</string>
          </property>
         </widget>
        </item>
@@ -93,6 +96,23 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="pushButton_delete">
+         <property name="toolTip">
+          <string>Remove selected from current Encounter as well as DM Vault.</string>
+         </property>
+         <property name="text">
+          <string>Delete</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_delete_undo">
+         <property name="text">
+          <string>Undo Delete</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -105,13 +125,17 @@
          </property>
         </spacer>
        </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_treeWidget">
        <item>
         <widget class="QLabel" name="label">
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
          <property name="text">
-          <string>(DM Vault Only)</string>
+          <string>### Double-Click to edit</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::MarkdownText</enum>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -119,57 +143,57 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_9">
-         <item>
-          <widget class="QPushButton" name="pushButton_load">
-           <property name="toolTip">
-            <string>Load Encounter file</string>
-           </property>
-           <property name="text">
-            <string>Load</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_save">
-           <property name="toolTip">
-            <string>Save Encounter File</string>
-           </property>
-           <property name="text">
-            <string>Save</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QTreeWidget" name="treeWidget_organizer">
+         <column>
+          <property name="text">
+           <string notr="true">1</string>
+          </property>
+         </column>
+        </widget>
        </item>
       </layout>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_8">
      <item>
-      <widget class="QPushButton" name="pushButton_back">
-       <property name="toolTip">
-        <string>Go back to your encounter</string>
-       </property>
-       <property name="text">
-        <string>⇦ Back (Esc)</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
+      <layout class="QVBoxLayout" name="verticalLayout_display">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>## Template Summery</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::MarkdownText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="listWidget_Display">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="showDropIndicator" stdset="0">
+          <bool>false</bool>
+         </property>
+         <property name="dragDropMode">
+          <enum>QAbstractItemView::NoDragDrop</enum>
+         </property>
+         <property name="defaultDropAction">
+          <enum>Qt::IgnoreAction</enum>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::ExtendedSelection</enum>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>template_actions</class>
+ <widget class="QWidget" name="template_actions">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>466</width>
+    <height>590</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="10" column="1">
+    <widget class="QPushButton" name="pushButton_random_table">
+     <property name="text">
+      <string>Add random table</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="label_name">
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="lineEdit_name"/>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLabel" name="label_description">
+     <property name="text">
+      <string>Description: %d, %e for auto damage and elemental damage</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QTextEdit" name="textEdit_description"/>
+   </item>
+   <item row="6" column="1">
+    <widget class="QPushButton" name="pushButton_add">
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="QLabel" name="label_dice_roll">
+     <property name="text">
+      <string>dice roll</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QLineEdit" name="lineEdit_dice_roll"/>
+   </item>
+   <item row="9" column="1">
+    <widget class="QPushButton" name="pushButton_roll_table">
+     <property name="text">
+      <string>Add roll table</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="1">
+    <widget class="QTreeView" name="treeView"/>
+   </item>
+   <item row="12" column="1">
+    <widget class="QPushButton" name="pushButton_delete">
+     <property name="text">
+      <string>Delete</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

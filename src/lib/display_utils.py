@@ -1,6 +1,3 @@
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-
 
 def get_health_color(item):
     if item.encounter.get_option('groupOf') > 1:
