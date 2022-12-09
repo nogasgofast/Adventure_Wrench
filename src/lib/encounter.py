@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 
-import lib.dice
+from lib.dice import dice
 import random
 import configparser
 import json
@@ -126,7 +126,7 @@ class Encounter():
             return 0
 
     def to_string(self):
-        dice_caddy = dice.dice()
+        dice_caddy = dice()
         options = []
         loadData = [
             'class',
@@ -272,7 +272,7 @@ class Template_factory():
     def __init__(self, encounter):
         'save encounter to be minipulated'
         self.presets = Preset_data()
-        self.dice_caddy = dice.dice()
+        self.dice_caddy = dice()
         self.encounter = encounter
         self.raw_templates = list()
         self.pattern_attack_mod = re.compile(r'a{}')
@@ -478,7 +478,7 @@ class Template_factory():
 
     def _update_damage(self, damage_diff, text):
         'take damage_diff and applies it'
-        dice_caddy = dice.dice()
+        dice_caddy = dice()
         m1 = self.pattern_dmg_die.search(text)
         m2 = self.pattern_elem_dmg_die.search(text)
         dam1, dam2 = None, None

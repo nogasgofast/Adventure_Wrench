@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Vault_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 6.4.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -28,26 +28,19 @@ class Ui_Vault(object):
         Vault.resize(925, 583)
         self.verticalLayout_3 = QVBoxLayout(Vault)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.horizontalLayout_header = QHBoxLayout()
-        self.horizontalLayout_header.setObjectName(u"horizontalLayout_header")
-        self.pushButton_back = QPushButton(Vault)
-        self.pushButton_back.setObjectName(u"pushButton_back")
-
-        self.horizontalLayout_header.addWidget(self.pushButton_back)
-
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_header.addItem(self.horizontalSpacer)
-
-
-        self.verticalLayout_3.addLayout(self.horizontalLayout_header)
-
         self.horizontalLayout_content = QHBoxLayout()
         self.horizontalLayout_content.setObjectName(u"horizontalLayout_content")
         self.verticalLayout_menu = QVBoxLayout()
         self.verticalLayout_menu.setObjectName(u"verticalLayout_menu")
         self.verticalLayout_menu.setSizeConstraint(QLayout.SetMinimumSize)
         self.verticalLayout_menu.setContentsMargins(0, -1, -1, -1)
+        self.label = QLabel(Vault)
+        self.label.setObjectName(u"label")
+        self.label.setTextFormat(Qt.MarkdownText)
+        self.label.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_menu.addWidget(self.label)
+
         self.pushButton_adventure = QPushButton(Vault)
         self.pushButton_adventure.setObjectName(u"pushButton_adventure")
 
@@ -92,12 +85,15 @@ class Ui_Vault(object):
 
         self.verticalLayout_treeWidget = QVBoxLayout()
         self.verticalLayout_treeWidget.setObjectName(u"verticalLayout_treeWidget")
-        self.label = QLabel(Vault)
-        self.label.setObjectName(u"label")
-        self.label.setTextFormat(Qt.MarkdownText)
-        self.label.setAlignment(Qt.AlignCenter)
+        self.label_tree_view = QLabel(Vault)
+        self.label_tree_view.setObjectName(u"label_tree_view")
+        font = QFont()
+        font.setBold(False)
+        self.label_tree_view.setFont(font)
+        self.label_tree_view.setTextFormat(Qt.MarkdownText)
+        self.label_tree_view.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_treeWidget.addWidget(self.label)
+        self.verticalLayout_treeWidget.addWidget(self.label_tree_view)
 
         self.treeWidget_organizer = QTreeWidget(Vault)
         __qtreewidgetitem = QTreeWidgetItem()
@@ -112,12 +108,12 @@ class Ui_Vault(object):
 
         self.verticalLayout_display = QVBoxLayout()
         self.verticalLayout_display.setObjectName(u"verticalLayout_display")
-        self.label_2 = QLabel(Vault)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setTextFormat(Qt.MarkdownText)
-        self.label_2.setAlignment(Qt.AlignCenter)
+        self.label_tenolate_summery = QLabel(Vault)
+        self.label_tenolate_summery.setObjectName(u"label_tenolate_summery")
+        self.label_tenolate_summery.setTextFormat(Qt.MarkdownText)
+        self.label_tenolate_summery.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_display.addWidget(self.label_2)
+        self.verticalLayout_display.addWidget(self.label_tenolate_summery)
 
         self.listWidget_Display = QListWidget(Vault)
         self.listWidget_Display.setObjectName(u"listWidget_Display")
@@ -148,10 +144,7 @@ class Ui_Vault(object):
 
     def retranslateUi(self, Vault):
         Vault.setWindowTitle(QCoreApplication.translate("Vault", u"DM Vault", None))
-#if QT_CONFIG(tooltip)
-        self.pushButton_back.setToolTip(QCoreApplication.translate("Vault", u"Go back to your encounter", None))
-#endif // QT_CONFIG(tooltip)
-        self.pushButton_back.setText(QCoreApplication.translate("Vault", u"\u21e6 Back (Esc)", None))
+        self.label.setText(QCoreApplication.translate("Vault", u"## Tools", None))
         self.pushButton_adventure.setText(QCoreApplication.translate("Vault", u"Create New Thingy", None))
         self.pushButton.setText(QCoreApplication.translate("Vault", u"Apply Template", None))
         self.pushButton_toggle_expand.setText(QCoreApplication.translate("Vault", u"Expand/Collapse", None))
@@ -168,7 +161,7 @@ class Ui_Vault(object):
 #endif // QT_CONFIG(tooltip)
         self.pushButton_delete.setText(QCoreApplication.translate("Vault", u"Delete", None))
         self.pushButton_delete_undo.setText(QCoreApplication.translate("Vault", u"Undo Delete", None))
-        self.label.setText(QCoreApplication.translate("Vault", u"### Double-Click to edit", None))
-        self.label_2.setText(QCoreApplication.translate("Vault", u"## Template Summery", None))
+        self.label_tree_view.setText(QCoreApplication.translate("Vault", u"## Double-Click to edit", None))
+        self.label_tenolate_summery.setText(QCoreApplication.translate("Vault", u"## Summery ", None))
     # retranslateUi
 

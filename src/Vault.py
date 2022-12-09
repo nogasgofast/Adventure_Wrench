@@ -17,7 +17,7 @@ class VaultDialog(QDialog):
         # self.ui.pushButton_New.clicked.connect(self.ui_s.show)
         # self.ui.pushButton_save.clicked.connect(self.save_dialog)
         # self.ui.pushButton_load.clicked.connect(self.open_dialog)
-        self.ui.pushButton_back.clicked.connect(self.close)
+        # self.ui.pushButton_back.clicked.connect(self.close)
         self.ui.listWidget_Display. \
             itemDoubleClicked.connect(self.toggle_item_view)
         # Set this value to keep track of my listItems
@@ -99,7 +99,7 @@ class VaultDialog(QDialog):
     def summon_item(self, encounter=False):
         # print("summon_item")
         '''set display item for main window.'''
-        for row in range(0, len(self.ui.listWidget_Display)):
+        for row in range(0, self.ui.listWidget_Display.count()):
             if self.ui.listWidget_Display.item(row).isSelected():
                 item = self.ui.listWidget_Display.item(row)
                 encItem = QListWidgetItem('***')

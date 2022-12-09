@@ -1,4 +1,6 @@
 
+from PySide6.QtGui import QBrush, QColor
+
 def get_health_color(item):
     if item.encounter.get_option('groupOf') > 1:
         hp = sum(item.encounter.get_option('groupHP')) / \
@@ -51,5 +53,8 @@ def update_text(item):
         item.setBackground(painter)
         # painter = QBrush(QColor(Qt.blue))
         # item.setForeground(painter)
-    if item.encounter.get_option('id') != -1:
+    if item.encounter.get_option('type') != 'pc':
         item.setToolTip("%s" % item.encounter.to_string())
+    else:
+        # if this is a player
+        item.setToolTip("\n".join(item.encounter.get_option('abilities')))

@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Player_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 6.4.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -15,15 +15,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QHBoxLayout,
-    QLabel, QPushButton, QSizePolicy, QSpinBox,
+from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLabel,
+    QLineEdit, QPushButton, QSizePolicy, QSpinBox,
     QTextEdit, QVBoxLayout, QWidget)
 
 class Ui_Player(object):
     def setupUi(self, Player):
         if not Player.objectName():
             Player.setObjectName(u"Player")
-        Player.setWindowModality(Qt.NonModal)
+        Player.setWindowModality(Qt.WindowModal)
         Player.resize(629, 344)
         sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -33,7 +33,7 @@ class Ui_Player(object):
         Player.setMinimumSize(QSize(629, 0))
         Player.setMaximumSize(QSize(629, 16777215))
         Player.setContextMenuPolicy(Qt.DefaultContextMenu)
-        Player.setModal(False)
+        Player.setModal(True)
         self.verticalLayout = QVBoxLayout(Player)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.horizontalLayout_head = QHBoxLayout()
@@ -45,17 +45,10 @@ class Ui_Player(object):
 
         self.verticalLayout_name.addWidget(self.label_name)
 
-        self.comboBox_name = QComboBox(Player)
-        self.comboBox_name.setObjectName(u"comboBox_name")
-        sizePolicy1 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
-        sizePolicy1.setHorizontalStretch(1)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.comboBox_name.sizePolicy().hasHeightForWidth())
-        self.comboBox_name.setSizePolicy(sizePolicy1)
-        self.comboBox_name.setEditable(True)
-        self.comboBox_name.setInsertPolicy(QComboBox.NoInsert)
+        self.lineEdit_name = QLineEdit(Player)
+        self.lineEdit_name.setObjectName(u"lineEdit_name")
 
-        self.verticalLayout_name.addWidget(self.comboBox_name)
+        self.verticalLayout_name.addWidget(self.lineEdit_name)
 
 
         self.horizontalLayout_head.addLayout(self.verticalLayout_name)
@@ -64,11 +57,11 @@ class Ui_Player(object):
         self.verticalLayout_inititive.setObjectName(u"verticalLayout_inititive")
         self.label_inititive = QLabel(Player)
         self.label_inititive.setObjectName(u"label_inititive")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.label_inititive.sizePolicy().hasHeightForWidth())
-        self.label_inititive.setSizePolicy(sizePolicy2)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.label_inititive.sizePolicy().hasHeightForWidth())
+        self.label_inititive.setSizePolicy(sizePolicy1)
 
         self.verticalLayout_inititive.addWidget(self.label_inititive)
 
@@ -88,8 +81,8 @@ class Ui_Player(object):
         self.verticalLayout_hp.setObjectName(u"verticalLayout_hp")
         self.label_hp = QLabel(Player)
         self.label_hp.setObjectName(u"label_hp")
-        sizePolicy2.setHeightForWidth(self.label_hp.sizePolicy().hasHeightForWidth())
-        self.label_hp.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.label_hp.sizePolicy().hasHeightForWidth())
+        self.label_hp.setSizePolicy(sizePolicy1)
 
         self.verticalLayout_hp.addWidget(self.label_hp)
 
@@ -112,30 +105,23 @@ class Ui_Player(object):
 
         self.verticalLayout.addWidget(self.label)
 
-        self.textEdit = QTextEdit(Player)
-        self.textEdit.setObjectName(u"textEdit")
-        self.textEdit.setMinimumSize(QSize(0, 150))
+        self.textEdit_description = QTextEdit(Player)
+        self.textEdit_description.setObjectName(u"textEdit_description")
+        self.textEdit_description.setMinimumSize(QSize(0, 150))
+        self.textEdit_description.setFocusPolicy(Qt.StrongFocus)
+        self.textEdit_description.setTabChangesFocus(True)
 
-        self.verticalLayout.addWidget(self.textEdit)
+        self.verticalLayout.addWidget(self.textEdit_description)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.pushButton_add = QPushButton(Player)
-        self.pushButton_add.setObjectName(u"pushButton_add")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.pushButton_add.sizePolicy().hasHeightForWidth())
-        self.pushButton_add.setSizePolicy(sizePolicy3)
-        self.pushButton_add.setMinimumSize(QSize(0, 0))
-        self.pushButton_add.setAutoDefault(True)
-
-        self.horizontalLayout.addWidget(self.pushButton_add)
-
         self.pushButton_delete = QPushButton(Player)
         self.pushButton_delete.setObjectName(u"pushButton_delete")
-        sizePolicy3.setHeightForWidth(self.pushButton_delete.sizePolicy().hasHeightForWidth())
-        self.pushButton_delete.setSizePolicy(sizePolicy3)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.pushButton_delete.sizePolicy().hasHeightForWidth())
+        self.pushButton_delete.setSizePolicy(sizePolicy2)
         self.pushButton_delete.setMinimumSize(QSize(0, 0))
         self.pushButton_delete.setAutoDefault(False)
 
@@ -156,7 +142,6 @@ class Ui_Player(object):
         self.label_inititive.setText(QCoreApplication.translate("Player", u"Initiative", None))
         self.label_hp.setText(QCoreApplication.translate("Player", u"HP", None))
         self.label.setText(QCoreApplication.translate("Player", u"Description", None))
-        self.pushButton_add.setText(QCoreApplication.translate("Player", u"Add", None))
         self.pushButton_delete.setText(QCoreApplication.translate("Player", u"Remove", None))
     # retranslateUi
 

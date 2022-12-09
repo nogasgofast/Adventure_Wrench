@@ -3,14 +3,27 @@
 import sys
 from ui.Main_Window import Ui_MainWindow
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QWidget
-
-from Player_Dialog import PlayerDialog
-from Vault_Dialog import VaultDialog
+from lib.display_utils import update_text
+from pony.orm import db_session
+from lib.aw_db import aw_db
+from Player import PlayerDialog
+from Vault import VaultDialog
 
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+        try:
+            aw_db.bind(provider="sqlite", filename="awdb.sqlite", create_db=True)
+            aw_db.generate_mapping(create_tables=True)
+            with db_session:
+                aw_db.Rtype(name='Roll table')
+                aw_db.Rtype(name='Random table')
+                aw_db.Rtype(name='table')
+                self.db = aw_db
+        except Exception as e:
+            print("aw_db.sqlite Failed to load: {e}")
+            raise e
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui_e = VaultDialog(self)
@@ -18,7 +31,8 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_Encounter.clicked.connect(self.ui_e.show)
         self.ui_p = PlayerDialog(self)
         self.ui_p.setModal(True)
-        self.ui.pushButton_Players.clicked.connect(self.ui_p.show)
+        self.ui.listWidget_Encounter.itemDoubleClicked.connect(self.ui_p.update_player)
+        self.ui.pushButton_Players.clicked.connect(self.ui_p.add_player)
         self.ui.pushButton_Inititave.clicked.connect(self.advance_initiative)
         self.ui.pushButton_toggle_expand.clicked.connect(self.toggle_expand)
         self.ui.pushButton_dam_1.clicked.connect(lambda: self.damage_thing(1))
@@ -47,29 +61,18 @@ class MainWindow(QMainWindow):
 
     def update_icon(self, kind, cycle):
         # print("update_icon")
-        for row in range(0, len(self.ui.listWidget_Encounter)):
+        for row in range(0, self.ui.listWidget_Encounter.count()):
             if self.ui.listWidget_Encounter.item(row).isSelected():
                 item = self.ui.listWidget_Encounter.item(row)
                 new = (item.encounter.get_option(kind) + 1) % cycle
                 item.encounter.set_option(kind, new)
                 update_text(item)
 
-    def closeEvent(self, event):
-        # print("closeEvent")
-        quit_msg = "Replace default save file ?"
-        reply = QMessageBox.question(self, 'Message',
-                                     quit_msg, QMessageBox.Yes,
-                                     QMessageBox.No)
-        if reply == QMessageBox.Yes:
-            self.save_session()
-            event.accept()
-        else:
-            event.accept()
 
     def kill_remove(self):
         # print("kill_remove")
         remove_these = []
-        for row in range(0, len(self.ui.listWidget_Encounter)):
+        for row in range(0, self.ui.listWidget_Encounter.count()):
             if self.ui.listWidget_Encounter.item(row).isSelected():
                 item = self.ui.listWidget_Encounter.item(row)
                 if item.encounter.get_option('groupOf') > 1:
@@ -128,64 +131,48 @@ class MainWindow(QMainWindow):
         pack['players'] = []
         # items in encounter window?
         pack['encounters'] = []
-        for row in range(0, len(self.ui.listWidget_Encounter)):
+        for row in range(0, self.ui.listWidget_Encounter.count()):
             item = self.ui.listWidget_Encounter.item(row)
             pack['main'].append(item.encounter)
-        for row in range(0, self.ui_p.ui.comboBox_name.count()):
-            pack['players'].append(
-                        str(self.ui_p.ui.comboBox_name.itemText(row)))
-        for row in range(0, len(self.ui_e.ui.listWidget_Display)):
+        for row in range(0, self.ui_e.ui.listWidget_Display.count()):
             item = self.ui_e.ui.listWidget_Display.item(row)
             if item:
                 pack['encounters'].append(item.encounter)
         pack['itemID'] = self.ui_e.itemID
         pickle.dump(pack, fh)
         fh.close()
-        # except:
-        #     # raise
-        #     QMessageBox.question(self,
-        #                          'Wisdom.',
-        #                          'Unable to write file',
-        #                          QMessageBox.Ok)
+
 
     def load_session(self, fh=None):
         # print("load_session")
-        try:
-            if fh:
-                with open(fh, 'rb') as fh:
-                    # print("fh: {}".format(fh))
-                    pack = pickle.load(fh)
-                    # print(pack)
-            else:
-                with open('saved_session.pickle', 'rb') as fh:
-                    # print("fh2: {}".format(fh))
-                    pack = pickle.load(fh)
-                    # print(pack)
-            self.ui_e.itemID = pack['itemID']
-            self.ui_p.ui.comboBox_name.clear()
-            for item in pack['players']:
-                self.ui_p.ui.comboBox_name.insertItem(1, item)
-            for row in range(0, len(self.ui_e.ui.listWidget_Display)):
-                self.ui_e.ui.listWidget_Display.takeItem(0)
-            for encounter in pack['encounters']:
-                self.ui_e.ui_s.add_item(encounter)
-            for row in range(0, len(self.ui.listWidget_Encounter)):
-                self.ui.listWidget_Encounter.takeItem(0)
-            for encounter in pack['main']:
-                item = QListWidgetItem("***")
-                item.encounter = encounter
-                update_text(item)
-                self.ui.listWidget_Encounter.addItem(item)
-        except FileNotFoundError:
-            QMessageBox.question(self,
-                                 'Wisdom.',
-                                 'Sorry no save 0_o',
-                                 QMessageBox.Ok)
+        if fh:
+            with open(fh, 'rb') as fh:
+                # print("fh: {}".format(fh))
+                pack = pickle.load(fh)
+                # print(pack)
+        else:
+            with open('saved_session.pickle', 'rb') as fh:
+                # print("fh2: {}".format(fh))
+                pack = pickle.load(fh)
+                # print(pack)
+        self.ui_e.itemID = pack['itemID']
+        for row in range(0, self.ui_e.ui.listWidget_Display.count()):
+            self.ui_e.ui.listWidget_Display.takeItem(0)
+        for encounter in pack['encounters']:
+            self.ui_e.ui_s.add_item(encounter)
+        for row in range(0, self.ui.listWidget_Encounter.count()):
+            self.ui.listWidget_Encounter.takeItem(0)
+        for encounter in pack['main']:
+            item = QListWidgetItem("***")
+            item.encounter = encounter
+            update_text(item)
+            self.ui.listWidget_Encounter.addItem(item)
+
 
     def spinBox_update(self):
         # print("spinBox_update")
         self.suppress_spinbox_update = True
-        for row in range(0, len(self.ui.listWidget_Encounter)):
+        for row in range(0, self.ui.listWidget_Encounter.count()):
             if self.ui.listWidget_Encounter.item(row).isSelected():
                 item = self.ui.listWidget_Encounter.item(row)
                 self.ui.spinBox_main_initiative.setValue(
@@ -199,7 +186,7 @@ class MainWindow(QMainWindow):
         if self.suppress_spinbox_update:
             pass
         else:
-            for row in range(0, len(self.ui.listWidget_Encounter)):
+            for row in range(0, self.ui.listWidget_Encounter.count()):
                 if self.ui.listWidget_Encounter.item(row).isSelected():
                     init_value = self.ui.spinBox_main_initiative.value()
                     item = self.ui.listWidget_Encounter.item(row)
@@ -213,7 +200,7 @@ class MainWindow(QMainWindow):
             pass
         else:
             newHP = self.ui.spinBox_main_hp.value()
-            for row in range(0, len(self.ui.listWidget_Encounter)):
+            for row in range(0, self.ui.listWidget_Encounter.count()):
                 if self.ui.listWidget_Encounter.item(row).isSelected():
                     item = self.ui.listWidget_Encounter.item(row)
                     if item.encounter.get_option('groupOf') == 1:
@@ -224,7 +211,7 @@ class MainWindow(QMainWindow):
 
     def damage_thing(self, damage):
         # print("damage_thing")
-        for row in range(0, len(self.ui.listWidget_Encounter)):
+        for row in range(0, self.ui.listWidget_Encounter.count()):
             if self.ui.listWidget_Encounter.item(row).isSelected():
                 item = self.ui.listWidget_Encounter.item(row)
                 if item.encounter.get_option('groupOf') > 1:
@@ -242,17 +229,16 @@ class MainWindow(QMainWindow):
 
     def toggle_expand(self):
         # print("toggle_expand")
-        for row in range(0, len(self.ui.listWidget_Encounter)):
+        for row in range(0, self.ui.listWidget_Encounter.count()):
             if self.ui.listWidget_Encounter.item(row) and \
                     self.ui.listWidget_Encounter.item(row).isSelected():
                 item = self.ui.listWidget_Encounter.item(row)
-                # -1 indicates a non-encounter object
-                if item.encounter.get_option('id') != -1:
+                if item.encounter.get_option('type') != 'pc':
                     if item.encounter.get_option('groupOf') > 1:
                         self.expands(row, item)
                         self.ui.listWidget_Encounter.takeItem(row)
                     else:
-                        if item.encounter.get_option('id') != -1:
+                        if item.encounter.get_option('type') != 'pc':
                             self.collapse(item)
 
     def expands(self, row, item):
@@ -275,7 +261,7 @@ class MainWindow(QMainWindow):
         encounter = inItem.encounter
         initiative = inItem.encounter.get_option('initiative')
         group = []
-        for row in range(0, len(self.ui.listWidget_Encounter)):
+        for row in range(0, self.ui.listWidget_Encounter.count()):
             if self.ui.listWidget_Encounter. \
                     item(row).encounter.get_option('id') == EncounterId:
                 group.append(row)
@@ -306,7 +292,7 @@ class MainWindow(QMainWindow):
         flag = False
         initiative = 0
         E = self.ui.listWidget_Encounter
-        for row in range(0, len(E)):
+        for row in range(0, E.count()):
             if E.item(row).isSelected():
                 initiative = E.item(row).encounter.get_option('initiative')
                 E.item(row).setSelected(False)
@@ -315,7 +301,7 @@ class MainWindow(QMainWindow):
         self.sort_initiative()
         if flag:
             flag2 = False
-            for row in range(0, len(E)):
+            for row in range(0, E.count()):
                 if E.item(row).encounter.get_option('initiative') < initiative:
                     E.item(row).setSelected(True)
                     flag2 = True
@@ -330,12 +316,12 @@ class MainWindow(QMainWindow):
         E = self.ui.listWidget_Encounter
         Initiatives = []
         order = []
-        for row in range(0, len(E)):
+        for row in range(0, E.count()):
             Initiatives.append(E.item(row).encounter.get_option('initiative'))
         Initiatives.sort()
         Initiatives.reverse()
         for init in Initiatives:
-            for row in range(0, len(E)):
+            for row in range(0, E.count()):
                 if E.item(row).encounter.get_option('initiative') == init:
                     item = E.takeItem(row)
                     order.append(item)
