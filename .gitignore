@@ -2,3 +2,4 @@
 TODO.txt
 *.pickle
 env/*
+src/awdb.sqlite
