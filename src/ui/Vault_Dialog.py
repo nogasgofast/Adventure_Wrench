@@ -15,17 +15,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QDialog, QHBoxLayout,
-    QHeaderView, QLabel, QLayout, QListWidget,
-    QListWidgetItem, QPushButton, QSizePolicy, QSpacerItem,
-    QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLabel,
+    QLayout, QListWidget, QListWidgetItem, QPushButton,
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Vault(object):
     def setupUi(self, Vault):
         if not Vault.objectName():
             Vault.setObjectName(u"Vault")
-        Vault.setWindowModality(Qt.WindowModal)
-        Vault.resize(925, 583)
+        Vault.resize(673, 583)
         self.verticalLayout_3 = QVBoxLayout(Vault)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout_content = QHBoxLayout()
@@ -37,101 +35,63 @@ class Ui_Vault(object):
         self.label = QLabel(Vault)
         self.label.setObjectName(u"label")
         self.label.setTextFormat(Qt.MarkdownText)
-        self.label.setAlignment(Qt.AlignCenter)
+        self.label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
         self.verticalLayout_menu.addWidget(self.label)
 
-        self.pushButton_adventure = QPushButton(Vault)
-        self.pushButton_adventure.setObjectName(u"pushButton_adventure")
+        self.pushButton_add_to_encounter = QPushButton(Vault)
+        self.pushButton_add_to_encounter.setObjectName(u"pushButton_add_to_encounter")
 
-        self.verticalLayout_menu.addWidget(self.pushButton_adventure)
+        self.verticalLayout_menu.addWidget(self.pushButton_add_to_encounter)
 
-        self.pushButton = QPushButton(Vault)
-        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton_remove_from_encounter = QPushButton(Vault)
+        self.pushButton_remove_from_encounter.setObjectName(u"pushButton_remove_from_encounter")
 
-        self.verticalLayout_menu.addWidget(self.pushButton)
+        self.verticalLayout_menu.addWidget(self.pushButton_remove_from_encounter)
 
-        self.pushButton_toggle_expand = QPushButton(Vault)
-        self.pushButton_toggle_expand.setObjectName(u"pushButton_toggle_expand")
+        self.pushButton_delete_selected_items = QPushButton(Vault)
+        self.pushButton_delete_selected_items.setObjectName(u"pushButton_delete_selected_items")
 
-        self.verticalLayout_menu.addWidget(self.pushButton_toggle_expand)
+        self.verticalLayout_menu.addWidget(self.pushButton_delete_selected_items)
 
-        self.pushButton_Summon = QPushButton(Vault)
-        self.pushButton_Summon.setObjectName(u"pushButton_Summon")
+        self.pushButton_clear_delete = QPushButton(Vault)
+        self.pushButton_clear_delete.setObjectName(u"pushButton_clear_delete")
 
-        self.verticalLayout_menu.addWidget(self.pushButton_Summon)
-
-        self.pushButton_UnSummon = QPushButton(Vault)
-        self.pushButton_UnSummon.setObjectName(u"pushButton_UnSummon")
-
-        self.verticalLayout_menu.addWidget(self.pushButton_UnSummon)
-
-        self.pushButton_delete = QPushButton(Vault)
-        self.pushButton_delete.setObjectName(u"pushButton_delete")
-
-        self.verticalLayout_menu.addWidget(self.pushButton_delete)
-
-        self.pushButton_delete_undo = QPushButton(Vault)
-        self.pushButton_delete_undo.setObjectName(u"pushButton_delete_undo")
-
-        self.verticalLayout_menu.addWidget(self.pushButton_delete_undo)
+        self.verticalLayout_menu.addWidget(self.pushButton_clear_delete)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_menu.addItem(self.verticalSpacer)
+
+        self.label_2 = QLabel(Vault)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setTextFormat(Qt.MarkdownText)
+        self.label_2.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.verticalLayout_menu.addWidget(self.label_2)
+
+        self.pushButton_the_shop = QPushButton(Vault)
+        self.pushButton_the_shop.setObjectName(u"pushButton_the_shop")
+
+        self.verticalLayout_menu.addWidget(self.pushButton_the_shop)
+
+        self.pushButton_acadamy = QPushButton(Vault)
+        self.pushButton_acadamy.setObjectName(u"pushButton_acadamy")
+
+        self.verticalLayout_menu.addWidget(self.pushButton_acadamy)
 
 
         self.horizontalLayout_content.addLayout(self.verticalLayout_menu)
 
         self.verticalLayout_treeWidget = QVBoxLayout()
         self.verticalLayout_treeWidget.setObjectName(u"verticalLayout_treeWidget")
-        self.label_tree_view = QLabel(Vault)
-        self.label_tree_view.setObjectName(u"label_tree_view")
-        font = QFont()
-        font.setBold(False)
-        self.label_tree_view.setFont(font)
-        self.label_tree_view.setTextFormat(Qt.MarkdownText)
-        self.label_tree_view.setAlignment(Qt.AlignCenter)
+        self.listWidget_vault = QListWidget(Vault)
+        self.listWidget_vault.setObjectName(u"listWidget_vault")
 
-        self.verticalLayout_treeWidget.addWidget(self.label_tree_view)
-
-        self.treeWidget_organizer = QTreeWidget(Vault)
-        __qtreewidgetitem = QTreeWidgetItem()
-        __qtreewidgetitem.setText(0, u"1");
-        self.treeWidget_organizer.setHeaderItem(__qtreewidgetitem)
-        self.treeWidget_organizer.setObjectName(u"treeWidget_organizer")
-
-        self.verticalLayout_treeWidget.addWidget(self.treeWidget_organizer)
+        self.verticalLayout_treeWidget.addWidget(self.listWidget_vault)
 
 
         self.horizontalLayout_content.addLayout(self.verticalLayout_treeWidget)
-
-        self.verticalLayout_display = QVBoxLayout()
-        self.verticalLayout_display.setObjectName(u"verticalLayout_display")
-        self.label_tenolate_summery = QLabel(Vault)
-        self.label_tenolate_summery.setObjectName(u"label_tenolate_summery")
-        self.label_tenolate_summery.setTextFormat(Qt.MarkdownText)
-        self.label_tenolate_summery.setAlignment(Qt.AlignCenter)
-
-        self.verticalLayout_display.addWidget(self.label_tenolate_summery)
-
-        self.listWidget_Display = QListWidget(Vault)
-        self.listWidget_Display.setObjectName(u"listWidget_Display")
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(1)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.listWidget_Display.sizePolicy().hasHeightForWidth())
-        self.listWidget_Display.setSizePolicy(sizePolicy)
-        self.listWidget_Display.setProperty("showDropIndicator", False)
-        self.listWidget_Display.setDragDropMode(QAbstractItemView.NoDragDrop)
-        self.listWidget_Display.setDefaultDropAction(Qt.IgnoreAction)
-        self.listWidget_Display.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        self.listWidget_Display.setWordWrap(True)
-
-        self.verticalLayout_display.addWidget(self.listWidget_Display)
-
-
-        self.horizontalLayout_content.addLayout(self.verticalLayout_display)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_content)
@@ -145,23 +105,27 @@ class Ui_Vault(object):
     def retranslateUi(self, Vault):
         Vault.setWindowTitle(QCoreApplication.translate("Vault", u"DM Vault", None))
         self.label.setText(QCoreApplication.translate("Vault", u"## Tools", None))
-        self.pushButton_adventure.setText(QCoreApplication.translate("Vault", u"Create New Thingy", None))
-        self.pushButton.setText(QCoreApplication.translate("Vault", u"Apply Template", None))
-        self.pushButton_toggle_expand.setText(QCoreApplication.translate("Vault", u"Expand/Collapse", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton_Summon.setToolTip(QCoreApplication.translate("Vault", u"Add Selected Items to Current Encounter", None))
+        self.pushButton_add_to_encounter.setToolTip(QCoreApplication.translate("Vault", u"Add Selected Items to Current Encounter", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_Summon.setText(QCoreApplication.translate("Vault", u"Copy to Encounter", None))
+        self.pushButton_add_to_encounter.setText(QCoreApplication.translate("Vault", u"Copy into Encounter", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton_UnSummon.setToolTip(QCoreApplication.translate("Vault", u"Remove Selected items from Current Encounter", None))
+        self.pushButton_remove_from_encounter.setToolTip(QCoreApplication.translate("Vault", u"Remove Selected items from Current Encounter", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_UnSummon.setText(QCoreApplication.translate("Vault", u"Remove from Encounter", None))
+        self.pushButton_remove_from_encounter.setText(QCoreApplication.translate("Vault", u"Remove from Encounter", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton_delete.setToolTip(QCoreApplication.translate("Vault", u"Remove selected from current Encounter as well as DM Vault.", None))
+        self.pushButton_delete_selected_items.setToolTip(QCoreApplication.translate("Vault", u"Remove selected from current Encounter as well as DM Vault.", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_delete.setText(QCoreApplication.translate("Vault", u"Delete", None))
-        self.pushButton_delete_undo.setText(QCoreApplication.translate("Vault", u"Undo Delete", None))
-        self.label_tree_view.setText(QCoreApplication.translate("Vault", u"## Double-Click to edit", None))
-        self.label_tenolate_summery.setText(QCoreApplication.translate("Vault", u"## Summery ", None))
+        self.pushButton_delete_selected_items.setText(QCoreApplication.translate("Vault", u"Mark/Delete", None))
+        self.pushButton_clear_delete.setText(QCoreApplication.translate("Vault", u"Clear Mark", None))
+        self.label_2.setText(QCoreApplication.translate("Vault", u"## Add Stuff", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_the_shop.setToolTip(QCoreApplication.translate("Vault", u"Add something new to the vault using templates.", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_the_shop.setText(QCoreApplication.translate("Vault", u"The Shop", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_acadamy.setToolTip(QCoreApplication.translate("Vault", u"add/edit templates usable in the shop.", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_acadamy.setText(QCoreApplication.translate("Vault", u"The Acadamy", None))
     # retranslateUi
 

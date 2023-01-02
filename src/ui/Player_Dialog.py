@@ -33,7 +33,7 @@ class Ui_Player(object):
         Player.setMinimumSize(QSize(629, 0))
         Player.setMaximumSize(QSize(629, 16777215))
         Player.setContextMenuPolicy(Qt.DefaultContextMenu)
-        Player.setModal(True)
+        Player.setModal(False)
         self.verticalLayout = QVBoxLayout(Player)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.horizontalLayout_head = QHBoxLayout()

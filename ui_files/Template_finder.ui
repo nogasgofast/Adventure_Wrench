@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>620</width>
-    <height>441</height>
+    <height>293</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -56,13 +56,6 @@
       </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>Create New Template</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QListWidget" name="listWidget_catagory">
        <property name="selectionMode">
         <enum>QAbstractItemView::MultiSelection</enum>
@@ -70,11 +63,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_create_example">
-       <property name="text">
-        <string>Apply Template</string>
-       </property>
-      </widget>
+      <widget class="QListWidget" name="listWidget"/>
      </item>
     </layout>
    </item>

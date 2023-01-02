@@ -99,14 +99,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_Players">
+         <widget class="QPushButton" name="pushButton_players">
           <property name="text">
            <string>Players</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_Encounter">
+         <widget class="QPushButton" name="pushButton_vault">
           <property name="text">
            <string>The Vault</string>
           </property>

@@ -79,15 +79,15 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.label)
 
-        self.pushButton_Players = QPushButton(self.centralwidget)
-        self.pushButton_Players.setObjectName(u"pushButton_Players")
+        self.pushButton_players = QPushButton(self.centralwidget)
+        self.pushButton_players.setObjectName(u"pushButton_players")
 
-        self.verticalLayout.addWidget(self.pushButton_Players)
+        self.verticalLayout.addWidget(self.pushButton_players)
 
-        self.pushButton_Encounter = QPushButton(self.centralwidget)
-        self.pushButton_Encounter.setObjectName(u"pushButton_Encounter")
+        self.pushButton_vault = QPushButton(self.centralwidget)
+        self.pushButton_vault.setObjectName(u"pushButton_vault")
 
-        self.verticalLayout.addWidget(self.pushButton_Encounter)
+        self.verticalLayout.addWidget(self.pushButton_vault)
 
         self.label_quick_change = QLabel(self.centralwidget)
         self.label_quick_change.setObjectName(u"label_quick_change")
@@ -259,8 +259,8 @@ class Ui_MainWindow(object):
         self.actionOpen.setText(QCoreApplication.translate("MainWindow", u"Open", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"## Current Encounter", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"### Add Stuff", None))
-        self.pushButton_Players.setText(QCoreApplication.translate("MainWindow", u"Players", None))
-        self.pushButton_Encounter.setText(QCoreApplication.translate("MainWindow", u"The Vault", None))
+        self.pushButton_players.setText(QCoreApplication.translate("MainWindow", u"Players", None))
+        self.pushButton_vault.setText(QCoreApplication.translate("MainWindow", u"The Vault", None))
         self.label_quick_change.setText(QCoreApplication.translate("MainWindow", u"### Quick Change", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Initiative", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"HP", None))

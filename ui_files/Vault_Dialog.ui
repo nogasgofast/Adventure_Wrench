@@ -2,14 +2,11 @@
 <ui version="4.0">
  <class>Vault</class>
  <widget class="QDialog" name="Vault">
-  <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>925</width>
+    <width>673</width>
     <height>583</height>
    </rect>
   </property>
@@ -36,43 +33,22 @@
           <enum>Qt::MarkdownText</enum>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_adventure">
-         <property name="text">
-          <string>Create New Thingy</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton">
-         <property name="text">
-          <string>Apply Template</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_toggle_expand">
-         <property name="text">
-          <string>Expand/Collapse</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_Summon">
+        <widget class="QPushButton" name="pushButton_add_to_encounter">
          <property name="toolTip">
           <string>Add Selected Items to Current Encounter</string>
          </property>
          <property name="text">
-          <string>Copy to Encounter</string>
+          <string>Copy into Encounter</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_UnSummon">
+        <widget class="QPushButton" name="pushButton_remove_from_encounter">
          <property name="toolTip">
           <string>Remove Selected items from Current Encounter</string>
          </property>
@@ -82,19 +58,19 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_delete">
+        <widget class="QPushButton" name="pushButton_delete_selected_items">
          <property name="toolTip">
           <string>Remove selected from current Encounter as well as DM Vault.</string>
          </property>
          <property name="text">
-          <string>Delete</string>
+          <string>Mark/Delete</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_delete_undo">
+        <widget class="QPushButton" name="pushButton_clear_delete">
          <property name="text">
-          <string>Undo Delete</string>
+          <string>Clear Mark</string>
          </property>
         </widget>
        </item>
@@ -111,79 +87,45 @@
          </property>
         </spacer>
        </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>## Add Stuff</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::MarkdownText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_the_shop">
+         <property name="toolTip">
+          <string>Add something new to the vault using templates.</string>
+         </property>
+         <property name="text">
+          <string>The Shop</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_acadamy">
+         <property name="toolTip">
+          <string>add/edit templates usable in the shop.</string>
+         </property>
+         <property name="text">
+          <string>The Acadamy</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_treeWidget">
        <item>
-        <widget class="QLabel" name="label_tree_view">
-         <property name="font">
-          <font>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>## Double-Click to edit</string>
-         </property>
-         <property name="textFormat">
-          <enum>Qt::MarkdownText</enum>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTreeWidget" name="treeWidget_organizer">
-         <column>
-          <property name="text">
-           <string notr="true">1</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_display">
-       <item>
-        <widget class="QLabel" name="label_tenolate_summery">
-         <property name="text">
-          <string>## Summery </string>
-         </property>
-         <property name="textFormat">
-          <enum>Qt::MarkdownText</enum>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QListWidget" name="listWidget_Display">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>1</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="showDropIndicator" stdset="0">
-          <bool>false</bool>
-         </property>
-         <property name="dragDropMode">
-          <enum>QAbstractItemView::NoDragDrop</enum>
-         </property>
-         <property name="defaultDropAction">
-          <enum>Qt::IgnoreAction</enum>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::ExtendedSelection</enum>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
+        <widget class="QListWidget" name="listWidget_vault"/>
        </item>
       </layout>
      </item>

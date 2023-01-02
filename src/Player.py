@@ -1,5 +1,4 @@
 
-from lib.display_utils import update_text
 from lib.encounter import Encounter
 from ui.Player_Dialog import Ui_Player
 from PySide6.QtWidgets import QDialog, QListWidgetItem
@@ -18,13 +17,16 @@ class PlayerDialog(QDialog):
         self.ui.textEdit_description.textChanged.connect(self.update_description)
         self.ui.pushButton_delete.clicked.connect(self.remove_player)
 
+    @db_session
     def update_player(self):
         # this may make more sense in main.py if I decide to add update
         # functionality to Other types of objects
-        for row in range(0, self.main.ui.listWidget_Encounter.count()):
-            if self.main.ui.listWidget_Encounter.item(row).isSelected():
-                item = self.main.ui.listWidget_Encounter.item(row)
-                if item.type == 'pc':
+        E = self.main.ui.listWidget_Encounter
+        for row in range(0, E.count()):
+            if E.item(row).isSelected():
+                item = E.item(row)
+                item.dbObj = self.main.db.Active[item.dbObj.id]
+                if item.dbObj.type == 'pc':
                     self.target = item
                     self.ui.lineEdit_name.setText(item.dbObj.name)
                     self.ui.spinBox_hp.setValue(item.dbObj.hp)
@@ -42,7 +44,7 @@ class PlayerDialog(QDialog):
         self.target.dbObj = self.main.db.Active[self.target.dbObj.id]
         self.target.dbObj.name = name
         commit()
-        update_text(self.target, self.main.db)
+        self.main.update_encounter_text(self.target)
 
     @db_session
     def update_hp(self):
@@ -52,7 +54,7 @@ class PlayerDialog(QDialog):
         self.target.dbObj.hp = hp
         self.target.dbObj.max_hp = hp
         commit()
-        update_text(self.target, self.main.db)
+        self.main.update_encounter_text(self.target)
 
     @db_session
     def update_inititive(self):
@@ -61,7 +63,7 @@ class PlayerDialog(QDialog):
         self.target.dbObj = self.main.db.Active[self.target.dbObj.id]
         self.target.dbObj.initiative = initiative
         commit()
-        update_text(self.target, self.main.db)
+        self.main.update_encounter_text(self.target)
 
     @db_session
     def update_description(self):
@@ -74,17 +76,15 @@ class PlayerDialog(QDialog):
             self.target.dbObj = self.main.db.Active[self.target.dbObj.id]
             self.target.dbObj.description = text
             commit()
-            update_text(self.target, self.main.db)
+            self.main.update_encounter_text(self.target)
 
     @db_session
     def add_player(self):
-        player = self.main.db.Active()
+        player = self.main.db.Active(type='pc')
         commit()
         item = QListWidgetItem("{player.initiative} | {player.name} | hp:{player.hp}")
         item.dbObj = player
-        # initiative window requires these attributes be added to items
-        item.type = 'pc'
-        update_text(item, self.main.db)
+        self.main.update_encounter_text(item)
         self.target = item
         self.main.ui.listWidget_Encounter.addItem(item)
         # clear ui for adding a new player

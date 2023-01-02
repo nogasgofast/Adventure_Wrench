@@ -1,6 +1,9 @@
-
+from pony.orm import db_session, commit
 from ui.Vault_Dialog import Ui_Vault
-from PySide6.QtWidgets import QDialog
+from PySide6.QtWidgets import QDialog, QListWidgetItem
+from PySide6.QtGui import QBrush, QColor
+from Acadamy import AcadamyDialog
+from TheShop import TheShopDialog
 
 class VaultDialog(QDialog):
     def __init__(self, parent=None):
@@ -8,166 +11,114 @@ class VaultDialog(QDialog):
         self.main = parent
         self.ui = Ui_Vault()
         self.ui.setupUi(self)
-        # self.ui_s = EncounterSelectorDialog(self)
-        # self.ui_s.setModal(True)
-        self.ui.pushButton_Summon.clicked.connect(self.summon_item)
-        self.ui.pushButton_UnSummon.clicked.connect(self.unsummon_item)
-        self.ui.pushButton_delete.clicked.connect(self.delete_item)
+        self.ui_acadamy = AcadamyDialog(self)
+        self.ui_ts = TheShopDialog(self)
+        self.ui.pushButton_the_shop.clicked.connect(self.ui_ts.show)
+        self.ui.pushButton_acadamy.clicked.connect(self.ui_acadamy.show)
+        self.ui.pushButton_add_to_encounter.clicked.connect(
+                                       self.add_to_encounter)
+        self.ui.pushButton_remove_from_encounter.clicked.connect(
+                                       self.remove_from_encounter)
+        self.ui.pushButton_delete_selected_items.clicked.connect(
+                                       self.delete_from_vault)
+        self.ui.pushButton_clear_delete.clicked.connect(
+                                       self.clear_delete)
+        self.load_vault()
 
-        # self.ui.pushButton_New.clicked.connect(self.ui_s.show)
-        # self.ui.pushButton_save.clicked.connect(self.save_dialog)
-        # self.ui.pushButton_load.clicked.connect(self.open_dialog)
-        # self.ui.pushButton_back.clicked.connect(self.close)
-        self.ui.listWidget_Display. \
-            itemDoubleClicked.connect(self.toggle_item_view)
-        # Set this value to keep track of my listItems
-        self.itemID = 1
 
-#   # def add_update_callback(self,update_callback):
-#   #     self.main_window_callback = update_callback
+    @db_session
+    def load_vault(self):
+        all_vault_assets = self.main.db.Vault.select()
+        for vault_thing in all_vault_assets:
+            item = QListWidgetItem(
+                           f'''{vault_thing.name}\n{vault_thing.description}''')
+            item.dbObj = vault_thing
+            item.type = vault_thing.type
+            item.isDeleting = False
+            self.ui.listWidget_vault.addItem(item)
 
-    def toggle_item_view(self):
-        # print("toggle_item_view")
-        for row in range(0, len(self.ui.listWidget_Display)):
-            if self.ui.listWidget_Display.item(row).isSelected():
-                item = self.ui.listWidget_Display.item(row)
-                if item.ViewTxt:
-                    item.setText('- %s' % item.encounter.to_string())
-                else:
-                    item.setText('+ %s' % item.encounter.get_option('name'))
-                item.ViewTxt = not item.ViewTxt
 
-    def open_dialog(self):
-        # print("open_dialog")
-        fileName = QFileDialog.getOpenFileName(self,
-                                               "Open Save Files",
-                                               "~",
-                                               "Pickles (*.pickle)")
-        if fileName:
-            self.load_encounters(fileName)
+    @db_session
+    def update_vault_summery(self, item):
+        # if the name or description changes
+        # we call this function to update the Vault item text.
+        (red,green,blue)=(255,255,255)
+        if item.isDeleting:
+            green = 0
+            blue = 0
+        painter = QBrush(QColor(red,green,blue))
+        item.setBackground(painter)
 
-    def save_dialog(self):
-        # print("save_dialog")
-        fileName = QFileDialog.getSaveFileName(self,
-                                               "Save File Name",
-                                               "encounters.pickle",
-                                               "Pickles (*.pickle)")
-        if fileName:
-            self.save_encounters(fileName)
 
-    def save_encounters(self, fh=None):
-        # print("save_encounters")
-        # try:
-        if fh:
-            fh = open(fh, 'wb')
-        else:
-            fh = open('encounters.pickle', 'wb')
-        pack = {}
-        # items in encounter window?
-        pack['encounters'] = []
-        for row in range(0, len(self.ui.listWidget_Display)):
-            item = self.ui.listWidget_Display.item(row)
-            if item:
-                pack['encounters'].append(item.encounter)
-        pack['itemID'] = self.itemID
-        pickle.dump(pack, fh, 2)
-        fh.close()
-        # except:
-        #     QMessageBox.question(self,
-        #                          'Wisdom.',
-        #                          'Unable to write file',
-        #                          QMessageBox.Ok)
+    # @db_session
+    # def new_vault_item(self):
+    #     item = QListWidgetItem(' *** ')
+    #     vault_item = self.main.db.Vault(group_hp=[1,2,3,4],hp=6, max_hp=40,
+    #                                     count=4, type='creature')
+    #     item.dbObj = vault_item
+    #     item.isDeleting = False
+    #     self.update_vault_summery(item)
+    #     self.ui.listWidget_vault.addItem(item)
 
-    def load_encounters(self, fh=None):
-        # print("load_encounters")
-        # try:
-        if fh:
-            fh = open(fh, 'rb')
-        else:
-            fh = open('encounters.pickle', 'rb')
-        pack = pickle.load(fh)
-        # for row in range(0, len(self.ui.listWidget_Display)):
-        #    self.ui.listWidget_Display.takeItem(0)
-        for encounter in pack['encounters']:
-            self.add_item(encounter)
-        # except:
-        #     QMessageBox.question(self,
-        #                          'Wisdom.',
-        #                          'Sorry no save 0_o',
-        #                          QMessageBox.Ok)
 
-    def summon_item(self, encounter=False):
-        # print("summon_item")
-        '''set display item for main window.'''
-        for row in range(0, self.ui.listWidget_Display.count()):
-            if self.ui.listWidget_Display.item(row).isSelected():
-                item = self.ui.listWidget_Display.item(row)
-                encItem = QListWidgetItem('***')
-                encItem.encounter = item.encounter.copy()
-                update_text(encItem)
-                self.main.ui.listWidget_Encounter.addItem(encItem)
+    @db_session
+    def add_to_encounter(self):
+        enc_list = self.main.ui.listWidget_Encounter
+        Vault = self.ui.listWidget_vault
+        for row in range(0, Vault.count()):
+            if Vault.item(row).isSelected():
+                item = Vault.item(row)
+                item.dbObj = self.main.db.Vault[item.dbObj.id]
+                new_item = QListWidgetItem()
+                new_item.dbObj = self.main.db.Active(
+                                name = item.dbObj.name,
+                                description = item.dbObj.description,
+                                initiative = item.dbObj.initiative,
+                                hp = item.dbObj.hp,
+                                max_hp = item.dbObj.max_hp,
+                                group_hp = item.dbObj.group_hp,
+                                count = item.dbObj.count,
+                                type = item.dbObj.type)
+                commit()
+                self.main.update_encounter_text(new_item)
+                self.main.ui.listWidget_Encounter.addItem(new_item)
 
-    def delete_item(self):
-        # print("delete_item")
-        unSummonList = {}
-        Remove = []
-        # find selected items to delete
-        for row in range(0, len(self.ui.listWidget_Display)):
-            if self.ui.listWidget_Display.item(row).isSelected():
-                # follow me here an item has it's position. But also
-                # has an identifier I can use to track down copies
-                # check out self.add_item().
-                unSummonList[row] = self.ui.listWidget_Display. \
-                    item(row).encounter.get_option('id')
-                for mainWindowRow in range(0,
-                                           len(self.main.ui.
-                                               listWidget_Encounter)):
-                    cur_Item = self.main.ui. \
-                        listWidget_Encounter.item(mainWindowRow)
-                    if cur_Item.encounter. \
-                            get_option('id') == unSummonList[row]:
-                        Remove.append(mainWindowRow)
 
-        # be careful to not change the index of the items
-        # you found as you remove them. So remove from the end first.
-        # we don't need those values anymore though
-        unSummonList = list(unSummonList.keys())
-        unSummonList.sort()
-        unSummonList.reverse()
-        Remove.sort()
-        Remove.reverse()
+    @db_session
+    def remove_from_encounter(self):
+        print(self.main.pos())
+        self.move(50, 50)
+        print(self.pos())
 
-        # remove items from the encounter applet
-        for row in unSummonList:
-            self.ui.listWidget_Display.takeItem(row)
-        # remove items from the initive window (main)
-        for row in Remove:
-            self.main.ui.listWidget_Encounter.takeItem(row)
 
-    def unsummon_item(self):
-        # print("unsummon_item")
-        unSummonList = {}
-        Remove = []
-        # find selected items to delete
-        for row in range(0, len(self.ui.listWidget_Display)):
-            if self.ui.listWidget_Display.item(row).isSelected():
-                # follow me here an item has it's position. But also
-                # has an identifier I can use to track down copies
-                # check out self.add_item() .
-                unSummonList[row] = self.ui. \
-                    listWidget_Display.item(row).encounter.get_option('id')
-                for mainWindowRow in range(0,
-                                           len(self.main.ui.
-                                               listWidget_Encounter)):
-                    cur_Item = self.main.ui. \
-                        listWidget_Encounter.item(mainWindowRow)
-                    if cur_Item.encounter. \
-                            get_option('id') == unSummonList[row]:
-                        Remove.append(mainWindowRow)
-        # things in the list change position as you remove them. So i
-        # must arrange for the deletion to happen in the right order.
-        Remove.sort()
-        Remove.reverse()
-        # remove items from the initive window (main)
-        for row in Remove:
-            self.main.ui.listWidget_Encounter.takeItem(row)
+
+    @db_session
+    def delete_from_vault(self):
+        remove_these = []
+        Vault = self.ui.listWidget_vault
+        for row in range(0, Vault.count()):
+            if Vault.item(row).isSelected():
+                item = Vault.item(row)
+                item.dbObj = self.main.db.Vault[item.dbObj.id]
+                if item.isDeleting:
+                    Vault.item(row).setSelected(False)
+                    item.dbObj.delete()
+                    remove_these.append(row)
+                if not item.isDeleting:
+                    item.isDeleting = True
+                    self.update_vault_summery(item)
+        commit()
+        remove_these.sort()
+        remove_these.reverse()
+        for row in remove_these:
+            Vault.takeItem(row)
+
+
+    @db_session
+    def clear_delete(self):
+        Vault = self.ui.listWidget_vault
+        for row in range(0, Vault.count()):
+            item = Vault.item(row)
+            item.dbObj = self.main.db.Vault[item.dbObj.id]
+            item.isDeleting = False
+            self.update_vault_summery(item)
