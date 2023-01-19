@@ -15,11 +15,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QFormLayout,
-    QFrame, QHBoxLayout, QLabel, QLineEdit,
-    QListWidget, QListWidgetItem, QPushButton, QSizePolicy,
-    QSpacerItem, QStackedWidget, QTextEdit, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDialog,
+    QFormLayout, QFrame, QGroupBox, QHBoxLayout,
+    QLabel, QLineEdit, QListWidget, QListWidgetItem,
+    QPushButton, QSizePolicy, QSpacerItem, QSpinBox,
+    QStackedWidget, QTextEdit, QVBoxLayout, QWidget)
 
 class Ui_acadamy_dialog(object):
     def setupUi(self, acadamy_dialog):
@@ -66,10 +66,10 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout.addWidget(self.label_template_details)
 
-        self.listWidget_template_detail = QListWidget(acadamy_dialog)
-        self.listWidget_template_detail.setObjectName(u"listWidget_template_detail")
+        self.listWidget_template = QListWidget(acadamy_dialog)
+        self.listWidget_template.setObjectName(u"listWidget_template")
 
-        self.verticalLayout.addWidget(self.listWidget_template_detail)
+        self.verticalLayout.addWidget(self.listWidget_template)
 
         self.pushButton_back = QPushButton(acadamy_dialog)
         self.pushButton_back.setObjectName(u"pushButton_back")
@@ -92,20 +92,20 @@ class Ui_acadamy_dialog(object):
         self.page_splash.setObjectName(u"page_splash")
         self.formLayout = QFormLayout(self.page_splash)
         self.formLayout.setObjectName(u"formLayout")
-        self.label = QLabel(self.page_splash)
-        self.label.setObjectName(u"label")
+        self.label_splash = QLabel(self.page_splash)
+        self.label_splash.setObjectName(u"label_splash")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy)
-        self.label.setMaximumSize(QSize(500, 500))
-        self.label.setPixmap(QPixmap(u"../src/ui/mascot.png"))
-        self.label.setScaledContents(True)
-        self.label.setMargin(50)
-        self.label.setIndent(0)
+        sizePolicy.setHeightForWidth(self.label_splash.sizePolicy().hasHeightForWidth())
+        self.label_splash.setSizePolicy(sizePolicy)
+        self.label_splash.setMaximumSize(QSize(500, 500))
+        self.label_splash.setPixmap(QPixmap(u"../src/ui/mascot.png"))
+        self.label_splash.setScaledContents(True)
+        self.label_splash.setMargin(50)
+        self.label_splash.setIndent(0)
 
-        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label)
+        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label_splash)
 
         self.verticalStackedWidget_forms.addWidget(self.page_splash)
         self.page_new_template = QWidget()
@@ -140,14 +140,15 @@ class Ui_acadamy_dialog(object):
         self.comboBox_type_templates_page.addItem("")
         self.comboBox_type_templates_page.addItem("")
         self.comboBox_type_templates_page.addItem("")
+        self.comboBox_type_templates_page.addItem("")
         self.comboBox_type_templates_page.setObjectName(u"comboBox_type_templates_page")
 
         self.verticalLayout_9.addWidget(self.comboBox_type_templates_page)
 
-        self.pushButton_add_type_template = QPushButton(self.page_new_template)
-        self.pushButton_add_type_template.setObjectName(u"pushButton_add_type_template")
+        self.pushButton_add_detail = QPushButton(self.page_new_template)
+        self.pushButton_add_detail.setObjectName(u"pushButton_add_detail")
 
-        self.verticalLayout_9.addWidget(self.pushButton_add_type_template)
+        self.verticalLayout_9.addWidget(self.pushButton_add_detail)
 
         self.line_2 = QFrame(self.page_new_template)
         self.line_2.setObjectName(u"line_2")
@@ -176,24 +177,24 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_9.addLayout(self.horizontalLayout_2)
 
-        self.comboBox_templates_page = QComboBox(self.page_new_template)
-        self.comboBox_templates_page.setObjectName(u"comboBox_templates_page")
+        self.comboBox_stack_template = QComboBox(self.page_new_template)
+        self.comboBox_stack_template.setObjectName(u"comboBox_stack_template")
 
-        self.verticalLayout_9.addWidget(self.comboBox_templates_page)
+        self.verticalLayout_9.addWidget(self.comboBox_stack_template)
 
-        self.pushButton_new_sub_template = QPushButton(self.page_new_template)
-        self.pushButton_new_sub_template.setObjectName(u"pushButton_new_sub_template")
+        self.pushButton_stack_template = QPushButton(self.page_new_template)
+        self.pushButton_stack_template.setObjectName(u"pushButton_stack_template")
 
-        self.verticalLayout_9.addWidget(self.pushButton_new_sub_template)
+        self.verticalLayout_9.addWidget(self.pushButton_stack_template)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_9.addItem(self.verticalSpacer)
 
-        self.pushButton_template_delete = QPushButton(self.page_new_template)
-        self.pushButton_template_delete.setObjectName(u"pushButton_template_delete")
+        self.pushButton_delete_template = QPushButton(self.page_new_template)
+        self.pushButton_delete_template.setObjectName(u"pushButton_delete_template")
 
-        self.verticalLayout_9.addWidget(self.pushButton_template_delete)
+        self.verticalLayout_9.addWidget(self.pushButton_delete_template)
 
         self.verticalStackedWidget_forms.addWidget(self.page_new_template)
         self.page_lore = QWidget()
@@ -226,219 +227,286 @@ class Ui_acadamy_dialog(object):
         self.verticalLayout_2.addWidget(self.pushButton_delete_lore)
 
         self.verticalStackedWidget_forms.addWidget(self.page_lore)
-        self.page_attribute_score = QWidget()
-        self.page_attribute_score.setObjectName(u"page_attribute_score")
-        self.verticalLayout_5 = QVBoxLayout(self.page_attribute_score)
+        self.page_stats = QWidget()
+        self.page_stats.setObjectName(u"page_stats")
+        self.verticalLayout_5 = QVBoxLayout(self.page_stats)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.label_attribute_score_name = QLabel(self.page_attribute_score)
-        self.label_attribute_score_name.setObjectName(u"label_attribute_score_name")
+        self.label_name_stats = QLabel(self.page_stats)
+        self.label_name_stats.setObjectName(u"label_name_stats")
 
-        self.verticalLayout_5.addWidget(self.label_attribute_score_name)
+        self.verticalLayout_5.addWidget(self.label_name_stats)
 
-        self.lineEdit_attribute_score_name = QLineEdit(self.page_attribute_score)
-        self.lineEdit_attribute_score_name.setObjectName(u"lineEdit_attribute_score_name")
+        self.comboBox_name_stats = QComboBox(self.page_stats)
+        self.comboBox_name_stats.addItem("")
+        self.comboBox_name_stats.addItem("")
+        self.comboBox_name_stats.addItem("")
+        self.comboBox_name_stats.addItem("")
+        self.comboBox_name_stats.addItem("")
+        self.comboBox_name_stats.addItem("")
+        self.comboBox_name_stats.setObjectName(u"comboBox_name_stats")
 
-        self.verticalLayout_5.addWidget(self.lineEdit_attribute_score_name)
+        self.verticalLayout_5.addWidget(self.comboBox_name_stats)
 
-        self.label_attribute_score = QLabel(self.page_attribute_score)
-        self.label_attribute_score.setObjectName(u"label_attribute_score")
+        self.label_des1_stats = QLabel(self.page_stats)
+        self.label_des1_stats.setObjectName(u"label_des1_stats")
 
-        self.verticalLayout_5.addWidget(self.label_attribute_score)
+        self.verticalLayout_5.addWidget(self.label_des1_stats)
 
-        self.horizontalLayout_score_button_group = QHBoxLayout()
-        self.horizontalLayout_score_button_group.setObjectName(u"horizontalLayout_score_button_group")
-        self.comboBox_attribute_score = QComboBox(self.page_attribute_score)
-        self.comboBox_attribute_score.addItem("")
-        self.comboBox_attribute_score.addItem("")
-        self.comboBox_attribute_score.addItem("")
-        self.comboBox_attribute_score.addItem("")
-        self.comboBox_attribute_score.addItem("")
-        self.comboBox_attribute_score.addItem("")
-        self.comboBox_attribute_score.setObjectName(u"comboBox_attribute_score")
+        self.label_des3_stats = QLabel(self.page_stats)
+        self.label_des3_stats.setObjectName(u"label_des3_stats")
 
-        self.horizontalLayout_score_button_group.addWidget(self.comboBox_attribute_score)
+        self.verticalLayout_5.addWidget(self.label_des3_stats)
 
-        self.lineEdit_attribute_score = QLineEdit(self.page_attribute_score)
-        self.lineEdit_attribute_score.setObjectName(u"lineEdit_attribute_score")
+        self.label_des2_stats = QLabel(self.page_stats)
+        self.label_des2_stats.setObjectName(u"label_des2_stats")
+
+        self.verticalLayout_5.addWidget(self.label_des2_stats)
+
+        self.lineEdit_content_stats = QLineEdit(self.page_stats)
+        self.lineEdit_content_stats.setObjectName(u"lineEdit_content_stats")
         sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.lineEdit_attribute_score.sizePolicy().hasHeightForWidth())
-        self.lineEdit_attribute_score.setSizePolicy(sizePolicy1)
-        self.lineEdit_attribute_score.setMaxLength(10)
+        sizePolicy1.setHeightForWidth(self.lineEdit_content_stats.sizePolicy().hasHeightForWidth())
+        self.lineEdit_content_stats.setSizePolicy(sizePolicy1)
+        self.lineEdit_content_stats.setMaxLength(10)
 
-        self.horizontalLayout_score_button_group.addWidget(self.lineEdit_attribute_score)
+        self.verticalLayout_5.addWidget(self.lineEdit_content_stats)
 
-        self.pushButton_attribute_score_new = QPushButton(self.page_attribute_score)
-        self.pushButton_attribute_score_new.setObjectName(u"pushButton_attribute_score_new")
+        self.verticalSpacer_stats = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.horizontalLayout_score_button_group.addWidget(self.pushButton_attribute_score_new)
+        self.verticalLayout_5.addItem(self.verticalSpacer_stats)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.pushButton_delete_stats = QPushButton(self.page_stats)
+        self.pushButton_delete_stats.setObjectName(u"pushButton_delete_stats")
 
-        self.horizontalLayout_score_button_group.addItem(self.horizontalSpacer)
+        self.verticalLayout_5.addWidget(self.pushButton_delete_stats)
 
-
-        self.verticalLayout_5.addLayout(self.horizontalLayout_score_button_group)
-
-        self.pushButton_attribute_score_delete = QPushButton(self.page_attribute_score)
-        self.pushButton_attribute_score_delete.setObjectName(u"pushButton_attribute_score_delete")
-
-        self.verticalLayout_5.addWidget(self.pushButton_attribute_score_delete)
-
-        self.verticalStackedWidget_forms.addWidget(self.page_attribute_score)
+        self.verticalStackedWidget_forms.addWidget(self.page_stats)
         self.page_attribute = QWidget()
         self.page_attribute.setObjectName(u"page_attribute")
         self.verticalLayout_4 = QVBoxLayout(self.page_attribute)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.label_attribute_name = QLabel(self.page_attribute)
-        self.label_attribute_name.setObjectName(u"label_attribute_name")
+        self.label_name_attribute = QLabel(self.page_attribute)
+        self.label_name_attribute.setObjectName(u"label_name_attribute")
 
-        self.verticalLayout_4.addWidget(self.label_attribute_name)
+        self.verticalLayout_4.addWidget(self.label_name_attribute)
 
-        self.lineEdit_attribute_name = QLineEdit(self.page_attribute)
-        self.lineEdit_attribute_name.setObjectName(u"lineEdit_attribute_name")
+        self.lineEdit_name_attribute = QLineEdit(self.page_attribute)
+        self.lineEdit_name_attribute.setObjectName(u"lineEdit_name_attribute")
 
-        self.verticalLayout_4.addWidget(self.lineEdit_attribute_name)
+        self.verticalLayout_4.addWidget(self.lineEdit_name_attribute)
 
         self.label_attribute_description = QLabel(self.page_attribute)
         self.label_attribute_description.setObjectName(u"label_attribute_description")
 
         self.verticalLayout_4.addWidget(self.label_attribute_description)
 
-        self.lineEdit_attribute_description = QLineEdit(self.page_attribute)
-        self.lineEdit_attribute_description.setObjectName(u"lineEdit_attribute_description")
+        self.lineEdit_content_attribute = QLineEdit(self.page_attribute)
+        self.lineEdit_content_attribute.setObjectName(u"lineEdit_content_attribute")
 
-        self.verticalLayout_4.addWidget(self.lineEdit_attribute_description)
+        self.verticalLayout_4.addWidget(self.lineEdit_content_attribute)
 
-        self.pushButton_attribute_delete = QPushButton(self.page_attribute)
-        self.pushButton_attribute_delete.setObjectName(u"pushButton_attribute_delete")
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.verticalLayout_4.addWidget(self.pushButton_attribute_delete)
+        self.verticalLayout_4.addItem(self.verticalSpacer_3)
+
+        self.pushButton_delete_attribute = QPushButton(self.page_attribute)
+        self.pushButton_delete_attribute.setObjectName(u"pushButton_delete_attribute")
+
+        self.verticalLayout_4.addWidget(self.pushButton_delete_attribute)
 
         self.verticalStackedWidget_forms.addWidget(self.page_attribute)
         self.page_item = QWidget()
         self.page_item.setObjectName(u"page_item")
         self.verticalLayout_6 = QVBoxLayout(self.page_item)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.label_item_name = QLabel(self.page_item)
-        self.label_item_name.setObjectName(u"label_item_name")
+        self.label_name_item = QLabel(self.page_item)
+        self.label_name_item.setObjectName(u"label_name_item")
 
-        self.verticalLayout_6.addWidget(self.label_item_name)
+        self.verticalLayout_6.addWidget(self.label_name_item)
 
-        self.lineEdit_item_name = QLineEdit(self.page_item)
-        self.lineEdit_item_name.setObjectName(u"lineEdit_item_name")
+        self.lineEdit_name_item = QLineEdit(self.page_item)
+        self.lineEdit_name_item.setObjectName(u"lineEdit_name_item")
 
-        self.verticalLayout_6.addWidget(self.lineEdit_item_name)
+        self.verticalLayout_6.addWidget(self.lineEdit_name_item)
 
-        self.label_item_weight = QLabel(self.page_item)
-        self.label_item_weight.setObjectName(u"label_item_weight")
+        self.label_weight_item = QLabel(self.page_item)
+        self.label_weight_item.setObjectName(u"label_weight_item")
 
-        self.verticalLayout_6.addWidget(self.label_item_weight)
+        self.verticalLayout_6.addWidget(self.label_weight_item)
 
-        self.lineEdit_item_weight = QLineEdit(self.page_item)
-        self.lineEdit_item_weight.setObjectName(u"lineEdit_item_weight")
+        self.lineEdit_weight_item = QLineEdit(self.page_item)
+        self.lineEdit_weight_item.setObjectName(u"lineEdit_weight_item")
 
-        self.verticalLayout_6.addWidget(self.lineEdit_item_weight)
+        self.verticalLayout_6.addWidget(self.lineEdit_weight_item)
 
-        self.label__item_description = QLabel(self.page_item)
-        self.label__item_description.setObjectName(u"label__item_description")
+        self.label_quantity_item = QLabel(self.page_item)
+        self.label_quantity_item.setObjectName(u"label_quantity_item")
 
-        self.verticalLayout_6.addWidget(self.label__item_description)
+        self.verticalLayout_6.addWidget(self.label_quantity_item)
 
-        self.textEdit_item_description = QTextEdit(self.page_item)
-        self.textEdit_item_description.setObjectName(u"textEdit_item_description")
+        self.spinBox_quantity_item = QSpinBox(self.page_item)
+        self.spinBox_quantity_item.setObjectName(u"spinBox_quantity_item")
 
-        self.verticalLayout_6.addWidget(self.textEdit_item_description)
+        self.verticalLayout_6.addWidget(self.spinBox_quantity_item)
 
-        self.pushButton_item_roll_table = QPushButton(self.page_item)
-        self.pushButton_item_roll_table.setObjectName(u"pushButton_item_roll_table")
+        self.label_description_item = QLabel(self.page_item)
+        self.label_description_item.setObjectName(u"label_description_item")
 
-        self.verticalLayout_6.addWidget(self.pushButton_item_roll_table)
+        self.verticalLayout_6.addWidget(self.label_description_item)
 
-        self.pushButton_item_random_table = QPushButton(self.page_item)
-        self.pushButton_item_random_table.setObjectName(u"pushButton_item_random_table")
+        self.textEdit_description_item = QTextEdit(self.page_item)
+        self.textEdit_description_item.setObjectName(u"textEdit_description_item")
 
-        self.verticalLayout_6.addWidget(self.pushButton_item_random_table)
+        self.verticalLayout_6.addWidget(self.textEdit_description_item)
 
-        self.pushButton_item_delete = QPushButton(self.page_item)
-        self.pushButton_item_delete.setObjectName(u"pushButton_item_delete")
+        self.pushButton_delete_item = QPushButton(self.page_item)
+        self.pushButton_delete_item.setObjectName(u"pushButton_delete_item")
 
-        self.verticalLayout_6.addWidget(self.pushButton_item_delete)
+        self.verticalLayout_6.addWidget(self.pushButton_delete_item)
 
         self.verticalStackedWidget_forms.addWidget(self.page_item)
         self.page_action = QWidget()
         self.page_action.setObjectName(u"page_action")
         self.verticalLayout_7 = QVBoxLayout(self.page_action)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.label_action_name = QLabel(self.page_action)
-        self.label_action_name.setObjectName(u"label_action_name")
+        self.label_name_action = QLabel(self.page_action)
+        self.label_name_action.setObjectName(u"label_name_action")
 
-        self.verticalLayout_7.addWidget(self.label_action_name)
+        self.verticalLayout_7.addWidget(self.label_name_action)
 
-        self.lineEdit_action_name = QLineEdit(self.page_action)
-        self.lineEdit_action_name.setObjectName(u"lineEdit_action_name")
+        self.lineEdit_name_action = QLineEdit(self.page_action)
+        self.lineEdit_name_action.setObjectName(u"lineEdit_name_action")
 
-        self.verticalLayout_7.addWidget(self.lineEdit_action_name)
+        self.verticalLayout_7.addWidget(self.lineEdit_name_action)
 
-        self.label_action_description = QLabel(self.page_action)
-        self.label_action_description.setObjectName(u"label_action_description")
+        self.label_cost_action = QLabel(self.page_action)
+        self.label_cost_action.setObjectName(u"label_cost_action")
 
-        self.verticalLayout_7.addWidget(self.label_action_description)
+        self.verticalLayout_7.addWidget(self.label_cost_action)
 
-        self.textEdit_action_description = QTextEdit(self.page_action)
-        self.textEdit_action_description.setObjectName(u"textEdit_action_description")
+        self.lineEdit_cost_action = QLineEdit(self.page_action)
+        self.lineEdit_cost_action.setObjectName(u"lineEdit_cost_action")
 
-        self.verticalLayout_7.addWidget(self.textEdit_action_description)
+        self.verticalLayout_7.addWidget(self.lineEdit_cost_action)
 
-        self.pushButton_action_delete = QPushButton(self.page_action)
-        self.pushButton_action_delete.setObjectName(u"pushButton_action_delete")
+        self.label_limitations_action = QLabel(self.page_action)
+        self.label_limitations_action.setObjectName(u"label_limitations_action")
 
-        self.verticalLayout_7.addWidget(self.pushButton_action_delete)
+        self.verticalLayout_7.addWidget(self.label_limitations_action)
+
+        self.lineEdit_limitations_action = QLineEdit(self.page_action)
+        self.lineEdit_limitations_action.setObjectName(u"lineEdit_limitations_action")
+
+        self.verticalLayout_7.addWidget(self.lineEdit_limitations_action)
+
+        self.label_description_action = QLabel(self.page_action)
+        self.label_description_action.setObjectName(u"label_description_action")
+
+        self.verticalLayout_7.addWidget(self.label_description_action)
+
+        self.textEdit_result_action = QTextEdit(self.page_action)
+        self.textEdit_result_action.setObjectName(u"textEdit_result_action")
+
+        self.verticalLayout_7.addWidget(self.textEdit_result_action)
+
+        self.pushButton_delete_action = QPushButton(self.page_action)
+        self.pushButton_delete_action.setObjectName(u"pushButton_delete_action")
+
+        self.verticalLayout_7.addWidget(self.pushButton_delete_action)
 
         self.verticalStackedWidget_forms.addWidget(self.page_action)
-        self.page_dice_roll = QWidget()
-        self.page_dice_roll.setObjectName(u"page_dice_roll")
-        self.verticalLayout_3 = QVBoxLayout(self.page_dice_roll)
+        self.page_roll_table = QWidget()
+        self.page_roll_table.setObjectName(u"page_roll_table")
+        self.verticalLayout_3 = QVBoxLayout(self.page_roll_table)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.label_dice_roll_name = QLabel(self.page_dice_roll)
-        self.label_dice_roll_name.setObjectName(u"label_dice_roll_name")
+        self.label_name_roll_table = QLabel(self.page_roll_table)
+        self.label_name_roll_table.setObjectName(u"label_name_roll_table")
 
-        self.verticalLayout_3.addWidget(self.label_dice_roll_name)
+        self.verticalLayout_3.addWidget(self.label_name_roll_table)
 
-        self.lineEdit_dice_roll_name = QLineEdit(self.page_dice_roll)
-        self.lineEdit_dice_roll_name.setObjectName(u"lineEdit_dice_roll_name")
+        self.lineEdit_name_roll_table = QLineEdit(self.page_roll_table)
+        self.lineEdit_name_roll_table.setObjectName(u"lineEdit_name_roll_table")
 
-        self.verticalLayout_3.addWidget(self.lineEdit_dice_roll_name)
+        self.verticalLayout_3.addWidget(self.lineEdit_name_roll_table)
 
-        self.label_dice_roll_parent = QLabel(self.page_dice_roll)
-        self.label_dice_roll_parent.setObjectName(u"label_dice_roll_parent")
+        self.checkBox_israndom_roll_table = QCheckBox(self.page_roll_table)
+        self.checkBox_israndom_roll_table.setObjectName(u"checkBox_israndom_roll_table")
 
-        self.verticalLayout_3.addWidget(self.label_dice_roll_parent)
+        self.verticalLayout_3.addWidget(self.checkBox_israndom_roll_table)
 
-        self.lineEdit_parent_dice_roll = QLineEdit(self.page_dice_roll)
-        self.lineEdit_parent_dice_roll.setObjectName(u"lineEdit_parent_dice_roll")
-        self.lineEdit_parent_dice_roll.setEnabled(True)
-        self.lineEdit_parent_dice_roll.setReadOnly(True)
+        self.label_dice_roll_table = QLabel(self.page_roll_table)
+        self.label_dice_roll_table.setObjectName(u"label_dice_roll_table")
 
-        self.verticalLayout_3.addWidget(self.lineEdit_parent_dice_roll)
+        self.verticalLayout_3.addWidget(self.label_dice_roll_table)
 
-        self.label_dice_roll_range = QLabel(self.page_dice_roll)
-        self.label_dice_roll_range.setObjectName(u"label_dice_roll_range")
+        self.lineEdit_dice_roll_table = QLineEdit(self.page_roll_table)
+        self.lineEdit_dice_roll_table.setObjectName(u"lineEdit_dice_roll_table")
+        self.lineEdit_dice_roll_table.setEnabled(True)
+        self.lineEdit_dice_roll_table.setReadOnly(False)
 
-        self.verticalLayout_3.addWidget(self.label_dice_roll_range)
+        self.verticalLayout_3.addWidget(self.lineEdit_dice_roll_table)
 
-        self.lineEdit_dice_roll_range = QLineEdit(self.page_dice_roll)
-        self.lineEdit_dice_roll_range.setObjectName(u"lineEdit_dice_roll_range")
+        self.groupBox = QGroupBox(self.page_roll_table)
+        self.groupBox.setObjectName(u"groupBox")
+        self.verticalLayout_10 = QVBoxLayout(self.groupBox)
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.label_explain1_roll_table = QLabel(self.groupBox)
+        self.label_explain1_roll_table.setObjectName(u"label_explain1_roll_table")
 
-        self.verticalLayout_3.addWidget(self.lineEdit_dice_roll_range)
+        self.verticalLayout_10.addWidget(self.label_explain1_roll_table)
 
-        self.pushButton_dice_roll_delete = QPushButton(self.page_dice_roll)
-        self.pushButton_dice_roll_delete.setObjectName(u"pushButton_dice_roll_delete")
+        self.label_explain2_roll_table = QLabel(self.groupBox)
+        self.label_explain2_roll_table.setObjectName(u"label_explain2_roll_table")
 
-        self.verticalLayout_3.addWidget(self.pushButton_dice_roll_delete)
+        self.verticalLayout_10.addWidget(self.label_explain2_roll_table)
 
-        self.verticalStackedWidget_forms.addWidget(self.page_dice_roll)
+        self.lineEdit_item_match_roll_table = QLineEdit(self.groupBox)
+        self.lineEdit_item_match_roll_table.setObjectName(u"lineEdit_item_match_roll_table")
+
+        self.verticalLayout_10.addWidget(self.lineEdit_item_match_roll_table)
+
+        self.label_item_options_roll_table = QLabel(self.groupBox)
+        self.label_item_options_roll_table.setObjectName(u"label_item_options_roll_table")
+
+        self.verticalLayout_10.addWidget(self.label_item_options_roll_table)
+
+        self.comboBox_options_roll_table = QComboBox(self.groupBox)
+        self.comboBox_options_roll_table.setObjectName(u"comboBox_options_roll_table")
+        self.comboBox_options_roll_table.setEditable(True)
+
+        self.verticalLayout_10.addWidget(self.comboBox_options_roll_table)
+
+        self.pushButton_add_item_roll_table = QPushButton(self.groupBox)
+        self.pushButton_add_item_roll_table.setObjectName(u"pushButton_add_item_roll_table")
+
+        self.verticalLayout_10.addWidget(self.pushButton_add_item_roll_table)
+
+
+        self.verticalLayout_3.addWidget(self.groupBox)
+
+        self.label_table_roll_table = QLabel(self.page_roll_table)
+        self.label_table_roll_table.setObjectName(u"label_table_roll_table")
+
+        self.verticalLayout_3.addWidget(self.label_table_roll_table)
+
+        self.listWidget_table_roll_table = QListWidget(self.page_roll_table)
+        self.listWidget_table_roll_table.setObjectName(u"listWidget_table_roll_table")
+
+        self.verticalLayout_3.addWidget(self.listWidget_table_roll_table)
+
+        self.pushButton_delete_item_roll_table = QPushButton(self.page_roll_table)
+        self.pushButton_delete_item_roll_table.setObjectName(u"pushButton_delete_item_roll_table")
+
+        self.verticalLayout_3.addWidget(self.pushButton_delete_item_roll_table)
+
+        self.pushButton_delete_roll_table = QPushButton(self.page_roll_table)
+        self.pushButton_delete_roll_table.setObjectName(u"pushButton_delete_roll_table")
+
+        self.verticalLayout_3.addWidget(self.pushButton_delete_roll_table)
+
+        self.verticalStackedWidget_forms.addWidget(self.page_roll_table)
         self.page_random = QWidget()
         self.page_random.setObjectName(u"page_random")
         self.verticalLayout_8 = QVBoxLayout(self.page_random)
@@ -466,7 +534,7 @@ class Ui_acadamy_dialog(object):
 
         self.retranslateUi(acadamy_dialog)
 
-        self.verticalStackedWidget_forms.setCurrentIndex(2)
+        self.verticalStackedWidget_forms.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(acadamy_dialog)
@@ -475,11 +543,11 @@ class Ui_acadamy_dialog(object):
     def retranslateUi(self, acadamy_dialog):
         acadamy_dialog.setWindowTitle(QCoreApplication.translate("acadamy_dialog", u"Acadamy", None))
         self.pushButton_new_template.setText(QCoreApplication.translate("acadamy_dialog", u"New template", None))
-        self.label_all_templates.setText(QCoreApplication.translate("acadamy_dialog", u"Templates", None))
+        self.label_all_templates.setText(QCoreApplication.translate("acadamy_dialog", u"All Templates", None))
         self.label_filter.setText(QCoreApplication.translate("acadamy_dialog", u"Filter", None))
-        self.label_template_details.setText(QCoreApplication.translate("acadamy_dialog", u"Selected Template", None))
+        self.label_template_details.setText(QCoreApplication.translate("acadamy_dialog", u"Template", None))
         self.pushButton_back.setText(QCoreApplication.translate("acadamy_dialog", u"<- Back (Esc)", None))
-        self.label.setText("")
+        self.label_splash.setText("")
         self.label_2.setText(QCoreApplication.translate("acadamy_dialog", u"Name", None))
         self.label_3.setText(QCoreApplication.translate("acadamy_dialog", u"Stat block areas:", None))
         self.comboBox_type_templates_page.setItemText(0, QCoreApplication.translate("acadamy_dialog", u"Lore", None))
@@ -487,45 +555,58 @@ class Ui_acadamy_dialog(object):
         self.comboBox_type_templates_page.setItemText(2, QCoreApplication.translate("acadamy_dialog", u"Attributes", None))
         self.comboBox_type_templates_page.setItemText(3, QCoreApplication.translate("acadamy_dialog", u"Items", None))
         self.comboBox_type_templates_page.setItemText(4, QCoreApplication.translate("acadamy_dialog", u"Actions", None))
+        self.comboBox_type_templates_page.setItemText(5, QCoreApplication.translate("acadamy_dialog", u"Roll Table", None))
 
-        self.pushButton_add_type_template.setText(QCoreApplication.translate("acadamy_dialog", u"Add", None))
+        self.pushButton_add_detail.setText(QCoreApplication.translate("acadamy_dialog", u"Add", None))
         self.label_4.setText(QCoreApplication.translate("acadamy_dialog", u"Stack a template on top of this one", None))
         self.label_filter_templates_page.setText(QCoreApplication.translate("acadamy_dialog", u"Filter", None))
-        self.pushButton_new_sub_template.setText(QCoreApplication.translate("acadamy_dialog", u"Stack", None))
-        self.pushButton_template_delete.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
-        self.label_name_lore.setText(QCoreApplication.translate("acadamy_dialog", u"Lore Name", None))
+        self.pushButton_stack_template.setText(QCoreApplication.translate("acadamy_dialog", u"Stack", None))
+        self.pushButton_delete_template.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
+        self.label_name_lore.setText(QCoreApplication.translate("acadamy_dialog", u"Name", None))
         self.label_description_lore.setText(QCoreApplication.translate("acadamy_dialog", u"Lore description", None))
         self.pushButton_delete_lore.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
-        self.label_attribute_score_name.setText(QCoreApplication.translate("acadamy_dialog", u"Attribute_score template name", None))
-        self.label_attribute_score.setText(QCoreApplication.translate("acadamy_dialog", u"score template", None))
-        self.comboBox_attribute_score.setItemText(0, QCoreApplication.translate("acadamy_dialog", u"Strength", None))
-        self.comboBox_attribute_score.setItemText(1, QCoreApplication.translate("acadamy_dialog", u"Dexterity", None))
-        self.comboBox_attribute_score.setItemText(2, QCoreApplication.translate("acadamy_dialog", u"Constitution", None))
-        self.comboBox_attribute_score.setItemText(3, QCoreApplication.translate("acadamy_dialog", u"Wisdom", None))
-        self.comboBox_attribute_score.setItemText(4, QCoreApplication.translate("acadamy_dialog", u"Intelligence", None))
-        self.comboBox_attribute_score.setItemText(5, QCoreApplication.translate("acadamy_dialog", u"Charisma", None))
+        self.label_name_stats.setText(QCoreApplication.translate("acadamy_dialog", u"Ability Score Name:", None))
+        self.comboBox_name_stats.setItemText(0, QCoreApplication.translate("acadamy_dialog", u"Strength", None))
+        self.comboBox_name_stats.setItemText(1, QCoreApplication.translate("acadamy_dialog", u"Dexterity", None))
+        self.comboBox_name_stats.setItemText(2, QCoreApplication.translate("acadamy_dialog", u"Constitution", None))
+        self.comboBox_name_stats.setItemText(3, QCoreApplication.translate("acadamy_dialog", u"Wisdom", None))
+        self.comboBox_name_stats.setItemText(4, QCoreApplication.translate("acadamy_dialog", u"Intelligence", None))
+        self.comboBox_name_stats.setItemText(5, QCoreApplication.translate("acadamy_dialog", u"Charisma", None))
 
+        self.label_des1_stats.setText(QCoreApplication.translate("acadamy_dialog", u"This value overrides the last value of it's type ", None))
+        self.label_des3_stats.setText(QCoreApplication.translate("acadamy_dialog", u"Unless it starts with a \"+\" or \"-\" symbol", None))
+        self.label_des2_stats.setText(QCoreApplication.translate("acadamy_dialog", u"Then it adds or subtracts the value instead. e.g. 10 or -10 or +14 are valid", None))
 #if QT_CONFIG(tooltip)
-        self.lineEdit_attribute_score.setToolTip(QCoreApplication.translate("acadamy_dialog", u"can have + or - to add or remove points from the base score. Or without them the value is replaced", None))
+        self.lineEdit_content_stats.setToolTip(QCoreApplication.translate("acadamy_dialog", u"can have + or - to add or remove points from the base score. Or without them the value is replaced", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_attribute_score_new.setText(QCoreApplication.translate("acadamy_dialog", u"Add", None))
-        self.pushButton_attribute_score_delete.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
-        self.label_attribute_name.setText(QCoreApplication.translate("acadamy_dialog", u"Name", None))
-        self.label_attribute_description.setText(QCoreApplication.translate("acadamy_dialog", u"description (optional)", None))
-        self.pushButton_attribute_delete.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
-        self.label_item_name.setText(QCoreApplication.translate("acadamy_dialog", u"Item Name", None))
-        self.label_item_weight.setText(QCoreApplication.translate("acadamy_dialog", u"Item Weight", None))
-        self.label__item_description.setText(QCoreApplication.translate("acadamy_dialog", u"<html><head/><body>Description: (Allows %d,%e) </body></html>", None))
-        self.pushButton_item_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Add roll table", None))
-        self.pushButton_item_random_table.setText(QCoreApplication.translate("acadamy_dialog", u"Add random table", None))
-        self.pushButton_item_delete.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
-        self.label_action_name.setText(QCoreApplication.translate("acadamy_dialog", u"Action name", None))
-        self.label_action_description.setText(QCoreApplication.translate("acadamy_dialog", u"Description: %d, %e for auto damage and elemental damage", None))
-        self.pushButton_action_delete.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
-        self.label_dice_roll_name.setText(QCoreApplication.translate("acadamy_dialog", u"Roll table name", None))
-        self.label_dice_roll_parent.setText(QCoreApplication.translate("acadamy_dialog", u"dice roll", None))
-        self.label_dice_roll_range.setText(QCoreApplication.translate("acadamy_dialog", u"Range: written 5-10 or 20 subtituting your own numbers of coarse.", None))
-        self.pushButton_dice_roll_delete.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
+#if QT_CONFIG(whatsthis)
+        self.lineEdit_content_stats.setWhatsThis(QCoreApplication.translate("acadamy_dialog", u"<html><head/><body><p>accepts one number from 0  to 30. A template with a number set as a stat will override the stat to be that number. The number may have a minus or plus symbol directly before it. If a minus or plus is used the previous value of the stat is added to this value. But will stay within the range 0 to 30. </p></body></html>", None))
+#endif // QT_CONFIG(whatsthis)
+        self.pushButton_delete_stats.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
+        self.label_name_attribute.setText(QCoreApplication.translate("acadamy_dialog", u"Attribute Name", None))
+        self.label_attribute_description.setText(QCoreApplication.translate("acadamy_dialog", u"Attribute description (optional)", None))
+        self.pushButton_delete_attribute.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
+        self.label_name_item.setText(QCoreApplication.translate("acadamy_dialog", u"Item Name", None))
+        self.label_weight_item.setText(QCoreApplication.translate("acadamy_dialog", u"Weight (optional)", None))
+        self.label_quantity_item.setText(QCoreApplication.translate("acadamy_dialog", u"Quantity", None))
+        self.label_description_item.setText(QCoreApplication.translate("acadamy_dialog", u"<html><head/><body><p>Item description: (allows %d,%e) </p></body></html>", None))
+        self.pushButton_delete_item.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
+        self.label_name_action.setText(QCoreApplication.translate("acadamy_dialog", u"Action Name", None))
+        self.label_cost_action.setText(QCoreApplication.translate("acadamy_dialog", u"Cost, i.e. \"1 dimond worth 1000gp\" or \"1 action\" or \"1 bonus action\"", None))
+        self.label_limitations_action.setText(QCoreApplication.translate("acadamy_dialog", u"Limitations, i.e. \"targets cone area\" or \"range 20/60 feet\" ", None))
+        self.label_description_action.setText(QCoreApplication.translate("acadamy_dialog", u"Result: %d, %e for auto damage and elemental damage", None))
+        self.pushButton_delete_action.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
+        self.label_name_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Roll Table Name:", None))
+        self.checkBox_israndom_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Select from the list randomly. (no dice roll, no matching)", None))
+        self.label_dice_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Dice Roll:", None))
+        self.groupBox.setTitle(QCoreApplication.translate("acadamy_dialog", u"Add Item to table", None))
+        self.label_explain1_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"match for the dice roll, no spaces are allowed.", None))
+        self.label_explain2_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"examples 20 or 1,3,5 or  1-4 or 9,8,7,18-20", None))
+        self.label_item_options_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"template for this item", None))
+        self.pushButton_add_item_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Add", None))
+        self.label_table_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"This Roll Table", None))
+        self.pushButton_delete_item_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"remove selected roll table item", None))
+        self.pushButton_delete_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
         self.label_random_name.setText(QCoreApplication.translate("acadamy_dialog", u"Random table name", None))
         self.pushButton_random_delete.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
     # retranslateUi

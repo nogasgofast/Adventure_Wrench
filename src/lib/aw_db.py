@@ -32,42 +32,66 @@ class Templates(aw_db.Entity):
     over = Optional('Templates', reverse='under')
     under = Set('Templates', reverse='over')
     vault = Set('Vault', reverse='templates')
-    lore = Set('Lore', reverse='templates')
-    attributes = Set('Attributes', reverse='templates')
-    items = Set('Items', reverse='templates')
-    actions = Set('Actions', reverse='templates')
-    stats = Set('Stats', reverse='templates')
+    lore = Set('Lore')
+    attributes = Set('Attributes', reverse='template')
+    items = Set('Items', reverse='template')
+    actions = Set('Actions', reverse='template')
+    stats = Set('Stats', reverse='template')
+    rtables = Set('Rtables', reverse='template')
+    rtable_items = Set('Rtables_items')
 
 class Lore(aw_db.Entity):
     name = Optional(str)
-    content = Optional(str)
-    templates = Set('Templates')
+    description = Optional(str)
+    template = Required('Templates')
+    rtable_items = Set('Rtables_items')
 
 class Stats(aw_db.Entity):
     name = Optional(str)
-    content = Optional(str)
-    templates = Set('Templates')
+    description = Optional(str)
+    template = Required('Templates')
+    rtable_items = Set('Rtables_items')
 
 class Attributes(aw_db.Entity):
     name = Optional(str)
     content = Optional(str)
-    templates = Set('Templates')
+    template = Required('Templates')
+    rtable_items = Set('Rtables_items')
 
 class Items(aw_db.Entity):
     name = Optional(str)
-    weight = Optional(int)
-    content = Optional(str)
-    templates = Set('Templates')
+    weight = Optional(str)
+    quantity = Optional(int)
+    description = Optional(str)
+    template = Required('Templates')
+    rtable_items = Set('Rtables_items')
 
 class Actions(aw_db.Entity):
     name = Optional(str)
-    content = Optional(str)
-    templates = Set('Templates')
+    cost = Optional(str)
+    limitations = Optional(str)
+    result = Optional(str)
+    template = Required('Templates')
+    rtable_items = Set('Rtables_items')
 
 class Rtables(aw_db.Entity):
-    type = Required(str)
     name = Optional(str)
-    content = Optional(str)
+    isRandom = Required(bool)
+    diceRoll = Optional(str)
+    items = Set('Rtables_items', reverse='table')
+    template = Set('Templates')
+    over = Set('Rtables_items', reverse='rtable')
+
+class Rtables_items(aw_db.Entity):
+    table = Required('Rtables')
+    match = Optional(str)
+    lore = Optional('Lore', reverse='rtable_items')
+    attribute = Optional('Attributes', reverse='rtable_items')
+    stat = Optional('Stats', reverse='rtable_items')
+    item = Optional('Items', reverse='rtable_items')
+    action = Optional('Actions', reverse='rtable_items')
+    template = Optional('Templates', reverse='rtable_items')
+    rtable = Optional('Rtables', reverse='over')
 
 
 if __name__ == '__main__':

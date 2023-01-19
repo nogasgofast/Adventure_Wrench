@@ -15,6 +15,7 @@ Lets us build fast, reduces writing, and enhances modular design over other buil
 - Encourage sharing.
 
 ## TODO:
-from Templates -> New -> Lore editor path works
-I need to make the controls on the lore page work now.
-(Including delete) and the lore pathway should be complete.
+Add template stacking (do not allow same templates to stack!)
+Add Roll tables applet.
+Setup Controls for "The Shop" the applet that builds things
+    to be put into the vault.

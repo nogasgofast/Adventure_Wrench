@@ -29,7 +29,7 @@
      <item>
       <widget class="QLabel" name="label_all_templates">
        <property name="text">
-        <string>Templates</string>
+        <string>All Templates</string>
        </property>
       </widget>
      </item>
@@ -53,12 +53,12 @@
      <item>
       <widget class="QLabel" name="label_template_details">
        <property name="text">
-        <string>Selected Template</string>
+        <string>Template</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QListWidget" name="listWidget_template_detail"/>
+      <widget class="QListWidget" name="listWidget_template"/>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_back">
@@ -79,12 +79,12 @@
    <item>
     <widget class="QStackedWidget" name="verticalStackedWidget_forms">
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page_splash">
       <layout class="QFormLayout" name="formLayout">
        <item row="0" column="0">
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="label_splash">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -169,10 +169,15 @@
            <string>Actions</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>Roll Table</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_add_type_template">
+        <widget class="QPushButton" name="pushButton_add_detail">
          <property name="text">
           <string>Add</string>
          </property>
@@ -207,10 +212,10 @@
         </layout>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_templates_page"/>
+        <widget class="QComboBox" name="comboBox_stack_template"/>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_new_sub_template">
+        <widget class="QPushButton" name="pushButton_stack_template">
          <property name="text">
           <string>Stack</string>
          </property>
@@ -230,7 +235,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_template_delete">
+        <widget class="QPushButton" name="pushButton_delete_template">
          <property name="text">
           <string>Delete</string>
          </property>
@@ -243,7 +248,7 @@
        <item>
         <widget class="QLabel" name="label_name_lore">
          <property name="text">
-          <string>Lore Name</string>
+          <string>Name</string>
          </property>
         </widget>
        </item>
@@ -269,101 +274,104 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_attribute_score">
+     <widget class="QWidget" name="page_stats">
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <widget class="QLabel" name="label_attribute_score_name">
+        <widget class="QLabel" name="label_name_stats">
          <property name="text">
-          <string>Attribute_score template name</string>
+          <string>Ability Score Name:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_attribute_score_name"/>
+        <widget class="QComboBox" name="comboBox_name_stats">
+         <item>
+          <property name="text">
+           <string>Strength</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Dexterity</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Constitution</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Wisdom</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Intelligence</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Charisma</string>
+          </property>
+         </item>
+        </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_attribute_score">
+        <widget class="QLabel" name="label_des1_stats">
          <property name="text">
-          <string>score template</string>
+          <string>This value overrides the last value of it's type </string>
          </property>
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_score_button_group">
-         <item>
-          <widget class="QComboBox" name="comboBox_attribute_score">
-           <item>
-            <property name="text">
-             <string>Strength</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Dexterity</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Constitution</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Wisdom</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Intelligence</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Charisma</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEdit_attribute_score">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>can have + or - to add or remove points from the base score. Or without them the value is replaced</string>
-           </property>
-           <property name="maxLength">
-            <number>10</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_attribute_score_new">
-           <property name="text">
-            <string>Add</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
+        <widget class="QLabel" name="label_des3_stats">
+         <property name="text">
+          <string>Unless it starts with a &quot;+&quot; or &quot;-&quot; symbol</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_attribute_score_delete">
+        <widget class="QLabel" name="label_des2_stats">
+         <property name="text">
+          <string>Then it adds or subtracts the value instead. e.g. 10 or -10 or +14 are valid</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_content_stats">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>can have + or - to add or remove points from the base score. Or without them the value is replaced</string>
+         </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;accepts one number from 0  to 30. A template with a number set as a stat will override the stat to be that number. The number may have a minus or plus symbol directly before it. If a minus or plus is used the previous value of the stat is added to this value. But will stay within the range 0 to 30. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="maxLength">
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_stats">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_delete_stats">
          <property name="text">
           <string>Delete</string>
          </property>
@@ -374,27 +382,40 @@
      <widget class="QWidget" name="page_attribute">
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QLabel" name="label_attribute_name">
+        <widget class="QLabel" name="label_name_attribute">
          <property name="text">
-          <string>Name</string>
+          <string>Attribute Name</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_attribute_name"/>
+        <widget class="QLineEdit" name="lineEdit_name_attribute"/>
        </item>
        <item>
         <widget class="QLabel" name="label_attribute_description">
          <property name="text">
-          <string>description (optional)</string>
+          <string>Attribute description (optional)</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_attribute_description"/>
+        <widget class="QLineEdit" name="lineEdit_content_attribute"/>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_attribute_delete">
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_delete_attribute">
          <property name="text">
           <string>Delete</string>
          </property>
@@ -405,51 +426,47 @@
      <widget class="QWidget" name="page_item">
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-        <widget class="QLabel" name="label_item_name">
+        <widget class="QLabel" name="label_name_item">
          <property name="text">
           <string>Item Name</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_item_name"/>
+        <widget class="QLineEdit" name="lineEdit_name_item"/>
        </item>
        <item>
-        <widget class="QLabel" name="label_item_weight">
+        <widget class="QLabel" name="label_weight_item">
          <property name="text">
-          <string>Item Weight</string>
+          <string>Weight (optional)</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_item_weight"/>
+        <widget class="QLineEdit" name="lineEdit_weight_item"/>
        </item>
        <item>
-        <widget class="QLabel" name="label__item_description">
+        <widget class="QLabel" name="label_quantity_item">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Description: (Allows %d,%e) &lt;/body&gt;&lt;/html&gt;</string>
+          <string>Quantity</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QTextEdit" name="textEdit_item_description"/>
+        <widget class="QSpinBox" name="spinBox_quantity_item"/>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_item_roll_table">
+        <widget class="QLabel" name="label_description_item">
          <property name="text">
-          <string>Add roll table</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Item description: (allows %d,%e) &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_item_random_table">
-         <property name="text">
-          <string>Add random table</string>
-         </property>
-        </widget>
+        <widget class="QTextEdit" name="textEdit_description_item"/>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_item_delete">
+        <widget class="QPushButton" name="pushButton_delete_item">
          <property name="text">
           <string>Delete</string>
          </property>
@@ -460,27 +477,47 @@
      <widget class="QWidget" name="page_action">
       <layout class="QVBoxLayout" name="verticalLayout_7">
        <item>
-        <widget class="QLabel" name="label_action_name">
+        <widget class="QLabel" name="label_name_action">
          <property name="text">
-          <string>Action name</string>
+          <string>Action Name</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_action_name"/>
+        <widget class="QLineEdit" name="lineEdit_name_action"/>
        </item>
        <item>
-        <widget class="QLabel" name="label_action_description">
+        <widget class="QLabel" name="label_cost_action">
          <property name="text">
-          <string>Description: %d, %e for auto damage and elemental damage</string>
+          <string>Cost, i.e. &quot;1 dimond worth 1000gp&quot; or &quot;1 action&quot; or &quot;1 bonus action&quot;</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QTextEdit" name="textEdit_action_description"/>
+        <widget class="QLineEdit" name="lineEdit_cost_action"/>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_action_delete">
+        <widget class="QLabel" name="label_limitations_action">
+         <property name="text">
+          <string>Limitations, i.e. &quot;targets cone area&quot; or &quot;range 20/60 feet&quot; </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_limitations_action"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_description_action">
+         <property name="text">
+          <string>Result: %d, %e for auto damage and elemental damage</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="textEdit_result_action"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_delete_action">
          <property name="text">
           <string>Delete</string>
          </property>
@@ -488,47 +525,108 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_dice_roll">
+     <widget class="QWidget" name="page_roll_table">
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QLabel" name="label_dice_roll_name">
+        <widget class="QLabel" name="label_name_roll_table">
          <property name="text">
-          <string>Roll table name</string>
+          <string>Roll Table Name:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_dice_roll_name"/>
+        <widget class="QLineEdit" name="lineEdit_name_roll_table"/>
        </item>
        <item>
-        <widget class="QLabel" name="label_dice_roll_parent">
+        <widget class="QCheckBox" name="checkBox_israndom_roll_table">
          <property name="text">
-          <string>dice roll</string>
+          <string>Select from the list randomly. (no dice roll, no matching)</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_parent_dice_roll">
+        <widget class="QLabel" name="label_dice_roll_table">
+         <property name="text">
+          <string>Dice Roll:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_dice_roll_table">
          <property name="enabled">
           <bool>true</bool>
          </property>
          <property name="readOnly">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_dice_roll_range">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Add Item to table</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <widget class="QLabel" name="label_explain1_roll_table">
+            <property name="text">
+             <string>match for the dice roll, no spaces are allowed.</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_explain2_roll_table">
+            <property name="text">
+             <string>examples 20 or 1,3,5 or  1-4 or 9,8,7,18-20</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEdit_item_match_roll_table"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_item_options_roll_table">
+            <property name="text">
+             <string>template for this item</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBox_options_roll_table">
+            <property name="editable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_add_item_roll_table">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_table_roll_table">
          <property name="text">
-          <string>Range: written 5-10 or 20 subtituting your own numbers of coarse.</string>
+          <string>This Roll Table</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_dice_roll_range"/>
+        <widget class="QListWidget" name="listWidget_table_roll_table"/>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_dice_roll_delete">
+        <widget class="QPushButton" name="pushButton_delete_item_roll_table">
+         <property name="text">
+          <string>remove selected roll table item</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_delete_roll_table">
          <property name="text">
           <string>Delete</string>
          </property>
