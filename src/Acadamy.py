@@ -25,6 +25,7 @@ class AcadamyDialog(QDialog):
         self.ui.pushButton_delete_item_roll_table.clicked.connect(self.delete_item_roll_table)
         self.ui.pushButton_delete_roll_table.clicked.connect(self.delete_detail)
         self.ui.pushButton_stack_template.clicked.connect(self.stack_template)
+        self.ui.pushButton_back.clicked.connect(self.close)
 
         self.ui.listWidget_all_templates.clicked.connect(self.select_template)
         self.ui.listWidget_template.clicked.connect(self.select_detail)
@@ -72,8 +73,12 @@ class AcadamyDialog(QDialog):
         db = self.ui_vault.main.db
         template_selecter = self.ui.comboBox_stack_template
         template = db.Templates[self.target.dbObj.id]
-        template.under.add(template_selecter.currentData())
-        self.update_detail(dbObj)
+        under = template_selecter.currentData()
+        under = db.Templates[under.id]
+        if not under is template:
+            if not under in template.under:
+                template.under.add(under)
+        self.init_detail_view()
 
 
     @db_session
@@ -412,7 +417,14 @@ class AcadamyDialog(QDialog):
 
     def update_detail(self, dbObj):
         'change name of one item in template panel'
-        title = '    ' + self.construct_detail_name(dbObj)
+        indent = 0
+        oldName = self.detail_target.text()
+        newName = self.detail_target.text().removeprefix('    ')
+        while not oldName == newName:
+            indent += 1
+            oldName = newName
+            newName = oldName.removeprefix('    ')
+        title = ('    ' * indent) + self.construct_detail_name(dbObj)
         self.detail_target.setText(title)
 
 
@@ -490,25 +502,37 @@ class AcadamyDialog(QDialog):
         parent = QListWidgetItem(self.construct_detail_name(template))
         parent.dbObj = template
         template_detail.addItem(parent)
-        details = []
-        for row in template.lore:
-            details.append(row)
-        for row in template.attributes:
-            details.append(row)
-        for row in template.items:
-            details.append(row)
-        for row in template.actions:
-            details.append(row)
-        for row in template.stats:
-            details.append(row)
-        for row in template.rtables:
-            details.append(row)
 
-        for row in details:
-            title = '    ' + self.construct_detail_name(row)
-            item = QListWidgetItem(title)
-            item.dbObj = row
-            template_detail.addItem(item)
+        def get_details(template):
+            details = []
+            for row in template.lore:
+                details.append(row)
+            for row in template.attributes:
+                details.append(row)
+            for row in template.items:
+                details.append(row)
+            for row in template.actions:
+                details.append(row)
+            for row in template.stats:
+                details.append(row)
+            for row in template.rtables:
+                details.append(row)
+            for row in template.under:
+                details.append(row)
+            return details
+
+        indent = 1
+        def create_detail_view(template, indent):
+            for row in get_details(template):
+                title = ('    ' * indent) + self.construct_detail_name(row)
+                item = QListWidgetItem(title)
+                item.dbObj = row
+                template_detail.addItem(item)
+                if type(row) is db.Templates:
+                    create_detail_view(row, indent + 1)
+        create_detail_view(template, indent)
+
+
 
     @db_session
     def new_template(self):
