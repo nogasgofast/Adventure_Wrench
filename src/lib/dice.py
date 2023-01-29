@@ -21,10 +21,15 @@ class dice:
             self.string = '1'
 
     def roll(self, str_in=False):
+        'supports simple dice notation 1d20 or 4d6'
+        'supports simple addition and subtraction 5 - 3'
+        'supports top function 2d20T1 or 4d6t3'
+        'support bottom function 6d10B2 6d10b2'
         if str_in:
             self.string = str_in
         # replace die rolls with generated numbers
         self.parse()
+
         if not re.search(r'[^0-9(*/)dD+-]', self.string):
             return int(self.nsp.eval(self.string))
         else:
@@ -32,7 +37,7 @@ class dice:
 
     def parse(self):
         # regex match each die and replace with this function
-        self.string = re.sub(r'\d*d\d+',
+        self.string = re.sub(r'\d*d\d+[tTbB]\d+',
                              lambda x: self.gen_die(x), self.string)
         if self.debug:
             print("|{}|".format(self.string))
@@ -41,15 +46,32 @@ class dice:
         # take first number and generate a list
         if self.debug:
             print("hi {}".format(die.group(0)))
-        dice_info = re.search(r'(\d*)d(\d+)', die.group(0))
+        dice_info = re.search(r'(\d*)d(\d+)([tTbB]\d+)?', die.group(0))
         if dice_info.group(1):
             num_die = int(dice_info.group(1))
         else:
             num_die = 1
         sides = int(dice_info.group(2))
+        rolls = [random.randint(1, sides) for x in range(num_die)]
+        if dice_info.group(3) and re.match('[tT]', dice_info.group(3)):
+            top = int(dice_info.group(3).lstrip('tT'))
+            if self.debug:
+                print(f'before top: {rolls}')
+            rolls = sorted(rolls, reverse=True)[:top]
+            if self.debug:
+                print(f'after top: {rolls}')
+        if dice_info.group(3) and re.match('[bB]', dice_info.group(3)):
+            bottom = int(dice_info.group(3).lstrip('bB'))
+            if self.debug:
+                print(f'before bottom: {rolls}')
+            rolls = sorted(rolls, reverse=True)[bottom:]
+            if self.debug:
+                print(f'after bottom: {rolls}')
         if self.debug:
             print("num_die:%s \nsides:%s" % (num_die, sides))
-        return str(sum([random.randint(1, sides) for x in range(num_die)]))
+        if self.debug:
+            print(rolls)
+        return str(sum(rolls))
 
     def get_average(self, diceExpression):
         # breaks out the multiplier and die and averages

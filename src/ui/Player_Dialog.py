@@ -130,6 +130,11 @@ class Ui_Player(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
+        self.pushButton = QPushButton(Player)
+        self.pushButton.setObjectName(u"pushButton")
+
+        self.verticalLayout.addWidget(self.pushButton)
+
 
         self.retranslateUi(Player)
 
@@ -143,5 +148,6 @@ class Ui_Player(object):
         self.label_hp.setText(QCoreApplication.translate("Player", u"HP", None))
         self.label.setText(QCoreApplication.translate("Player", u"Description", None))
         self.pushButton_delete.setText(QCoreApplication.translate("Player", u"Remove", None))
+        self.pushButton.setText(QCoreApplication.translate("Player", u"<- Back (Esc)", None))
     # retranslateUi
 

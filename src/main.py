@@ -5,7 +5,7 @@ from ui.Main_Window import Ui_MainWindow
 from PySide6.QtWidgets import (QApplication, QMainWindow,
                               QDialog, QWidget,
                               QListWidgetItem)
-from PySide6.QtGui import QBrush, QColor
+from PySide6.QtGui import QBrush, QColor, QFont
 from pony.orm import db_session, commit
 from lib.aw_db import aw_db
 from Player import PlayerDialog
@@ -393,6 +393,10 @@ class MainWindow(QMainWindow):
         (red,green,blue) = self.get_health_color(item)
         painter = QBrush(QColor(red,green,blue))
         item.setBackground(painter)
+        (red,green,blue) = (0,0,0)
+        painter = QBrush(QColor(red,green,blue))
+        item.setForeground(painter)
+        item.setFont(QFont("Times", 16, QFont.Bold))
         item.setToolTip(item.dbObj.description)
 
 

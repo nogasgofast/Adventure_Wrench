@@ -507,34 +507,13 @@ class Ui_acadamy_dialog(object):
         self.verticalLayout_3.addWidget(self.pushButton_delete_roll_table)
 
         self.verticalStackedWidget_forms.addWidget(self.page_roll_table)
-        self.page_random = QWidget()
-        self.page_random.setObjectName(u"page_random")
-        self.verticalLayout_8 = QVBoxLayout(self.page_random)
-        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.label_random_name = QLabel(self.page_random)
-        self.label_random_name.setObjectName(u"label_random_name")
-
-        self.verticalLayout_8.addWidget(self.label_random_name)
-
-        self.lineEdit_random_name = QLineEdit(self.page_random)
-        self.lineEdit_random_name.setObjectName(u"lineEdit_random_name")
-        self.lineEdit_random_name.setReadOnly(True)
-
-        self.verticalLayout_8.addWidget(self.lineEdit_random_name)
-
-        self.pushButton_random_delete = QPushButton(self.page_random)
-        self.pushButton_random_delete.setObjectName(u"pushButton_random_delete")
-
-        self.verticalLayout_8.addWidget(self.pushButton_random_delete)
-
-        self.verticalStackedWidget_forms.addWidget(self.page_random)
 
         self.horizontalLayout.addWidget(self.verticalStackedWidget_forms)
 
 
         self.retranslateUi(acadamy_dialog)
 
-        self.verticalStackedWidget_forms.setCurrentIndex(1)
+        self.verticalStackedWidget_forms.setCurrentIndex(6)
 
 
         QMetaObject.connectSlotsByName(acadamy_dialog)
@@ -607,7 +586,5 @@ class Ui_acadamy_dialog(object):
         self.label_table_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"This Roll Table", None))
         self.pushButton_delete_item_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"remove selected roll table item", None))
         self.pushButton_delete_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
-        self.label_random_name.setText(QCoreApplication.translate("acadamy_dialog", u"Random table name", None))
-        self.pushButton_random_delete.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
     # retranslateUi
 

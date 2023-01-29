@@ -79,7 +79,7 @@
    <item>
     <widget class="QStackedWidget" name="verticalStackedWidget_forms">
      <property name="currentIndex">
-      <number>1</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="page_splash">
       <layout class="QFormLayout" name="formLayout">
@@ -627,31 +627,6 @@
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_delete_roll_table">
-         <property name="text">
-          <string>Delete</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="page_random">
-      <layout class="QVBoxLayout" name="verticalLayout_8">
-       <item>
-        <widget class="QLabel" name="label_random_name">
-         <property name="text">
-          <string>Random table name</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit_random_name">
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_random_delete">
          <property name="text">
           <string>Delete</string>
          </property>

@@ -25,6 +25,39 @@
         <number>0</number>
        </property>
        <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>## Add Stuff</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::MarkdownText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_acadamy">
+         <property name="toolTip">
+          <string>add/edit templates usable in the shop.</string>
+         </property>
+         <property name="text">
+          <string>Acadamy (templates)</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_the_shop">
+         <property name="toolTip">
+          <string>Add something new to the vault using templates.</string>
+         </property>
+         <property name="text">
+          <string>Shop (apply templates)</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="label">
          <property name="text">
           <string>## Tools</string>
@@ -43,7 +76,7 @@
           <string>Add Selected Items to Current Encounter</string>
          </property>
          <property name="text">
-          <string>Copy into Encounter</string>
+          <string>Copy to Encounter</string>
          </property>
         </widget>
        </item>
@@ -63,14 +96,7 @@
           <string>Remove selected from current Encounter as well as DM Vault.</string>
          </property>
          <property name="text">
-          <string>Mark/Delete</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_clear_delete">
-         <property name="text">
-          <string>Clear Mark</string>
+          <string>Delete selected</string>
          </property>
         </widget>
        </item>
@@ -88,35 +114,9 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QPushButton" name="pushButton">
          <property name="text">
-          <string>## Add Stuff</string>
-         </property>
-         <property name="textFormat">
-          <enum>Qt::MarkdownText</enum>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_the_shop">
-         <property name="toolTip">
-          <string>Add something new to the vault using templates.</string>
-         </property>
-         <property name="text">
-          <string>The Shop</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_acadamy">
-         <property name="toolTip">
-          <string>add/edit templates usable in the shop.</string>
-         </property>
-         <property name="text">
-          <string>The Acadamy</string>
+          <string>&lt;- Back (Esc)</string>
          </property>
         </widget>
        </item>

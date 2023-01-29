@@ -13,7 +13,7 @@ class VaultDialog(QDialog):
         self.ui.setupUi(self)
         self.ui_acadamy = AcadamyDialog(self)
         self.ui_ts = TheShopDialog(self)
-        self.ui.pushButton_the_shop.clicked.connect(self.ui_ts.show)
+        self.ui.pushButton_the_shop.clicked.connect(self.ui_ts.new_vault_item)
         self.ui.pushButton_acadamy.clicked.connect(self.ui_acadamy.show)
         self.ui.pushButton_add_to_encounter.clicked.connect(
                                        self.add_to_encounter)
@@ -21,44 +21,33 @@ class VaultDialog(QDialog):
                                        self.remove_from_encounter)
         self.ui.pushButton_delete_selected_items.clicked.connect(
                                        self.delete_from_vault)
-        self.ui.pushButton_clear_delete.clicked.connect(
-                                       self.clear_delete)
+
+        self.ui.listWidget_vault.doubleClicked.connect(self.ui_ts.load_vault_item)
         self.load_vault()
 
 
     @db_session
-    def load_vault(self):
-        all_vault_assets = self.main.db.Vault.select()
-        for vault_thing in all_vault_assets:
-            item = QListWidgetItem(
-                           f'''{vault_thing.name}\n{vault_thing.description}''')
-            item.dbObj = vault_thing
-            item.type = vault_thing.type
-            item.isDeleting = False
-            self.ui.listWidget_vault.addItem(item)
-
+    def remove_from_encounter(self):
+        pass
 
     @db_session
-    def update_vault_summery(self, item):
-        # if the name or description changes
-        # we call this function to update the Vault item text.
-        (red,green,blue)=(255,255,255)
-        if item.isDeleting:
-            green = 0
-            blue = 0
-        painter = QBrush(QColor(red,green,blue))
-        item.setBackground(painter)
+    def load_vault(self):
+        all_vault_items = self.main.db.Vault.select()
+        for vault_item in all_vault_items:
+            item = QListWidgetItem(
+                           f'{vault_item.name}')
+            item.dbObj = vault_item
+            self.ui.listWidget_vault.addItem(item)
 
-
-    # @db_session
-    # def new_vault_item(self):
-    #     item = QListWidgetItem(' *** ')
-    #     vault_item = self.main.db.Vault(group_hp=[1,2,3,4],hp=6, max_hp=40,
-    #                                     count=4, type='creature')
-    #     item.dbObj = vault_item
-    #     item.isDeleting = False
-    #     self.update_vault_summery(item)
-    #     self.ui.listWidget_vault.addItem(item)
+    @db_session
+    def update_vault_item(self, target):
+        vault = self.ui.listWidget_vault
+        for row in range(0, vault.count()):
+            item = vault.item(row)
+            dbObj = db.Vault[item.dbObj.id]
+            target = db.Vault[target.dbObj.id]
+            if dbObj == target:
+                item.setText(dbObj.name)
 
 
     @db_session
@@ -85,14 +74,6 @@ class VaultDialog(QDialog):
 
 
     @db_session
-    def remove_from_encounter(self):
-        print(self.main.pos())
-        self.move(50, 50)
-        print(self.pos())
-
-
-
-    @db_session
     def delete_from_vault(self):
         remove_these = []
         Vault = self.ui.listWidget_vault
@@ -100,25 +81,8 @@ class VaultDialog(QDialog):
             if Vault.item(row).isSelected():
                 item = Vault.item(row)
                 item.dbObj = self.main.db.Vault[item.dbObj.id]
-                if item.isDeleting:
-                    Vault.item(row).setSelected(False)
-                    item.dbObj.delete()
-                    remove_these.append(row)
-                if not item.isDeleting:
-                    item.isDeleting = True
-                    self.update_vault_summery(item)
-        commit()
-        remove_these.sort()
-        remove_these.reverse()
-        for row in remove_these:
-            Vault.takeItem(row)
-
-
-    @db_session
-    def clear_delete(self):
-        Vault = self.ui.listWidget_vault
-        for row in range(0, Vault.count()):
-            item = Vault.item(row)
-            item.dbObj = self.main.db.Vault[item.dbObj.id]
-            item.isDeleting = False
-            self.update_vault_summery(item)
+                item.dbObj.delete()
+                remove_these.append(row)
+                commit()
+                Vault.takeItem(row)
+                break

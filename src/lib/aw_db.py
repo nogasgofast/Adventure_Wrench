@@ -18,14 +18,11 @@ class Active(aw_db.Entity):
 
 class Vault(aw_db.Entity):
     name = Optional(str, default=' *** ')
-    description = Optional(str, default='')
-    initiative = Optional(int, default=1)
-    hp = Optional(int, default=1)
-    max_hp = Optional(int, default=1)
-    group_hp = Optional(IntArray)
+    stat_block = Optional(str, default='')
+    attributes = Optional(str)
+    cr = Optional(int, default=1)
     count = Optional(int, default=1)
     templates = Set('Templates', reverse='vault')
-    type = Required(str)
 
 class Templates(aw_db.Entity):
     name = Required(str)
@@ -45,18 +42,24 @@ class Lore(aw_db.Entity):
     description = Optional(str)
     template = Required('Templates')
     rtable_items = Set('Rtables_items')
+    def to_strings(self):
+        return f'{self.name}: {self.description}'
 
 class Stats(aw_db.Entity):
     name = Optional(str)
     description = Optional(str)
     template = Required('Templates')
     rtable_items = Set('Rtables_items')
+    def to_strings(self):
+        return f'{self.name}: {self.description}'
 
 class Attributes(aw_db.Entity):
     name = Optional(str)
     content = Optional(str)
     template = Required('Templates')
     rtable_items = Set('Rtables_items')
+    def to_strings(self):
+        return f'{self.name}: {self.content}'
 
 class Items(aw_db.Entity):
     name = Optional(str)
@@ -65,6 +68,9 @@ class Items(aw_db.Entity):
     description = Optional(str)
     template = Required('Templates')
     rtable_items = Set('Rtables_items')
+    def to_strings(self):
+        return (f'{self.name}:\n'
+                f'    {self.description}')
 
 class Actions(aw_db.Entity):
     name = Optional(str)
@@ -73,6 +79,11 @@ class Actions(aw_db.Entity):
     result = Optional(str)
     template = Required('Templates')
     rtable_items = Set('Rtables_items')
+    def to_strings(self):
+        return (f'{self.name}:\n'
+                f'    cost: {self.cost}\n'
+                f'    limitations: {self.limitations}\n\n'
+                f'    {self.result}')
 
 class Rtables(aw_db.Entity):
     name = Optional(str)
@@ -81,6 +92,9 @@ class Rtables(aw_db.Entity):
     items = Set('Rtables_items', reverse='table')
     template = Set('Templates')
     over = Set('Rtables_items', reverse='rtable')
+    def to_strings(self):
+        items = tuple( i.to_string() for i in self.items )
+        return (f'{self.name} - {self.diceRoll}',) + items
 
 class Rtables_items(aw_db.Entity):
     table = Required('Rtables')
@@ -92,6 +106,21 @@ class Rtables_items(aw_db.Entity):
     action = Optional('Actions', reverse='rtable_items')
     template = Optional('Templates', reverse='rtable_items')
     rtable = Optional('Rtables', reverse='over')
+    def to_string(self):
+        if self.lore:
+            thing = self.lore
+        if self.attribute:
+            thing = self.attribute
+        if self.stat:
+            thing = self.stat
+        if self.item:
+            thing = self.item
+        if self.action:
+            thing = self.action
+        if self.rtable:
+            thing = rtable
+        thing = thing.to_string()
+        return f'    {self.match}: {thing}'
 
 
 if __name__ == '__main__':
