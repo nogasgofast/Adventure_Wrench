@@ -2,9 +2,10 @@ from pony.orm import *
 
 aw_db = Database()
 
+
 class Active(aw_db.Entity):
     name = Optional(str, default=' *** ')
-    description = Optional(str, default='')
+    stat_block = Optional(str, default='')
     initiative = Optional(int, default=1)
     hp = Optional(int, default=1)
     max_hp = Optional(int, default=1)
@@ -14,10 +15,14 @@ class Active(aw_db.Entity):
     death_save_success = Optional(int, default=0)
     black_star = Optional(int, default=0)
     white_star = Optional(int, default=0)
-    type = Required(str)
+    player = Required(bool, default=False)
 
 class Vault(aw_db.Entity):
     name = Optional(str, default=' *** ')
+    initiative = Optional(int, default=1)
+    hp = Optional(int, default=1)
+    max_hp = Optional(int, default=1)
+    group_hp = Optional(IntArray)
     stat_block = Optional(str, default='')
     attributes = Optional(str)
     cr = Optional(int, default=1)
@@ -93,8 +98,10 @@ class Rtables(aw_db.Entity):
     template = Set('Templates')
     over = Set('Rtables_items', reverse='rtable')
     def to_strings(self):
-        items = tuple( i.to_string() for i in self.items )
-        return (f'{self.name} - {self.diceRoll}',) + items
+        items = ''
+        for i in self.items:
+            items += i.to_strings()
+        return f'{self.name}: {self.diceRoll}\n' + items
 
 class Rtables_items(aw_db.Entity):
     table = Required('Rtables')
@@ -106,7 +113,7 @@ class Rtables_items(aw_db.Entity):
     action = Optional('Actions', reverse='rtable_items')
     template = Optional('Templates', reverse='rtable_items')
     rtable = Optional('Rtables', reverse='over')
-    def to_string(self):
+    def to_strings(self):
         if self.lore:
             thing = self.lore
         if self.attribute:
@@ -119,8 +126,8 @@ class Rtables_items(aw_db.Entity):
             thing = self.action
         if self.rtable:
             thing = rtable
-        thing = thing.to_string()
-        return f'    {self.match}: {thing}'
+        thing = thing.to_strings()
+        return f'    {self.match}: {thing}\n'
 
 
 if __name__ == '__main__':

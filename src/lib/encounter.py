@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 
-from lib.dice import dice
+from lib.dice import dice_caddy
 import random
 import configparser
 import json

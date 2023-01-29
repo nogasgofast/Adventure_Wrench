@@ -1,5 +1,4 @@
 
-from lib.encounter import Encounter
 from ui.Player_Dialog import Ui_Player
 from PySide6.QtWidgets import QDialog, QListWidgetItem
 from pony.orm import db_session, commit
@@ -26,12 +25,12 @@ class PlayerDialog(QDialog):
             if E.item(row).isSelected():
                 item = E.item(row)
                 item.dbObj = self.main.db.Active[item.dbObj.id]
-                if item.dbObj.type == 'pc':
+                if item.dbObj.player:
                     self.target = item
                     self.ui.lineEdit_name.setText(item.dbObj.name)
                     self.ui.spinBox_hp.setValue(item.dbObj.hp)
                     self.ui.spinBox_initiative.setValue(item.dbObj.initiative)
-                    self.ui.textEdit_description.setText(item.dbObj.description)
+                    self.ui.textEdit_description.setText(item.dbObj.stat_block)
                     self.show()
                 else:
                     # we detected this as not a player so we don't do nothin.
@@ -73,14 +72,14 @@ class PlayerDialog(QDialog):
         # why it does not happen for the other updates ^ ??
         if self.target:
             # reaquire state from db. Pony implementation requires this.
-            self.target.dbObj = self.main.db.Active[self.target.dbObj.id]
-            self.target.dbObj.description = text
+            dbObj = self.main.db.Active[self.target.dbObj.id]
+            dbObj.stat_block = text
             commit()
             self.main.update_encounter_text(self.target)
 
     @db_session
     def add_player(self):
-        player = self.main.db.Active(type='pc')
+        player = self.main.db.Active(player=True)
         commit()
         item = QListWidgetItem("{player.initiative} | {player.name} | hp:{player.hp}")
         item.dbObj = player

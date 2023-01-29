@@ -207,8 +207,8 @@ class MainWindow(QMainWindow):
                     groupHP = item.dbObj.group_hp
                     groupHP = [x - damage for x in groupHP]
                     groupHP = [x for x in groupHP if x > 0]
-                    item.encounter.set_option('group_hp', groupHP)
-                    item.encounter.set_option('count', len(groupHP))
+                    item.dbObj.group_hp = groupHP
+                    item.dbObj.count = len(groupHP)
                 else:
                     item.dbObj = self.db.Active[item.dbObj.id]
                     hp = item.dbObj.hp - damage
@@ -249,8 +249,7 @@ class MainWindow(QMainWindow):
                             death_save_fail = item.dbObj.death_save_fail,
                             death_save_success = item.dbObj.death_save_success,
                             black_star = item.dbObj.black_star,
-                            white_star = item.dbObj.white_star,
-                            type = item.dbObj.type)
+                            white_star = item.dbObj.white_star)
             commit()
             self.update_encounter_text(newItem)
             self.ui.listWidget_Encounter.insertItem((row + 1), newItem)
@@ -258,7 +257,6 @@ class MainWindow(QMainWindow):
     @db_session
     def collapse(self, item, inRow):
         item.dbObj = self.db.Active[item.dbObj.id]
-        type = item.dbObj.type
         name = item.dbObj.name
         group = []
         E = self.ui.listWidget_Encounter
@@ -266,7 +264,6 @@ class MainWindow(QMainWindow):
             rowItem = E.item(row)
             rowItem.dbObj = self.db.Active[rowItem.dbObj.id]
             if (rowItem.dbObj.name == name and
-                rowItem.dbObj.type == type and
                 rowItem.dbObj.count == 1   and row != inRow):
                 group.append(row)
         group.sort()
@@ -397,7 +394,7 @@ class MainWindow(QMainWindow):
         painter = QBrush(QColor(red,green,blue))
         item.setForeground(painter)
         item.setFont(QFont("Times", 16, QFont.Bold))
-        item.setToolTip(item.dbObj.description)
+        item.setToolTip(item.dbObj.stat_block)
 
 
 if __name__ == "__main__":

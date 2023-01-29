@@ -2,7 +2,7 @@
 from PySide6.QtWidgets import (QDialog, QListWidgetItem)
 from ui.TheShop_Dialog import Ui_TheShop
 from pony.orm import db_session, commit
-from lib.dice import dice
+from lib.dice import dice_factory
 
 
 class TheShopDialog(QDialog):
@@ -102,7 +102,7 @@ class TheShopDialog(QDialog):
             if stat_mod is None:
                 return int(attribute)
             if '+' not in stat_mod and '-' not in stat_mod:
-                print(stat_mod)
+                # print(stat_mod)
                 return int(stat_mod)
             else:
                 return int(attribute) + int(stat_mod)
@@ -121,7 +121,7 @@ class TheShopDialog(QDialog):
                    'INT', 'CHA')
         final_scores = ''
         for row in range(0, 6):
-            final_scores += f'{heading[row]}:{scores[row]:02}    '
+            final_scores += f'{heading[row]}: {scores[row]:02}    '
         name = self.ui.lineEdit_name.text()
 
         plainText = f'{name}\n{final_scores}'
@@ -131,7 +131,7 @@ class TheShopDialog(QDialog):
                     'roll_tables' )
         for section in range(0, len(sections)):
             for key, text in stat_block[sections[section]].items():
-                print(text)
+                # print(text)
                 plainText += f'\n{text}'
         self.ui.textEdit_stat_block.setPlainText(plainText)
 
@@ -178,7 +178,7 @@ class TheShopDialog(QDialog):
     def roll_stats(self):
         db = self.vault.main.db
         dbObj = db.Vault[self.target.id]
-        dice_tower = dice()
+        dice_tower = dice_factory()
         # roll 4d6 but keep the top 3
         stats = [ dice_tower.roll('4d6t3') for r in range(6)]
         # print(stats)

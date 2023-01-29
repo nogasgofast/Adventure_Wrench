@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QDialog, QListWidgetItem
 from PySide6.QtGui import QBrush, QColor
 from Acadamy import AcadamyDialog
 from TheShop import TheShopDialog
+from lib.dice import dice_factory
 
 class VaultDialog(QDialog):
     def __init__(self, parent=None):
@@ -54,6 +55,7 @@ class VaultDialog(QDialog):
     def add_to_encounter(self):
         enc_list = self.main.ui.listWidget_Encounter
         Vault = self.ui.listWidget_vault
+        dice_caddy = dice_factory()
         for row in range(0, Vault.count()):
             if Vault.item(row).isSelected():
                 item = Vault.item(row)
@@ -61,14 +63,14 @@ class VaultDialog(QDialog):
                 new_item = QListWidgetItem()
                 new_item.dbObj = self.main.db.Active(
                                 name = item.dbObj.name,
-                                description = item.dbObj.description,
+                                stat_block = item.dbObj.stat_block,
                                 initiative = item.dbObj.initiative,
                                 hp = item.dbObj.hp,
                                 max_hp = item.dbObj.max_hp,
                                 group_hp = item.dbObj.group_hp,
-                                count = item.dbObj.count,
-                                type = item.dbObj.type)
+                                count = item.dbObj.count)
                 commit()
+                new_item.isPlayer = False
                 self.main.update_encounter_text(new_item)
                 self.main.ui.listWidget_Encounter.addItem(new_item)
 
