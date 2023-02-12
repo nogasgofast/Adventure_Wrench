@@ -18,31 +18,33 @@ These special words will be replaced at the time your building something in "The
 And generally allow you to write more flexible items and actions which adjust to
 the difficulty your going for.
 
+
 | Stand-in Values | What they are |
-| %h| This is directly related to cr, but you likely will never use this |
-| %h9| same as %h but divides by 9. Works with numbers 2-9 Great for making healing or poison effects. |
-| %a| attack bonus calculated from strength mod plus profeciency bonus for cr |
-| %d| damage calculated from "Challenge rating" divided by "Group of". You will need
-to adjust this number down for things included in a multi-attack. %d is just a guess at damage
-per round this entity should be doing for the challenge rating your looking for. |
-| %e| elemental damage calculated as 1/4th of damager per round. (in addition to challenge rating) |
-| %e9| same as %e only divides damage by number specified. can use numbers 2-9 |
-| %s| Spell save DC for spell actions directly from cr|
+| --------------- | ------------- |
+| %h              | This is directly related to cr, but you likely will never use this                 |
+| %h9             | same as %h but divides by 9. Works with numbers 2-9 Great for making healing or poison effects. |
+| %a              | attack bonus calculated from strength mod plus profeciency bonus for cr            |
+| %d              | damage calculated from "Challenge rating" divided by "Group of". You will need to adjust this number down for things included in a multi-attack. %d is just a guess at damage per round this entity should be doing for the challenge rating your looking for. |
+| %e              | elemental damage calculated as 1/4th of damager per round. (in addition to challenge rating)     |
+| %e9             | same as %e only divides damage by number specified. can use numbers 2-9 
+| %s              | Spell save DC for spell actions directly from cr
 
 
 ## Examples
-0.
-| cr | "challenge rating" | "group of" |
-|1/2| 1 | 2|
-|1/4| 1 | 4|
-|1/8| 1 | 8|
-|1/16| 1 |16|
+0. Fractional Challenge Ratings
+
+| cr  | "challenge rating" | "group of" |
+| --- | ------------------ | ---------- |
+|1/2  | 1                  | 2          |
+|1/4  | 1                  | 4          |
+|1/8  | 1                  | 8          |
+|1/16 | 1                  |16          |
+
 I guess the point here is double the "group of" field is aproximatly like lowering
 the challenge rating by 1 level until you get to cr 1. Then it's more or less filling out
-the space between CR 1 and CR 0. Remember if the HP seems high for a cr 1 thing,
+the space between CR 1 and CR 0. Remember if the HP seems high for a cr of 1,
 that's because it's built to be a challenging 4 on 1 fight. That goes for the damage
 as well. The Challenge Rating data is sampled from the SRD but may not be exact.
-
 
 1. damage, elemental damange, and health auto-values
 Building a weapon with auto-values. You can create a "Action" for this:
@@ -92,10 +94,5 @@ to have roll tables which select other roll tables, templates that use other tem
 and so on. When applied to something this roll table will apply another template so
 long as that template or roll table has not been applied already.
 
-
-
-## TODO:
-@TheShop getting roll tables to work right.
-@TheShop put in limiters for roll tables and templates so they can't be selected
-twice. Preventing endless recussion problems.
-@main add click-able window for items that came from the vault.
+## Questions
+If you have any questions please pop them into the [Issues tracker on github](https://github.com/nogasgofast/Adventure_Wrench/issues)
