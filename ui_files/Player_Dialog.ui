@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>629</width>
-    <height>344</height>
+    <height>356</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -172,7 +172,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="pushButton_back">
      <property name="text">
       <string>&lt;- Back (Esc)</string>
      </property>

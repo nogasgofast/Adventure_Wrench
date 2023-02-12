@@ -2,7 +2,9 @@
 from PySide6.QtWidgets import (QDialog, QListWidgetItem)
 from ui.TheShop_Dialog import Ui_TheShop
 from pony.orm import db_session, commit
-from lib.dice import dice_factory
+from lib.dice import Dice_factory
+from lib.encounter import Preset_data
+import re
 
 
 class TheShopDialog(QDialog):
@@ -18,9 +20,47 @@ class TheShopDialog(QDialog):
         self.ui.pushButton_add_templates.clicked.connect(self.add_template)
         self.ui.pushButton_delete_shop.clicked.connect(self.delete_vault_item)
         self.ui.pushButton_remove_templates.clicked.connect(self.remove_template)
+        self.ui.pushButton_reset_stat_block.clicked.connect(self.update_stat_block)
+
+        self.ui.spinBox_cr.valueChanged.connect(self.update_cr)
+        self.ui.spinBox_group_of.valueChanged.connect(self.update_group_of)
+        self.ui.spinBox_STR.valueChanged.connect(lambda x: self.update_stat(0, x))
+        self.ui.spinBox_DEX.valueChanged.connect(lambda x: self.update_stat(1, x))
+        self.ui.spinBox_CON.valueChanged.connect(lambda x: self.update_stat(2, x))
+        self.ui.spinBox_INT.valueChanged.connect(lambda x: self.update_stat(3, x))
+        self.ui.spinBox_WIS.valueChanged.connect(lambda x: self.update_stat(4, x))
+        self.ui.spinBox_CHA.valueChanged.connect(lambda x: self.update_stat(5, x))
 
         self.ui.lineEdit_name.textEdited.connect(self.update_name)
+
         self.ui.textEdit_stat_block.textChanged.connect(self.save_stat_block_Changes)
+
+
+    @db_session
+    def update_cr(self):
+        db = self.vault.main.db
+        dbObj = db.Vault[self.target.id]
+        dbObj.cr = self.ui.spinBox_cr.value()
+        self.update_stat_block()
+
+
+    @db_session
+    def update_group_of(self):
+        db = self.vault.main.db
+        dbObj = db.Vault[self.target.id]
+        dbObj.group_of = self.ui.spinBox_group_of.value()
+        self.update_stat_block()
+
+
+    @db_session
+    def update_stat(self, stat, val_as_unicode):
+        db = self.vault.main.db
+        dbObj = db.Vault[self.target.id]
+        scores = dbObj.attributes.split(',')
+        scores[stat] = str(val_as_unicode)
+        dbObj.attributes = ','.join(scores)
+        self.update_stat_block()
+
 
     @db_session
     def save_stat_block_Changes(self):
@@ -92,72 +132,162 @@ class TheShopDialog(QDialog):
 
     @db_session
     def update_stat_block(self):
-        'responsible for Stat Block on The Shop'
+        'responsible for creating stat blocks'
         db = self.vault.main.db
         dbObj = db.Vault[self.target.id]
         stat_block = self.compile_templates()
+        cr = self.ui.spinBox_cr.value()
+        group_of = self.ui.spinBox_group_of.value()
+        cr_info = Preset_data().get(cr)
+        dice_tower = Dice_factory()
+        HP = cr_info["hp"] // group_of
+        dbObj.hp = HP
+        HP_view = f'{HP} ({dice_tower.to_dice(HP)})'
 
         # pull in The Shop's stats to compile with these
         def compile_attr(attribute, stat_mod):
+            'combines ui ability scores with templates'
             if stat_mod is None:
                 return int(attribute)
             if '+' not in stat_mod and '-' not in stat_mod:
-                # print(stat_mod)
                 return int(stat_mod)
             else:
                 return int(attribute) + int(stat_mod)
 
-        base_attributes = dbObj.attributes.split(',')
-        scores = base_attributes
+        def replace_auto_values(text):
+            m = re.search('%h([2-9])', text)
+            if m:
+                HP = (cr_info["hp"] // group_of) / m.group(1)
+                HP_view = (f'{HP} '
+                           f'({dice_tower.to_dice(HP)})')
+                text = re.sub('%h[2-9]', str(HP_view), text)
+            else:
+                HP = (cr_info["hp"] // group_of)
+                HP_view = (f'{HP} '
+                           f'({dice_tower.to_dice(HP)})')
+                text = re.sub('%h', str(HP_view), text)
+            attack_bonus = cr_info["atkBonus"]
+            text = re.sub('%a', str(attack_bonus), text)
+
+            damage = cr_info["damPerRound"] // group_of
+            damage_view = (f'{damage} '
+                           f'({dice_tower.to_dice(damage)})')
+            text = re.sub('%d', damage_view, text)
+
+            m = re.search('%e([2-9])', text)
+            if m:
+                elementalDamage = damage // m.group(1)
+                elem_view = (f'{elementalDamage} '
+                             f'({dice_tower.to_dice(elementalDamage)})')
+                text = re.sub('%e[2-9]', elem_view, text)
+            else:
+                elementalDamage = damage // 2
+                elem_view = (f'{elementalDamage} '
+                             f'({dice_tower.to_dice(elementalDamage)})')
+                text = re.sub('%e', elem_view, text)
+            spellSaveDC = cr_info['saveDC']
+            text = re.sub('%s', str(spellSaveDC), text)
+            return text
+
+        scores = dbObj.attributes.split(',')
         names = ('Strength', 'Dexterity',
                  'Constitution', 'Wisdom',
                  'Intelligence', 'Charisma')
         for row in range(0, 6):
             scores[row] = compile_attr(scores[row],
-                                       stat_block['stats'].get(names[row]))
-
-        heading = ('STR', 'DEX',
-                   'CON', 'WIS',
-                   'INT', 'CHA')
+                                       stat_block['Stats'].get(names[row]))
+        stat_bar_heading = ('STR', 'DEX',
+                            'CON', 'WIS',
+                            'INT', 'CHA')
         final_scores = ''
         for row in range(0, 6):
-            final_scores += f'{heading[row]}: {scores[row]:02}    '
+            final_scores += f'{stat_bar_heading[row]}: {scores[row]:02}    '
         name = self.ui.lineEdit_name.text()
-
-        plainText = f'{name}\n{final_scores}'
-
-        sections = ('lore', 'attributes',
-                    'items', 'actions',
-                    'roll_tables' )
+        plainText = (f'{name}\n'
+                     f'CR: {cr}\n'
+                     f'HP: {HP_view}\n'
+                     f'{final_scores}\n')
+        sections = ('Lore', 'Attributes',
+                    'Items', 'Actions',
+                    'Roll tables' )
         for section in range(0, len(sections)):
-            for key, text in stat_block[sections[section]].items():
-                # print(text)
-                plainText += f'\n{text}'
+            if stat_block[sections[section]]:
+                plainText += f'\n====[ {sections[section]} ]===\n'
+                for key, text in stat_block[sections[section]].items():
+                    text = replace_auto_values(text)
+                    plainText += f'\n{text}\n'
+                plainText += '\n'
         self.ui.textEdit_stat_block.setPlainText(plainText)
+        # and update vault tool-tip as well.
+        vault_list = self.vault.ui.listWidget_vault
+        for row in range(0, vault_list.count()):
+            item = vault_list.item(row)
+            if item.dbObj == self.target:
+                item.setToolTip(plainText)
+
+    def read_match(self, matchList):
+        matchList = matchList.split(',')
+        removeRows = []
+        for match in matchList:
+            if '-' in str(match):
+                removeRows.append(matchList.index(match))
+                low, high = match.split('-')
+                low = int(low.strip())
+                high = int(high.strip())
+                matchRange = [ x for x in range(low, high + 1)]
+                matchList.extend(matchRange)
+        for r in removeRows:
+            matchList.pop(r)
+        matchList = [ int(x) for x in matchList ]
+        return sorted(matchList)
 
     @db_session
     def compile_templates(self):
         db = self.vault.main.db
-        details = {'lore':{},
-                   'stats':{},
-                   'attributes':{},
-                   'items': {},
-                   'actions': {},
-                   'roll_tables': {} }
+        details = {'Lore':{},
+                   'Stats':{},
+                   'Attributes':{},
+                   'Items': {},
+                   'Actions': {},
+                   'Roll tables': {} }
+
+        def stack_rtable(details, rtable):
+            if rtable.immutable:
+                details['Roll tables'][rtable.name] = rtable.to_strings()
+            else:
+                dice_tower = Dice_factory()
+                result = dice_tower.roll(rtable.diceRoll)
+                for item in rtable.items:
+                    if result in self.read_match(item.match):
+                        if item.lore:
+                            details['Lore'][item.lore.name] = item.lore.to_strings()
+                        if item.attribute:
+                            details['Attributes'][item.attribute.name] = item.attribute.to_strings()
+                        if item.stat:
+                            details['Stats'][item.stat.name] = item.stat.description
+                        if item.item:
+                            details['Items'][item.item.name] = item.item.to_strings()
+                        if item.action:
+                            details['Actions'][item.action.name] = item.action.to_strings()
+                        if item.template:
+                            details = stack(details, item.template)
+                        if item.rtable:
+                            stack_rtable(details, item.rtable)
+            return details
 
         def stack_details(details, template):
             for item in template.lore:
-                details['lore'][item.name] = item.to_strings()
+                details['Lore'][item.name] = item.to_strings()
             for item in template.stats:
-                details['stats'][item.name] = item.description
+                details['Stats'][item.name] = item.description
             for item in template.attributes:
-                details['attributes'][item.name] = item.to_strings()
+                details['Attributes'][item.name] = item.to_strings()
             for item in template.items:
-                details['items'][item.name] = item.to_strings()
+                details['Items'][item.name] = item.to_strings()
             for item in template.actions:
-                details['actions'][item.name] = item.to_strings()
-            for item in template.rtables:
-                details['roll_tables'][item.name] = item.to_strings()
+                details['Actions'][item.name] = item.to_strings()
+            for table in template.rtables:
+                stack_rtable(details, table)
             return details
 
         def stack(details, template):
@@ -178,10 +308,9 @@ class TheShopDialog(QDialog):
     def roll_stats(self):
         db = self.vault.main.db
         dbObj = db.Vault[self.target.id]
-        dice_tower = dice_factory()
+        dice_tower = Dice_factory()
         # roll 4d6 but keep the top 3
         stats = [ dice_tower.roll('4d6t3') for r in range(6)]
-        # print(stats)
         self.ui.spinBox_STR.setValue(stats[0])
         self.ui.spinBox_DEX.setValue(stats[1])
         self.ui.spinBox_CON.setValue(stats[2])

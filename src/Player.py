@@ -10,11 +10,17 @@ class PlayerDialog(QDialog):
         self.target = None
         self.ui = Ui_Player()
         self.ui.setupUi(self)
-        self.ui.lineEdit_name.textChanged.connect(self.update_name)
+
+        self.ui.pushButton_delete.clicked.connect(self.remove_player)
+        self.ui.pushButton_back.clicked.connect(self.close)
+
         self.ui.spinBox_hp.valueChanged.connect(self.update_hp)
         self.ui.spinBox_initiative.valueChanged.connect(self.update_inititive)
+
+        self.ui.lineEdit_name.textChanged.connect(self.update_name)
+
         self.ui.textEdit_description.textChanged.connect(self.update_description)
-        self.ui.pushButton_delete.clicked.connect(self.remove_player)
+
 
     @db_session
     def update_player(self):
@@ -23,18 +29,16 @@ class PlayerDialog(QDialog):
         E = self.main.ui.listWidget_Encounter
         for row in range(0, E.count()):
             if E.item(row).isSelected():
-                item = E.item(row)
-                item.dbObj = self.main.db.Active[item.dbObj.id]
-                if item.dbObj.player:
+                if E.item(row).dbObj.count == 1:
+                    item = E.item(row)
+                    item.dbObj = self.main.db.Active[item.dbObj.id]
                     self.target = item
                     self.ui.lineEdit_name.setText(item.dbObj.name)
                     self.ui.spinBox_hp.setValue(item.dbObj.hp)
                     self.ui.spinBox_initiative.setValue(item.dbObj.initiative)
                     self.ui.textEdit_description.setText(item.dbObj.stat_block)
                     self.show()
-                else:
-                    # we detected this as not a player so we don't do nothin.
-                    pass
+
 
     @db_session
     def update_name(self):
@@ -83,6 +87,7 @@ class PlayerDialog(QDialog):
         commit()
         item = QListWidgetItem("{player.initiative} | {player.name} | hp:{player.hp}")
         item.dbObj = player
+        commit()
         self.main.update_encounter_text(item)
         self.target = item
         self.main.ui.listWidget_Encounter.addItem(item)

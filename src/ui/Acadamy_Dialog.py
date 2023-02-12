@@ -58,6 +58,7 @@ class Ui_acadamy_dialog(object):
 
         self.listWidget_all_templates = QListWidget(acadamy_dialog)
         self.listWidget_all_templates.setObjectName(u"listWidget_all_templates")
+        self.listWidget_all_templates.setSortingEnabled(True)
 
         self.verticalLayout.addWidget(self.listWidget_all_templates)
 
@@ -218,6 +219,7 @@ class Ui_acadamy_dialog(object):
 
         self.textEdit_content_lore = QTextEdit(self.page_lore)
         self.textEdit_content_lore.setObjectName(u"textEdit_content_lore")
+        self.textEdit_content_lore.setLineWrapMode(QTextEdit.NoWrap)
 
         self.verticalLayout_2.addWidget(self.textEdit_content_lore)
 
@@ -358,6 +360,7 @@ class Ui_acadamy_dialog(object):
 
         self.textEdit_description_item = QTextEdit(self.page_item)
         self.textEdit_description_item.setObjectName(u"textEdit_description_item")
+        self.textEdit_description_item.setLineWrapMode(QTextEdit.NoWrap)
 
         self.verticalLayout_6.addWidget(self.textEdit_description_item)
 
@@ -408,6 +411,7 @@ class Ui_acadamy_dialog(object):
 
         self.textEdit_result_action = QTextEdit(self.page_action)
         self.textEdit_result_action.setObjectName(u"textEdit_result_action")
+        self.textEdit_result_action.setLineWrapMode(QTextEdit.NoWrap)
 
         self.verticalLayout_7.addWidget(self.textEdit_result_action)
 
@@ -435,6 +439,11 @@ class Ui_acadamy_dialog(object):
         self.checkBox_israndom_roll_table.setObjectName(u"checkBox_israndom_roll_table")
 
         self.verticalLayout_3.addWidget(self.checkBox_israndom_roll_table)
+
+        self.checkBox_immutable_roll_table = QCheckBox(self.page_roll_table)
+        self.checkBox_immutable_roll_table.setObjectName(u"checkBox_immutable_roll_table")
+
+        self.verticalLayout_3.addWidget(self.checkBox_immutable_roll_table)
 
         self.label_dice_roll_table = QLabel(self.page_roll_table)
         self.label_dice_roll_table.setObjectName(u"label_dice_roll_table")
@@ -493,6 +502,7 @@ class Ui_acadamy_dialog(object):
 
         self.listWidget_table_roll_table = QListWidget(self.page_roll_table)
         self.listWidget_table_roll_table.setObjectName(u"listWidget_table_roll_table")
+        self.listWidget_table_roll_table.setSortingEnabled(True)
 
         self.verticalLayout_3.addWidget(self.listWidget_table_roll_table)
 
@@ -513,7 +523,7 @@ class Ui_acadamy_dialog(object):
 
         self.retranslateUi(acadamy_dialog)
 
-        self.verticalStackedWidget_forms.setCurrentIndex(6)
+        self.verticalStackedWidget_forms.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(acadamy_dialog)
@@ -577,6 +587,7 @@ class Ui_acadamy_dialog(object):
         self.pushButton_delete_action.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
         self.label_name_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Roll Table Name:", None))
         self.checkBox_israndom_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Select from the list randomly. (no dice roll, no matching)", None))
+        self.checkBox_immutable_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Write the table into the stat block (instead of useing the table).", None))
         self.label_dice_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Dice Roll:", None))
         self.groupBox.setTitle(QCoreApplication.translate("acadamy_dialog", u"Add Item to table", None))
         self.label_explain1_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"match for the dice roll, no spaces are allowed.", None))

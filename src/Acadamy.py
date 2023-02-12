@@ -52,6 +52,7 @@ class AcadamyDialog(QDialog):
         self.ui.comboBox_name_stats.currentIndexChanged.connect(self.update_name_stats)
 
         self.ui.checkBox_israndom_roll_table.stateChanged.connect(self.update_israndom_roll_table)
+        self.ui.checkBox_immutable_roll_table.stateChanged.connect(self.update_immutable_roll_table)
 
         self.target = None
         self.detail_target = None
@@ -95,6 +96,11 @@ class AcadamyDialog(QDialog):
         dbObj = db.Rtables[self.detail_target.dbObj.id]
         dbObj.isRandom = self.ui.checkBox_israndom_roll_table.isChecked()
 
+    @db_session
+    def update_immutable_roll_table(self):
+        db = self.ui_vault.main.db
+        dbObj = db.Rtables[self.detail_target.dbObj.id]
+        dbObj.immutable = self.ui.checkBox_immutable_roll_table.isChecked()
 
     @db_session
     def update_dice_roll_table(self):
@@ -149,7 +155,7 @@ class AcadamyDialog(QDialog):
             if rollTable.item(row).isSelected():
                 table_entry = rollTable.takeItem(row)
                 break
-        dbObj = db.Rtables_items[table_entry.dbObj.id]
+        dbObj = db.Rtable_items[table_entry.dbObj.id]
         dbObj.delete()
         commit()
 
@@ -557,7 +563,7 @@ class AcadamyDialog(QDialog):
     @db_session
     def construct_roll_table_name(self, dbObj):
         db = self.ui_vault.main.db
-        item = db.Rtables_items[dbObj.id]
+        item = db.Rtable_items[dbObj.id]
         item_child = ''
         if item.lore:
             item_child = item.lore
@@ -628,6 +634,7 @@ class AcadamyDialog(QDialog):
                 cBoxItems += [ x for x in db.Actions.select()]
                 self.ui.lineEdit_name_roll_table.setText(dbObj.name)
                 self.ui.checkBox_israndom_roll_table.setChecked(dbObj.isRandom)
+                self.ui.checkBox_immutable_roll_table.setChecked(dbObj.immutable)
                 self.ui.lineEdit_dice_roll_table.setText(dbObj.diceRoll)
                 self.ui.lineEdit_item_match_roll_table.clear()
                 self.ui.comboBox_options_roll_table.clear()

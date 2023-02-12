@@ -125,7 +125,11 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_treeWidget">
        <item>
-        <widget class="QListWidget" name="listWidget_vault"/>
+        <widget class="QListWidget" name="listWidget_vault">
+         <property name="sortingEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

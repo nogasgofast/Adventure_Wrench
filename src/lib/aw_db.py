@@ -16,6 +16,7 @@ class Active(aw_db.Entity):
     black_star = Optional(int, default=0)
     white_star = Optional(int, default=0)
     player = Required(bool, default=False)
+    from_vault = Optional('Vault', reverse='in_active')
 
 class Vault(aw_db.Entity):
     name = Optional(str, default=' *** ')
@@ -28,6 +29,7 @@ class Vault(aw_db.Entity):
     cr = Optional(int, default=1)
     count = Optional(int, default=1)
     templates = Set('Templates', reverse='vault')
+    in_active = Set('Active', reverse='from_vault')
 
 class Templates(aw_db.Entity):
     name = Required(str)
@@ -39,22 +41,23 @@ class Templates(aw_db.Entity):
     items = Set('Items', reverse='template')
     actions = Set('Actions', reverse='template')
     stats = Set('Stats', reverse='template')
-    rtables = Set('Rtables', reverse='template')
-    rtable_items = Set('Rtables_items')
+    rtables = Set('Rtables', reverse='used_in_templates')
+    rtable_items = Set('Rtable_items')
 
 class Lore(aw_db.Entity):
     name = Optional(str)
     description = Optional(str)
     template = Required('Templates')
-    rtable_items = Set('Rtables_items')
+    rtable_items = Set('Rtable_items')
     def to_strings(self):
-        return f'{self.name}: {self.description}'
+        return (f'{self.name}:\n'
+                f'    {self.description}')
 
 class Stats(aw_db.Entity):
     name = Optional(str)
     description = Optional(str)
     template = Required('Templates')
-    rtable_items = Set('Rtables_items')
+    rtable_items = Set('Rtable_items')
     def to_strings(self):
         return f'{self.name}: {self.description}'
 
@@ -62,7 +65,7 @@ class Attributes(aw_db.Entity):
     name = Optional(str)
     content = Optional(str)
     template = Required('Templates')
-    rtable_items = Set('Rtables_items')
+    rtable_items = Set('Rtable_items')
     def to_strings(self):
         return f'{self.name}: {self.content}'
 
@@ -72,7 +75,7 @@ class Items(aw_db.Entity):
     quantity = Optional(int)
     description = Optional(str)
     template = Required('Templates')
-    rtable_items = Set('Rtables_items')
+    rtable_items = Set('Rtable_items')
     def to_strings(self):
         return (f'{self.name}:\n'
                 f'    {self.description}')
@@ -83,7 +86,7 @@ class Actions(aw_db.Entity):
     limitations = Optional(str)
     result = Optional(str)
     template = Required('Templates')
-    rtable_items = Set('Rtables_items')
+    rtable_items = Set('Rtable_items')
     def to_strings(self):
         return (f'{self.name}:\n'
                 f'    cost: {self.cost}\n'
@@ -92,18 +95,19 @@ class Actions(aw_db.Entity):
 
 class Rtables(aw_db.Entity):
     name = Optional(str)
-    isRandom = Required(bool)
+    isRandom = Required(bool, default=False)
+    immutable = Required(bool, default=True)
     diceRoll = Optional(str)
-    items = Set('Rtables_items', reverse='table')
-    template = Set('Templates')
-    over = Set('Rtables_items', reverse='rtable')
+    items = Set('Rtable_items', reverse='table')
+    used_in_templates = Set('Templates')
+    used_in_rtable_items = Set('Rtable_items', reverse='rtable')
     def to_strings(self):
-        items = ''
+        items = []
         for i in self.items:
-            items += i.to_strings()
-        return f'{self.name}: {self.diceRoll}\n' + items
+            items.append(i.to_strings())
+        return f'{self.name}: {self.diceRoll}\n' + ''.join(sorted(items))
 
-class Rtables_items(aw_db.Entity):
+class Rtable_items(aw_db.Entity):
     table = Required('Rtables')
     match = Optional(str)
     lore = Optional('Lore', reverse='rtable_items')
@@ -112,7 +116,7 @@ class Rtables_items(aw_db.Entity):
     item = Optional('Items', reverse='rtable_items')
     action = Optional('Actions', reverse='rtable_items')
     template = Optional('Templates', reverse='rtable_items')
-    rtable = Optional('Rtables', reverse='over')
+    rtable = Optional('Rtables', reverse='used_in_rtable_items')
     def to_strings(self):
         if self.lore:
             thing = self.lore
@@ -134,19 +138,6 @@ if __name__ == '__main__':
     try:
         aw_db.bind("sqlite", ":memory:", create_db=True)
         aw_db.generate_mapping(create_tables=True)
-        with db_session:
-            aw_db.Vault(name='group 3', group_hp=[1,2,3],
-                        hp=6, max_hp=6, count=3, type='creature')
-            aw_db.Vault(name='c1', group_hp='',
-                        hp=6, max_hp=20, count=1, type='creature')
-            aw_db.Vault(name='c2', group_hp='',
-                        hp=6, max_hp=6, count=1, type='creature')
-            aw_db.Vault(name='group 1', group_hp=[1,2,3,4],
-                        hp=6, max_hp=40, count=4, type='creature')
-            aw_db.Active(type='pc')
-            aw_db.Active(type='creature')
-            aw_db.Active(type='npc')
-            aw_db.Active(type='trap')
         print("schema syntax: OKAY")
     except:
         print("schema syntax: FAIL")

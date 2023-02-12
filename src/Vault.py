@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QDialog, QListWidgetItem
 from PySide6.QtGui import QBrush, QColor
 from Acadamy import AcadamyDialog
 from TheShop import TheShopDialog
-from lib.dice import dice_factory
+from lib.dice import Dice_factory
 
 class VaultDialog(QDialog):
     def __init__(self, parent=None):
@@ -29,7 +29,25 @@ class VaultDialog(QDialog):
 
     @db_session
     def remove_from_encounter(self):
-        pass
+        db = self.main.db
+        vault = self.ui.listWidget_vault
+        encounter = self.main.ui.listWidget_Encounter
+        selected_from_vault = vault.selectedItems()
+        search_objects = [ db.Vault[o.dbObj.id].in_active for o in selected_from_vault ]
+        deleting_items = []
+        for row in range(0, encounter.count()):
+            encounter_item = encounter.item(row)
+            encounterObj = db.Active[encounter_item.dbObj.id]
+            for ActiveSet in search_objects:
+                # print(encounterObj, ActiveSet)
+                if encounterObj in ActiveSet:
+                    encounterObj.delete()
+                    deleting_items.append(row)
+        # delete rows from highest to lowest to prevent
+        # messing up indexing of deleted items.
+        for row in sorted(deleting_items, reverse=True):
+            encounter.takeItem(row)
+
 
     @db_session
     def load_vault(self):
@@ -38,6 +56,7 @@ class VaultDialog(QDialog):
             item = QListWidgetItem(
                            f'{vault_item.name}')
             item.dbObj = vault_item
+            item.setToolTip(vault_item.stat_block)
             self.ui.listWidget_vault.addItem(item)
 
     @db_session
@@ -55,12 +74,15 @@ class VaultDialog(QDialog):
     def add_to_encounter(self):
         enc_list = self.main.ui.listWidget_Encounter
         Vault = self.ui.listWidget_vault
-        dice_caddy = dice_factory()
+        dice_caddy = Dice_factory()
         for row in range(0, Vault.count()):
             if Vault.item(row).isSelected():
                 item = Vault.item(row)
                 item.dbObj = self.main.db.Vault[item.dbObj.id]
                 new_item = QListWidgetItem()
+                if item.dbObj.count > 1:
+                    item.dbObj.group_hp = [ item.dbObj.hp for x in range(0, item.dbObj.count) ]
+                    commit()
                 new_item.dbObj = self.main.db.Active(
                                 name = item.dbObj.name,
                                 stat_block = item.dbObj.stat_block,
@@ -68,7 +90,8 @@ class VaultDialog(QDialog):
                                 hp = item.dbObj.hp,
                                 max_hp = item.dbObj.max_hp,
                                 group_hp = item.dbObj.group_hp,
-                                count = item.dbObj.count)
+                                count = item.dbObj.count,
+                                from_vault = item.dbObj)
                 commit()
                 new_item.isPlayer = False
                 self.main.update_encounter_text(new_item)

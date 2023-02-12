@@ -20,7 +20,7 @@
       <item>
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>## Current Encounter</string>
+         <string>## Current Game</string>
         </property>
         <property name="textFormat">
          <enum>Qt::MarkdownText</enum>
@@ -100,8 +100,11 @@
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_players">
+          <property name="toolTip">
+           <string>Add Players, NPC's and other stuff</string>
+          </property>
           <property name="text">
-           <string>Players</string>
+           <string>Add</string>
           </property>
          </widget>
         </item>
@@ -303,6 +306,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_toggle_expand">
+          <property name="toolTip">
+           <string>Warning: smashes changes to individual stat blocks!</string>
+          </property>
           <property name="text">
            <string>Expand/Collapse</string>
           </property>
@@ -310,6 +316,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_Inititave">
+          <property name="toolTip">
+           <string>sorts current game and advances selection in a cycle</string>
+          </property>
           <property name="text">
            <string>Advance Inititave</string>
           </property>
@@ -331,6 +340,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>cycles on 3rd press</string>
+            </property>
             <property name="text">
              <string>✖</string>
             </property>
@@ -343,6 +355,9 @@
               <width>40</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string>cycles on 3rd press</string>
             </property>
             <property name="text">
              <string>✔</string>
@@ -357,6 +372,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>cycles on 6th press</string>
+            </property>
             <property name="text">
              <string>★</string>
             </property>
@@ -369,6 +387,9 @@
               <width>40</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string>cycles on 6th press</string>
             </property>
             <property name="text">
              <string>☆</string>

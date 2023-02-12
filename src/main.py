@@ -203,6 +203,7 @@ class MainWindow(QMainWindow):
         for row in range(0, self.ui.listWidget_Encounter.count()):
             if self.ui.listWidget_Encounter.item(row).isSelected():
                 item = self.ui.listWidget_Encounter.item(row)
+                item.dbObj = self.db.Active[item.dbObj.id]
                 if len(item.dbObj.group_hp) > 1:
                     groupHP = item.dbObj.group_hp
                     groupHP = [x - damage for x in groupHP]
@@ -210,12 +211,11 @@ class MainWindow(QMainWindow):
                     item.dbObj.group_hp = groupHP
                     item.dbObj.count = len(groupHP)
                 else:
-                    item.dbObj = self.db.Active[item.dbObj.id]
                     hp = item.dbObj.hp - damage
                     if hp < 0:
                         hp = 0
                     item.dbObj.hp = hp
-                    commit()
+                commit()
                 self.update_encounter_text(item)
 
     @db_session
@@ -242,48 +242,49 @@ class MainWindow(QMainWindow):
             newItem = QListWidgetItem()
             newItem.dbObj = self.db.Active(
                             name = item.dbObj.name,
-                            description = item.dbObj.description,
+                            stat_block = item.dbObj.stat_block,
                             initiative = item.dbObj.initiative,
                             hp = hp,
                             max_hp = hp,
                             death_save_fail = item.dbObj.death_save_fail,
                             death_save_success = item.dbObj.death_save_success,
                             black_star = item.dbObj.black_star,
-                            white_star = item.dbObj.white_star)
+                            white_star = item.dbObj.white_star,
+                            from_vault = item.dbObj.from_vault)
             commit()
             self.update_encounter_text(newItem)
             self.ui.listWidget_Encounter.insertItem((row + 1), newItem)
 
     @db_session
     def collapse(self, item, inRow):
-        item.dbObj = self.db.Active[item.dbObj.id]
-        name = item.dbObj.name
+        viewObj = self.db.Active[item.dbObj.id]
+        name = viewObj.name
         group = []
-        E = self.ui.listWidget_Encounter
-        for row in range(0, E.count()):
-            rowItem = E.item(row)
-            rowItem.dbObj = self.db.Active[rowItem.dbObj.id]
-            if (rowItem.dbObj.name == name and
-                rowItem.dbObj.count == 1   and row != inRow):
+        encounter_view = self.ui.listWidget_Encounter
+        for row in range(0, encounter_view.count()):
+            rowItem = encounter_view.item(row)
+            rowObj = self.db.Active[rowItem.dbObj.id]
+            if (rowObj.name == name and
+                rowObj.count == 1   and row != inRow):
                 group.append(row)
         group.sort()
         group.reverse()
         groupHP = []
         groupOf = 0
         for row in group:
-            rowItem = E.item(row)
-            rowItem.dbObj = self.db.Active[rowItem.dbObj.id]
-            groupHP.append(rowItem.dbObj.hp)
-            groupOf = groupOf + 1
-            rowItem.dbObj.delete()
-            E.takeItem(row)
+            rowItem = encounter_view.item(row)
+            rowObj = self.db.Active[rowItem.dbObj.id]
+            groupHP.append(rowObj.hp)
+            groupOf += 1
+            rowObj.delete()
+            encounter_view.takeItem(row)
         # include the item slected as well.
         commit()
-        groupHP.append(item.dbObj.hp)
-        item.dbObj.hp = sum(groupHP)
-        item.dbObj.max_hp = sum(groupHP)
-        item.dbObj.count = len(groupHP)
-        item.dbObj.group_hp = groupHP
+        groupHP.append(viewObj.hp)
+        viewObj.hp = sum(groupHP)
+        viewObj.max_hp = sum(groupHP)
+        viewObj.count = len(groupHP)
+        viewObj.group_hp = groupHP
         self.update_encounter_text(item)
 
 
@@ -364,6 +365,7 @@ class MainWindow(QMainWindow):
     def update_encounter_text(self, item):
         item.dbObj = self.db.Active[item.dbObj.id]
         if item.dbObj.count > 1:
+            print(item.dbObj.group_hp)
             format = '''%s | %s
     %s left with hp Sum: %s High: %s Low: %s
     %s%s%s%s''' % (

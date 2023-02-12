@@ -87,6 +87,7 @@ class Ui_Vault(object):
         self.verticalLayout_treeWidget.setObjectName(u"verticalLayout_treeWidget")
         self.listWidget_vault = QListWidget(Vault)
         self.listWidget_vault.setObjectName(u"listWidget_vault")
+        self.listWidget_vault.setSortingEnabled(True)
 
         self.verticalLayout_treeWidget.addWidget(self.listWidget_vault)
 

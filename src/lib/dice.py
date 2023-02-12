@@ -8,7 +8,7 @@ import re
 import random
 
 
-class dice_factory:
+class Dice_factory:
     # Never expose this class through a service. Its too insecure.
     # But you can use it safely with known input values. Or as a part
     # of a client application with known input values like in this case.
@@ -30,14 +30,15 @@ class dice_factory:
         # replace die rolls with generated numbers
         self.parse()
 
-        if not re.search(r'[^0-9(*/)dD+-]', self.string):
-            return int(self.nsp.eval(self.string))
+        # this is just here to catch bad things happening in parse()
+        if re.search(r'[dD-Tt]', self.string):
+            raise Exception(f'dice not processed: {self.string}')
         else:
-            return 0
+            return int(self.nsp.eval(self.string))
 
     def parse(self):
         # regex match each die and replace with this function
-        self.string = re.sub(r'\d*d\d+[tTbB]\d+',
+        self.string = re.sub(r'\d*d\d+([tTbB]?\d+)?',
                              lambda x: self.gen_die(x), self.string)
         if self.debug:
             print("|{}|".format(self.string))
@@ -50,6 +51,8 @@ class dice_factory:
         if dice_info.group(1):
             num_die = int(dice_info.group(1))
         else:
+            if self.debug:
+                print('triggered default num dice 1')
             num_die = 1
         sides = int(dice_info.group(2))
         rolls = [random.randint(1, sides) for x in range(num_die)]
@@ -93,18 +96,18 @@ class dice_factory:
         'use largest die possible, do not break into smaller die'
         if Max < 2:
             return Max
-        dice = (100, 20, 12, 10, 8, 6, 4)
+        half_max = Max // 2
+        dice = (12, 10, 8, 6, 4)
         out = None
         for die in dice:
             die_avg = (die // 2) + 1
-            numDice = Max // die_avg
+            numDice = half_max // die_avg
             if numDice >= 1:
-                Max = Max - (die_avg * numDice)
                 out = '{}d{}'.format(numDice, die)
                 if Max <= 0:
                     return out
                 else:
-                    out = f"{out}+{Max}"
+                    out = f"{out}+{half_max}"
                     return out
 
 # __author__ = 'Paul McGuire'
@@ -218,6 +221,7 @@ class NumericStringParser(object):
 
     def eval(self, num_string, parseAll=True):
         self.exprStack = []
+        # print(num_string, parseAll)
         results = self.bnf.parseString(num_string, parseAll)
         val = self.evaluateStack(self.exprStack[:])
         return val

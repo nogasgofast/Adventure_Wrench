@@ -75,6 +75,7 @@ class Ui_TheShop(object):
 
         self.spinBox_group_of = QSpinBox(self.groupBox_shop)
         self.spinBox_group_of.setObjectName(u"spinBox_group_of")
+        self.spinBox_group_of.setMinimum(1)
         self.spinBox_group_of.setMaximum(999)
         self.spinBox_group_of.setValue(1)
 
@@ -212,13 +213,14 @@ class Ui_TheShop(object):
 
         self.verticalLayout_display_template.addWidget(self.label_display_templates)
 
-        self.pushButton = QPushButton(self.groupBox_shop)
-        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton_reset_stat_block = QPushButton(self.groupBox_shop)
+        self.pushButton_reset_stat_block.setObjectName(u"pushButton_reset_stat_block")
 
-        self.verticalLayout_display_template.addWidget(self.pushButton)
+        self.verticalLayout_display_template.addWidget(self.pushButton_reset_stat_block)
 
         self.textEdit_stat_block = QTextEdit(self.groupBox_shop)
         self.textEdit_stat_block.setObjectName(u"textEdit_stat_block")
+        self.textEdit_stat_block.setLineWrapMode(QTextEdit.NoWrap)
 
         self.verticalLayout_display_template.addWidget(self.textEdit_stat_block)
 
@@ -275,6 +277,7 @@ class Ui_TheShop(object):
 
         self.listWidget_templates = QListWidget(self.groupBox_templates)
         self.listWidget_templates.setObjectName(u"listWidget_templates")
+        self.listWidget_templates.setSortingEnabled(True)
 
         self.verticalLayout.addWidget(self.listWidget_templates)
 
@@ -294,7 +297,7 @@ class Ui_TheShop(object):
 
     def retranslateUi(self, TheShop):
         TheShop.setWindowTitle(QCoreApplication.translate("TheShop", u"The Shop", None))
-        self.groupBox_shop.setTitle(QCoreApplication.translate("TheShop", u"The Shop", None))
+        self.groupBox_shop.setTitle(QCoreApplication.translate("TheShop", u"Vault Item:", None))
         self.label_name.setText(QCoreApplication.translate("TheShop", u"What is it?", None))
         self.lineEdit_name.setInputMask("")
         self.lineEdit_name.setText(QCoreApplication.translate("TheShop", u"*new vault item*", None))
@@ -309,7 +312,7 @@ class Ui_TheShop(object):
         self.label_WIS.setText(QCoreApplication.translate("TheShop", u"WIS", None))
         self.label_CHA.setText(QCoreApplication.translate("TheShop", u"CHA", None))
         self.label_display_templates.setText(QCoreApplication.translate("TheShop", u"Stat block", None))
-        self.pushButton.setText(QCoreApplication.translate("TheShop", u"Re-apply Templates (does rolls again)", None))
+        self.pushButton_reset_stat_block.setText(QCoreApplication.translate("TheShop", u"Re-Roll templates", None))
         self.pushButton_back.setText(QCoreApplication.translate("TheShop", u"<- Back (Esc)", None))
         self.pushButton_delete_shop.setText(QCoreApplication.translate("TheShop", u"Delete from vault", None))
         self.groupBox_templates.setTitle(QCoreApplication.translate("TheShop", u"Templates", None))

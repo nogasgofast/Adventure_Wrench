@@ -24,7 +24,7 @@ class Ui_Player(object):
         if not Player.objectName():
             Player.setObjectName(u"Player")
         Player.setWindowModality(Qt.WindowModal)
-        Player.resize(629, 344)
+        Player.resize(629, 356)
         sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -130,10 +130,10 @@ class Ui_Player(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
-        self.pushButton = QPushButton(Player)
-        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton_back = QPushButton(Player)
+        self.pushButton_back.setObjectName(u"pushButton_back")
 
-        self.verticalLayout.addWidget(self.pushButton)
+        self.verticalLayout.addWidget(self.pushButton_back)
 
 
         self.retranslateUi(Player)
@@ -148,6 +148,6 @@ class Ui_Player(object):
         self.label_hp.setText(QCoreApplication.translate("Player", u"HP", None))
         self.label.setText(QCoreApplication.translate("Player", u"Description", None))
         self.pushButton_delete.setText(QCoreApplication.translate("Player", u"Remove", None))
-        self.pushButton.setText(QCoreApplication.translate("Player", u"<- Back (Esc)", None))
+        self.pushButton_back.setText(QCoreApplication.translate("Player", u"<- Back (Esc)", None))
     # retranslateUi
 

@@ -25,7 +25,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox_shop">
        <property name="title">
-        <string>The Shop</string>
+        <string>Vault Item:</string>
        </property>
        <property name="flat">
         <bool>true</bool>
@@ -88,6 +88,9 @@
             </item>
             <item>
              <widget class="QSpinBox" name="spinBox_group_of">
+              <property name="minimum">
+               <number>1</number>
+              </property>
               <property name="maximum">
                <number>999</number>
               </property>
@@ -265,14 +268,18 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton">
+             <widget class="QPushButton" name="pushButton_reset_stat_block">
               <property name="text">
-               <string>Re-apply Templates (does rolls again)</string>
+               <string>Re-Roll templates</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QTextEdit" name="textEdit_stat_block"/>
+             <widget class="QTextEdit" name="textEdit_stat_block">
+              <property name="lineWrapMode">
+               <enum>QTextEdit::NoWrap</enum>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -341,7 +348,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QListWidget" name="listWidget_templates"/>
+       <widget class="QListWidget" name="listWidget_templates">
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_remove_templates">
