@@ -14,9 +14,9 @@ out of what you create.
 - Reuse and recycle as much as possible.
 
 ## Automaticly Adjusted Values
-These special words will be replaced at the time your building something in "The Shop".
+These special words will be replaced at the time you are building something in "The Shop".
 And generally allow you to write more flexible items and actions which adjust to
-the difficulty your going for.
+the difficulty you are going for.
 
 
 | Stand-in Values | What they are |
@@ -24,7 +24,7 @@ the difficulty your going for.
 | %h              | This is directly related to cr, but you likely will never use this                 |
 | %h9             | same as %h but divides by 9. Works with numbers 2-9 Great for making healing or poison effects. |
 | %a              | attack bonus calculated from strength mod plus profeciency bonus for cr            |
-| %d              | damage calculated from "Challenge rating" divided by "Group of". You will need to adjust this number down for things included in a multi-attack. %d is just a guess at damage per round this entity should be doing for the challenge rating your looking for. |
+| %d              | damage calculated from "Challenge rating" divided by "Group of". You will need to adjust this number down for things included in a multi-attack. %d is just a guess at damage per round this entity should be doing for the challenge rating you are looking for. |
 | %e              | elemental damage calculated as 1/4th of damager per round. (in addition to challenge rating)     |
 | %e9             | same as %e only divides damage by number specified. can use numbers 2-9 
 | %s              | Spell save DC for spell actions directly from cr
