@@ -27,6 +27,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.ui_vault = VaultDialog(self)
         self.ui_p = PlayerDialog(self)
+        self.suppress_spinbox_update = False
 
 
         self.ui_p.setModal(True)

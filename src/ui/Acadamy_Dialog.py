@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDialog,
     QLabel, QLineEdit, QListWidget, QListWidgetItem,
     QPushButton, QSizePolicy, QSpacerItem, QSpinBox,
     QStackedWidget, QTextEdit, QVBoxLayout, QWidget)
+import images_rc
 
 class Ui_acadamy_dialog(object):
     def setupUi(self, acadamy_dialog):
@@ -101,7 +102,7 @@ class Ui_acadamy_dialog(object):
         sizePolicy.setHeightForWidth(self.label_splash.sizePolicy().hasHeightForWidth())
         self.label_splash.setSizePolicy(sizePolicy)
         self.label_splash.setMaximumSize(QSize(500, 500))
-        self.label_splash.setPixmap(QPixmap(u"../src/ui/mascot.png"))
+        self.label_splash.setPixmap(QPixmap(u":/images/mascot.png"))
         self.label_splash.setScaledContents(True)
         self.label_splash.setMargin(50)
         self.label_splash.setIndent(0)
