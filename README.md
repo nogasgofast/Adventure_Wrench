@@ -21,13 +21,13 @@ the difficulty you are going for.
 
 | Stand-in Values | What they are |
 | --------------- | ------------- |
-| %h              | This is directly related to cr, but you likely will never use this                 |
-| %h9             | same as %h but divides by 9. Works with numbers 2-9 Great for making healing or poison effects. |
-| %a              | attack bonus calculated from strength mod plus profeciency bonus for cr            |
-| %d              | damage calculated from "Challenge rating" divided by "Group of". You will need to adjust this number down for things included in a multi-attack. %d is just a guess at damage per round this entity should be doing for the challenge rating you are looking for. |
-| %e              | elemental damage calculated as 1/4th of damager per round. (in addition to challenge rating)     |
-| %e9             | same as %e only divides damage by number specified. can use numbers 2-9 
-| %s              | Spell save DC for spell actions directly from cr
+| %h              | This is current health value directly related to challenge rating, but should not be used often.  |
+| %h9             | Same as %h but divides it by 9. Works with numbers 2-9 Great for making healing or poison effects. |
+| %a              | Attack bonus calculated from challenge rating directly   |
+| %d              | Damage per round, calculated from "Challenge rating" divided by "Group of" on the shop page of the app. You will need to adjust this number down for things included in a multi-attack. I am still working on a way to enforce damage per round by  |
+| %e              | Elemental damage per round, calculated as 1/4th of damager per round. This is just a guess and may be adjusted later. |
+| %e9             | Same as %e only divides damage per round number specified. can use numbers 2-9 |
+| %s              | Spell save DC for spell actions calculated directly from challange rating     |
 
 
 ## Examples
@@ -69,7 +69,7 @@ roll: 1d6
 6: a golden ticket
 
 Here we can see this is like a regular roll table except 3 is on here twice. When
-the roll table is applied to something if A.W. rolls a 3 that thing will now have
+the roll table is applied to something if Adventure Wrench rolls a 3 that thing will now have
 a pudding and a spoon. A better outcome then even a golden ticket some might say.
 
 Random roll? yes.
