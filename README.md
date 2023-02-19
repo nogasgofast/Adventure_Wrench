@@ -90,5 +90,56 @@ to have roll tables which select other roll tables, templates that use other tem
 and so on. When applied to something this roll table will apply another template so
 long as that template or roll table has not been applied already.
 
+
+## Install instructions
+
+If you are running 64bit windows or linux, likely all you need 
+is to look up the latest [Release]https://github.com/nogasgofast/Adventure_Wrench/releases)
+for your platform.
+
+Then you can simply unzip and move the folder to where you want the files to be kept, and 
+if you are so inclined you can make a shortcut at that time. 
+
+The application and all of it's dependencies will be in a self-contained folder the executable 
+name is adventure_wrench.
+
+
+## Build instructions
+
+If a binary does not work or does not work on your platform you can try building 
+the application for your system.
+
+This application requires at least python3.10, all versions before that are untested.
+
+On a local command line interface:
+git clone the project to a local folder. 
+
+optionally create a virtual enviornment and make sure it's activated.
+
+cd src/
+pip install -r requirements.txt
+
+Then to run the application:
+python main.py
+
+
+## creating binary distrobutions
+
+First you have to build the application as stated in Build instructions.
+Then you can do the following:
+pip install cx_Freeze
+Make sure to read how cx_Freeze works and is used. Might be important info.
+
+cd src/
+
+Then do one of the following or make a new setup.py for your distrobution.
+
+python linux-setup.py build
+or
+python windows-setup.py build
+
+The distibution will be in a build/ folder. 
+
+
 ## Questions
 If you have any questions please pop them into the [Issues tracker on github](https://github.com/nogasgofast/Adventure_Wrench/issues)
