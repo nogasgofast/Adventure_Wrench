@@ -117,17 +117,9 @@ class TheShopDialog(QDialog):
         item = QListWidgetItem('*new vault item*')
         item.dbObj = self.target
         self.vault.ui.listWidget_vault.addItem(item)
+        self.update_selector_templates()
         self.update_stat_block()
         self.show()
-
-
-    @db_session
-    def update_name(self):
-        db = self.vault.main.db
-        self.target = db.Vault[self.target.id]
-        self.target.name = self.ui.lineEdit_name.text()
-        self.vault.update_vault_item(self.target)
-        self.update_stat_block()
 
 
     @db_session
@@ -328,8 +320,9 @@ class TheShopDialog(QDialog):
         all_templates = db.Templates.select()
         self.ui.comboBox_selector_templates.clear()
         for template in all_templates:
-            self.ui.comboBox_selector_templates.addItem(template.name,
-                                                        template)
+            if not template.is_folder:
+                self.ui.comboBox_selector_templates.addItem(template.name,
+                                                            template)
 
     @db_session
     def add_template(self):
@@ -427,4 +420,5 @@ class TheShopDialog(QDialog):
         db = self.vault.main.db
         self.target = vault_item = db.Vault[self.target.id]
         vault_item.name = self.ui.lineEdit_name.text()
+        self.vault.update_vault_item(self.target)
         self.update_stat_block()

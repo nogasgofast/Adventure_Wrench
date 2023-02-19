@@ -53,6 +53,7 @@ class AcadamyDialog(QDialog):
 
         self.ui.checkBox_israndom_roll_table.stateChanged.connect(self.update_israndom_roll_table)
         self.ui.checkBox_immutable_roll_table.stateChanged.connect(self.update_immutable_roll_table)
+        self.ui.checkBox_is_folder_template.stateChanged.connect(self.update_is_folder)
 
         self.target = None
         self.detail_target = None
@@ -67,6 +68,18 @@ class AcadamyDialog(QDialog):
                           'Actions': 6,
                           'Roll Table': 7}
         self.populate_listWidget_all_templates()
+
+
+    @db_session
+    def update_is_folder(self):
+        db = self.ui_vault.main.db
+        dbObj = db.Templates[self.target.dbObj.id]
+        dbObj.is_folder = self.ui.checkBox_is_folder_template.isChecked()
+        if dbObj.is_folder:
+            self.target.setText(f"Folder: {dbObj.name}")
+        else:
+            self.target.setText(f"{dbObj.name}")
+        self.init_detail_view()
 
 
     @db_session
@@ -404,7 +417,10 @@ class AcadamyDialog(QDialog):
         db = self.ui_vault.main.db
         templates_view = self.ui.listWidget_all_templates
         for dbObj in db.Templates.select():
-            item = QListWidgetItem(dbObj.name)
+            if dbObj.is_folder:
+                item = QListWidgetItem(f"Folder: {dbObj.name}")
+            else:
+                item = QListWidgetItem(dbObj.name)
             item.dbObj = dbObj
             templates_view.addItem(item)
 
@@ -417,7 +433,10 @@ class AcadamyDialog(QDialog):
         self.target.dbObj = db.Templates[self.target.dbObj.id]
         self.target.dbObj.name = name
         commit()
-        self.target.setText(f"{name}")
+        if dbObj.is_folder:
+            self.target.setText(f"Folder: {name}")
+        else:
+            self.target.setText(f"{name}")
         self.init_detail_view()
 
 
@@ -490,7 +509,10 @@ class AcadamyDialog(QDialog):
                 name = f'Action: {dbObj.name}'
             case db.Templates:
                 dbObj = db.Templates[dbObj.id]
-                name = f'Template: {dbObj.name}'
+                if dbObj.is_folder:
+                    name = f'Folder: {dbObj.name}'
+                else:
+                    name = f'Template: {dbObj.name}'
             case db.Rtables:
                 dbObj = db.Rtables[dbObj.id]
                 name = f'Roll Table: {dbObj.name} {dbObj.diceRoll}'
@@ -614,12 +636,14 @@ class AcadamyDialog(QDialog):
             case db.Templates:
                 dbObj = db.Templates[dbObj.id]
                 self.ui.lineEdit_template_name.setText(dbObj.name)
+                self.ui.checkBox_is_folder_template.setChecked(dbObj.is_folder)
                 self.ui.lineEdit_filter_templates_page.clear()
                 self.ui.comboBox_stack_template.clear()
                 all_templates = db.Templates.select()
                 for template in all_templates:
-                    self.ui.comboBox_stack_template.addItem(template.name,
-                                                            userData=template)
+                    if not template.is_folder:
+                        self.ui.comboBox_stack_template.addItem(template.name,
+                                                                userData=template)
             case db.Rtables:
                 dbObj = db.Rtables[dbObj.id]
                 table = []

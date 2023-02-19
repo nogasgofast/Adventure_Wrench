@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Main_Window.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.1
+## Created by: Qt User Interface Compiler version 6.4.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -97,6 +97,19 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.label_quick_change)
 
+        self.pushButton_Inititave = QPushButton(self.centralwidget)
+        self.pushButton_Inititave.setObjectName(u"pushButton_Inititave")
+
+        self.verticalLayout.addWidget(self.pushButton_Inititave)
+
+        self.label_damage = QLabel(self.centralwidget)
+        self.label_damage.setObjectName(u"label_damage")
+        self.label_damage.setStyleSheet(u"")
+        self.label_damage.setTextFormat(Qt.MarkdownText)
+        self.label_damage.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.verticalLayout.addWidget(self.label_damage)
+
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setSpacing(2)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
@@ -138,16 +151,37 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
-        self.label_damage = QLabel(self.centralwidget)
-        self.label_damage.setObjectName(u"label_damage")
-        self.label_damage.setStyleSheet(u"")
-        self.label_damage.setTextFormat(Qt.MarkdownText)
-        self.label_damage.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.pushButton_heal_1 = QPushButton(self.centralwidget)
+        self.pushButton_heal_1.setObjectName(u"pushButton_heal_1")
+        self.pushButton_heal_1.setMaximumSize(QSize(40, 16777215))
 
-        self.verticalLayout.addWidget(self.label_damage)
+        self.horizontalLayout.addWidget(self.pushButton_heal_1)
+
+        self.pushButton_heal_3 = QPushButton(self.centralwidget)
+        self.pushButton_heal_3.setObjectName(u"pushButton_heal_3")
+        self.pushButton_heal_3.setMaximumSize(QSize(40, 16777215))
+
+        self.horizontalLayout.addWidget(self.pushButton_heal_3)
+
+        self.pushButton_heal_5 = QPushButton(self.centralwidget)
+        self.pushButton_heal_5.setObjectName(u"pushButton_heal_5")
+        self.pushButton_heal_5.setMaximumSize(QSize(40, 16777215))
+
+        self.horizontalLayout.addWidget(self.pushButton_heal_5)
+
+        self.pushButton_heal_10 = QPushButton(self.centralwidget)
+        self.pushButton_heal_10.setObjectName(u"pushButton_heal_10")
+        self.pushButton_heal_10.setMaximumSize(QSize(40, 16777215))
+
+        self.horizontalLayout.addWidget(self.pushButton_heal_10)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.horizontalLayout_3 = QHBoxLayout()
-        self.horizontalLayout_3.setSpacing(0)
+        self.horizontalLayout_3.setSpacing(6)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.pushButton_dam_1 = QPushButton(self.centralwidget)
         self.pushButton_dam_1.setObjectName(u"pushButton_dam_1")
@@ -180,27 +214,26 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
-        self.pushButton_kill_remove = QPushButton(self.centralwidget)
-        self.pushButton_kill_remove.setObjectName(u"pushButton_kill_remove")
+        self.pushButton_kill = QPushButton(self.centralwidget)
+        self.pushButton_kill.setObjectName(u"pushButton_kill")
 
-        self.verticalLayout.addWidget(self.pushButton_kill_remove)
-
-        self.label_markers = QLabel(self.centralwidget)
-        self.label_markers.setObjectName(u"label_markers")
-        self.label_markers.setTextFormat(Qt.MarkdownText)
-        self.label_markers.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
-
-        self.verticalLayout.addWidget(self.label_markers)
+        self.verticalLayout.addWidget(self.pushButton_kill)
 
         self.pushButton_toggle_expand = QPushButton(self.centralwidget)
         self.pushButton_toggle_expand.setObjectName(u"pushButton_toggle_expand")
 
         self.verticalLayout.addWidget(self.pushButton_toggle_expand)
 
-        self.pushButton_Inititave = QPushButton(self.centralwidget)
-        self.pushButton_Inititave.setObjectName(u"pushButton_Inititave")
+        self.pushButton_remove = QPushButton(self.centralwidget)
+        self.pushButton_remove.setObjectName(u"pushButton_remove")
 
-        self.verticalLayout.addWidget(self.pushButton_Inititave)
+        self.verticalLayout.addWidget(self.pushButton_remove)
+
+        self.label_2 = QLabel(self.centralwidget)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setTextFormat(Qt.MarkdownText)
+
+        self.verticalLayout.addWidget(self.label_2)
 
         self.horizontalLayout_6 = QHBoxLayout()
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
@@ -260,28 +293,39 @@ class Ui_MainWindow(object):
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"## Current Game", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"### Add Stuff", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton_players.setToolTip(QCoreApplication.translate("MainWindow", u"Add Players, NPC's and other stuff", None))
+        self.pushButton_players.setToolTip(QCoreApplication.translate("MainWindow", u"Add players and simple things to the current game.", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_players.setText(QCoreApplication.translate("MainWindow", u"Add", None))
-        self.pushButton_vault.setText(QCoreApplication.translate("MainWindow", u"The Vault", None))
-        self.label_quick_change.setText(QCoreApplication.translate("MainWindow", u"### Quick Change", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Initiative", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"HP", None))
-        self.label_damage.setText(QCoreApplication.translate("MainWindow", u"### Damage", None))
-        self.pushButton_dam_1.setText(QCoreApplication.translate("MainWindow", u"-1", None))
-        self.pushButton_dam_3.setText(QCoreApplication.translate("MainWindow", u"-3", None))
-        self.pushButton_dam_5.setText(QCoreApplication.translate("MainWindow", u"-5", None))
-        self.pushButton_dam_10.setText(QCoreApplication.translate("MainWindow", u"-10", None))
-        self.pushButton_kill_remove.setText(QCoreApplication.translate("MainWindow", u"Kill/Remove", None))
-        self.label_markers.setText(QCoreApplication.translate("MainWindow", u"### Tools", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton_toggle_expand.setToolTip(QCoreApplication.translate("MainWindow", u"Warning: smashes changes to individual stat blocks!", None))
+        self.pushButton_vault.setToolTip(QCoreApplication.translate("MainWindow", u"A list of things you've created and more tools.", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_toggle_expand.setText(QCoreApplication.translate("MainWindow", u"Expand/Collapse", None))
+        self.pushButton_vault.setText(QCoreApplication.translate("MainWindow", u"The Vault", None))
+        self.label_quick_change.setText(QCoreApplication.translate("MainWindow", u"### Game Tracker:", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_Inititave.setToolTip(QCoreApplication.translate("MainWindow", u"sorts current game and advances selection in a cycle", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_Inititave.setText(QCoreApplication.translate("MainWindow", u"Advance Inititave", None))
+        self.label_damage.setText(QCoreApplication.translate("MainWindow", u"### Selected Item:", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Initiative", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"HP", None))
+        self.pushButton_heal_1.setText(QCoreApplication.translate("MainWindow", u"+1", None))
+        self.pushButton_heal_3.setText(QCoreApplication.translate("MainWindow", u"+3", None))
+        self.pushButton_heal_5.setText(QCoreApplication.translate("MainWindow", u"+5", None))
+        self.pushButton_heal_10.setText(QCoreApplication.translate("MainWindow", u"+10", None))
+        self.pushButton_dam_1.setText(QCoreApplication.translate("MainWindow", u"-1", None))
+        self.pushButton_dam_3.setText(QCoreApplication.translate("MainWindow", u"-3", None))
+        self.pushButton_dam_5.setText(QCoreApplication.translate("MainWindow", u"-5", None))
+        self.pushButton_dam_10.setText(QCoreApplication.translate("MainWindow", u"-10", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_kill.setToolTip("")
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_kill.setText(QCoreApplication.translate("MainWindow", u"Set HP to 0", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_toggle_expand.setToolTip(QCoreApplication.translate("MainWindow", u"Groups-up selections of creatures with the same name. (shift to select multiple). Or breaks down groups into individuals.", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_toggle_expand.setText(QCoreApplication.translate("MainWindow", u"Group-up Toggle", None))
+        self.pushButton_remove.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Status labels:", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_cross.setToolTip(QCoreApplication.translate("MainWindow", u"cycles on 3rd press", None))
 #endif // QT_CONFIG(tooltip)

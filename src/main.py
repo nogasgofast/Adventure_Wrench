@@ -36,11 +36,16 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_players.clicked.connect(self.ui_p.add_player)
         self.ui.pushButton_Inititave.clicked.connect(self.advance_initiative)
         self.ui.pushButton_toggle_expand.clicked.connect(self.toggle_expand)
-        self.ui.pushButton_dam_1.clicked.connect(lambda: self.damage_thing(1))
-        self.ui.pushButton_dam_3.clicked.connect(lambda: self.damage_thing(3))
-        self.ui.pushButton_dam_5.clicked.connect(lambda: self.damage_thing(5))
+        self.ui.pushButton_heal_1.clicked.connect(lambda: self.change_hp(1))
+        self.ui.pushButton_heal_3.clicked.connect(lambda: self.change_hp(3))
+        self.ui.pushButton_heal_5.clicked.connect(lambda: self.change_hp(5))
+        self.ui.pushButton_heal_10.clicked.connect(
+                            lambda: self.change_hp(10))
+        self.ui.pushButton_dam_1.clicked.connect(lambda: self.change_hp(-1))
+        self.ui.pushButton_dam_3.clicked.connect(lambda: self.change_hp(-3))
+        self.ui.pushButton_dam_5.clicked.connect(lambda: self.change_hp(-5))
         self.ui.pushButton_dam_10.clicked.connect(
-                            lambda: self.damage_thing(10))
+                            lambda: self.change_hp(-10))
         self.ui.pushButton_b_star.clicked.connect(
                             lambda: self.update_icon('black_star', 6))
         self.ui.pushButton_w_star.clicked.connect(
@@ -49,7 +54,8 @@ class MainWindow(QMainWindow):
                             lambda: self.update_icon('death_save_fail', 3))
         self.ui.pushButton_check.clicked.connect(
                             lambda: self.update_icon('death_save_success', 3))
-        self.ui.pushButton_kill_remove.clicked.connect(self.kill_remove)
+        self.ui.pushButton_kill.clicked.connect(self.kill)
+        self.ui.pushButton_remove.clicked.connect(self.remove)
 
         self.ui.listWidget_Encounter.itemDoubleClicked.connect(self.ui_p.update_player)
         # connect to quick update fields
@@ -84,19 +90,30 @@ class MainWindow(QMainWindow):
 
 
     @db_session
-    def kill_remove(self):
-        # print("kill_remove")
+    def remove(self):
         remove_these = []
+        E = self.ui.listWidget_Encounter
+        for row in range(0, E.count()):
+            if E.item(row).isSelected():
+                remove_these.append(row)
+                E.item(row).setSelected(False)
+        remove_these.sort()
+        remove_these.reverse()
+        for row in remove_these:
+            deletion = E.takeItem(row)
+            dbObj = self.db.Active[deletion.dbObj.id]
+            dbObj.delete()
+            del(deletion)
+
+
+    @db_session
+    def kill(self):
         E = self.ui.listWidget_Encounter
         for row in range(0, E.count()):
             if E.item(row).isSelected():
                 item = E.item(row)
                 item.dbObj = self.db.Active[item.dbObj.id]
-                if item.dbObj.count > 1 and sum(item.dbObj.group_hp) == 0:
-                    remove_these.append(row)
-                    E.item(row).setSelected(False)
-                    continue
-                elif item.dbObj.count > 1 and sum(item.dbObj.group_hp) > 0:
+                if item.dbObj.count > 1 and sum(item.dbObj.group_hp) > 0:
                     groupHP = [ 0 for x in item.dbObj.group_hp if x > 0 ]
                     item.dbObj.group_hp = groupHP
                     item.dbObj.count = len(groupHP)
@@ -104,16 +121,7 @@ class MainWindow(QMainWindow):
                 elif item.dbObj.hp:
                     item.dbObj.hp = 0
                     self.update_encounter_text(item)
-                else:
-                    remove_these.append(row)
-                    E.item(row).setSelected(False)
-        commit()
-        remove_these.sort()
-        remove_these.reverse()
-        for row in remove_these:
-            deletion = E.takeItem(row)
-            deletion.dbObj.delete()
-        commit()
+
 
     @db_session
     def load_session(self):
@@ -199,20 +207,20 @@ class MainWindow(QMainWindow):
 
 
     @db_session
-    def damage_thing(self, damage):
-        # print("damage_thing")
+    def change_hp(self, diff):
+        # print("diff_thing")
         for row in range(0, self.ui.listWidget_Encounter.count()):
             if self.ui.listWidget_Encounter.item(row).isSelected():
                 item = self.ui.listWidget_Encounter.item(row)
                 item.dbObj = self.db.Active[item.dbObj.id]
                 if len(item.dbObj.group_hp) > 1:
                     groupHP = item.dbObj.group_hp
-                    groupHP = [x - damage for x in groupHP]
+                    groupHP = [x + diff for x in groupHP]
                     groupHP = [x for x in groupHP if x > 0]
                     item.dbObj.group_hp = groupHP
                     item.dbObj.count = len(groupHP)
                 else:
-                    hp = item.dbObj.hp - damage
+                    hp = item.dbObj.hp + diff
                     if hp < 0:
                         hp = 0
                     item.dbObj.hp = hp
@@ -263,11 +271,12 @@ class MainWindow(QMainWindow):
         group = []
         encounter_view = self.ui.listWidget_Encounter
         for row in range(0, encounter_view.count()):
-            rowItem = encounter_view.item(row)
-            rowObj = self.db.Active[rowItem.dbObj.id]
-            if (rowObj.name == name and
-                rowObj.count == 1   and row != inRow):
-                group.append(row)
+            if encounter_view.item(row).isSelected():
+                rowItem = encounter_view.item(row)
+                rowObj = self.db.Active[rowItem.dbObj.id]
+                if (rowObj.name == name and
+                    rowObj.count == 1   and row != inRow):
+                    group.append(row)
         group.sort()
         group.reverse()
         groupHP = []

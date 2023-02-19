@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'TheShop_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.1
+## Created by: Qt User Interface Compiler version 6.4.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -313,9 +313,15 @@ class Ui_TheShop(object):
         self.label_CHA.setText(QCoreApplication.translate("TheShop", u"CHA", None))
         self.label_display_templates.setText(QCoreApplication.translate("TheShop", u"Stat block", None))
         self.pushButton_reset_stat_block.setText(QCoreApplication.translate("TheShop", u"Re-Roll templates", None))
-        self.pushButton_back.setText(QCoreApplication.translate("TheShop", u"<- Back (Esc)", None))
+#if QT_CONFIG(tooltip)
+        self.textEdit_stat_block.setToolTip(QCoreApplication.translate("TheShop", u"This box gets over-written a lot. But you can edit it directly in a pinch.(do it after your done chaning everything else then save and never look back.", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_back.setText(QCoreApplication.translate("TheShop", u"<- Save (Esc)", None))
         self.pushButton_delete_shop.setText(QCoreApplication.translate("TheShop", u"Delete from vault", None))
         self.groupBox_templates.setTitle(QCoreApplication.translate("TheShop", u"Templates", None))
+#if QT_CONFIG(tooltip)
+        self.comboBox_selector_templates.setToolTip(QCoreApplication.translate("TheShop", u"Templates are created in The Acadamy. Navigate there from the Vault.", None))
+#endif // QT_CONFIG(tooltip)
         self.pushButton_add_templates.setText(QCoreApplication.translate("TheShop", u"Add", None))
         self.label_templates.setText(QCoreApplication.translate("TheShop", u"Applied templates", None))
         self.pushButton_remove_templates.setText(QCoreApplication.translate("TheShop", u"Remove template", None))

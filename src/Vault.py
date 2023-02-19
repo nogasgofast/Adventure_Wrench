@@ -61,13 +61,14 @@ class VaultDialog(QDialog):
 
     @db_session
     def update_vault_item(self, target):
+        db = self.main.db
         vault = self.ui.listWidget_vault
+        target = db.Vault[target.id]
         for row in range(0, vault.count()):
             item = vault.item(row)
             dbObj = db.Vault[item.dbObj.id]
-            target = db.Vault[target.dbObj.id]
             if dbObj == target:
-                item.setText(dbObj.name)
+                item.setText(target.name)
 
 
     @db_session

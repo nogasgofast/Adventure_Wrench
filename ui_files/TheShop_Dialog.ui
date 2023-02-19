@@ -276,6 +276,9 @@
             </item>
             <item>
              <widget class="QTextEdit" name="textEdit_stat_block">
+              <property name="toolTip">
+               <string>This box gets over-written a lot. But you can edit it directly in a pinch.(do it after your done chaning everything else then save and never look back.</string>
+              </property>
               <property name="lineWrapMode">
                <enum>QTextEdit::NoWrap</enum>
               </property>
@@ -293,7 +296,7 @@
        <item>
         <widget class="QPushButton" name="pushButton_back">
          <property name="text">
-          <string>&lt;- Back (Esc)</string>
+          <string>&lt;- Save (Esc)</string>
          </property>
         </widget>
        </item>
@@ -331,7 +334,11 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QComboBox" name="comboBox_selector_templates"/>
+       <widget class="QComboBox" name="comboBox_selector_templates">
+        <property name="toolTip">
+         <string>Templates are created in The Acadamy. Navigate there from the Vault.</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_add_templates">

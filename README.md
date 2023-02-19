@@ -8,10 +8,6 @@
 Lets us build fast, reduces writing, and enhances what you get
 out of what you create.
 
-## Ethos:
-- never ask anyone to save.
-- Be easy to write and read
-- Reuse and recycle as much as possible.
 
 ## Automaticly Adjusted Values
 These special words will be replaced at the time you are building something in "The Shop".

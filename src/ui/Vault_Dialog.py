@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Vault_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.1
+## Created by: Qt User Interface Compiler version 6.4.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -118,15 +118,18 @@ class Ui_Vault(object):
 #if QT_CONFIG(tooltip)
         self.pushButton_add_to_encounter.setToolTip(QCoreApplication.translate("Vault", u"Add Selected Items to Current Encounter", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_add_to_encounter.setText(QCoreApplication.translate("Vault", u"Copy to Encounter", None))
+        self.pushButton_add_to_encounter.setText(QCoreApplication.translate("Vault", u"Copy to Current Game", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_remove_from_encounter.setToolTip(QCoreApplication.translate("Vault", u"Remove Selected items from Current Encounter", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_remove_from_encounter.setText(QCoreApplication.translate("Vault", u"Remove from Encounter", None))
+        self.pushButton_remove_from_encounter.setText(QCoreApplication.translate("Vault", u"Remove from Game", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_delete_selected_items.setToolTip(QCoreApplication.translate("Vault", u"Remove selected from current Encounter as well as DM Vault.", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_delete_selected_items.setText(QCoreApplication.translate("Vault", u"Delete selected", None))
-        self.pushButton.setText(QCoreApplication.translate("Vault", u"<- Back (Esc)", None))
+        self.pushButton.setText(QCoreApplication.translate("Vault", u"<- Save (Esc)", None))
+#if QT_CONFIG(tooltip)
+        self.listWidget_vault.setToolTip(QCoreApplication.translate("Vault", u"Add items from the Shop.", None))
+#endif // QT_CONFIG(tooltip)
     # retranslateUi
 

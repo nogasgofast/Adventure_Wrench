@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Player_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.1
+## Created by: Qt User Interface Compiler version 6.4.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -148,6 +148,6 @@ class Ui_Player(object):
         self.label_hp.setText(QCoreApplication.translate("Player", u"HP", None))
         self.label.setText(QCoreApplication.translate("Player", u"Description", None))
         self.pushButton_delete.setText(QCoreApplication.translate("Player", u"Remove", None))
-        self.pushButton_back.setText(QCoreApplication.translate("Player", u"<- Back (Esc)", None))
+        self.pushButton_back.setText(QCoreApplication.translate("Player", u"<- Save (Esc)", None))
     # retranslateUi
 

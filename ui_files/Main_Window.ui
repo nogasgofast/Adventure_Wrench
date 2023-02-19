@@ -62,7 +62,7 @@
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
         <property name="spacing">
          <number>6</number>
         </property>
@@ -101,7 +101,7 @@
         <item>
          <widget class="QPushButton" name="pushButton_players">
           <property name="toolTip">
-           <string>Add Players, NPC's and other stuff</string>
+           <string>Add players and simple things to the current game.</string>
           </property>
           <property name="text">
            <string>Add</string>
@@ -110,6 +110,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_vault">
+          <property name="toolTip">
+           <string>A list of things you've created and more tools.</string>
+          </property>
           <property name="text">
            <string>The Vault</string>
           </property>
@@ -118,13 +121,39 @@
         <item>
          <widget class="QLabel" name="label_quick_change">
           <property name="text">
-           <string>### Quick Change</string>
+           <string>### Game Tracker:</string>
           </property>
           <property name="textFormat">
            <enum>Qt::MarkdownText</enum>
           </property>
           <property name="scaledContents">
            <bool>false</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_Inititave">
+          <property name="toolTip">
+           <string>sorts current game and advances selection in a cycle</string>
+          </property>
+          <property name="text">
+           <string>Advance Inititave</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_damage">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>### Selected Item:</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::MarkdownText</enum>
           </property>
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -186,25 +215,65 @@
          </layout>
         </item>
         <item>
-         <widget class="QLabel" name="label_damage">
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>### Damage</string>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::MarkdownText</enum>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QPushButton" name="pushButton_heal_1">
+            <property name="maximumSize">
+             <size>
+              <width>40</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>+1</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_heal_3">
+            <property name="maximumSize">
+             <size>
+              <width>40</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>+3</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_heal_5">
+            <property name="maximumSize">
+             <size>
+              <width>40</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>+5</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_heal_10">
+            <property name="maximumSize">
+             <size>
+              <width>40</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>+10</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <property name="spacing">
-           <number>0</number>
+           <number>6</number>
           </property>
           <item>
            <widget class="QPushButton" name="pushButton_dam_1">
@@ -285,42 +354,39 @@
          </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_kill_remove">
+         <widget class="QPushButton" name="pushButton_kill">
+          <property name="toolTip">
+           <string/>
+          </property>
           <property name="text">
-           <string>Kill/Remove</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_markers">
-          <property name="text">
-           <string>### Tools</string>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::MarkdownText</enum>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           <string>Set HP to 0</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_toggle_expand">
           <property name="toolTip">
-           <string>Warning: smashes changes to individual stat blocks!</string>
+           <string>Groups-up selections of creatures with the same name. (shift to select multiple). Or breaks down groups into individuals.</string>
           </property>
           <property name="text">
-           <string>Expand/Collapse</string>
+           <string>Group-up Toggle</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_Inititave">
-          <property name="toolTip">
-           <string>sorts current game and advances selection in a cycle</string>
-          </property>
+         <widget class="QPushButton" name="pushButton_remove">
           <property name="text">
-           <string>Advance Inititave</string>
+           <string>Remove</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Status labels:</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::MarkdownText</enum>
           </property>
          </widget>
         </item>

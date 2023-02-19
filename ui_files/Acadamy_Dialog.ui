@@ -67,7 +67,7 @@
      <item>
       <widget class="QPushButton" name="pushButton_back">
        <property name="text">
-        <string>&lt;- Back (Esc)</string>
+        <string>&lt;- Save (Esc)</string>
        </property>
       </widget>
      </item>
@@ -83,7 +83,7 @@
    <item>
     <widget class="QStackedWidget" name="verticalStackedWidget_forms">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page_splash">
       <layout class="QFormLayout" name="formLayout">
@@ -131,6 +131,16 @@
        </item>
        <item>
         <widget class="QLineEdit" name="lineEdit_template_name"/>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox_is_folder_template">
+         <property name="toolTip">
+          <string>Useful for building roll tables. So you don't have wierd useless templates.</string>
+         </property>
+         <property name="text">
+          <string>This is just a folder, so don't show it in places that use templates.</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="Line" name="line_3">
@@ -328,21 +338,14 @@
        <item>
         <widget class="QLabel" name="label_des1_stats">
          <property name="text">
-          <string>This value overrides the last value of it's type </string>
+          <string>This value overrides the value created in the shop.</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_des3_stats">
          <property name="text">
-          <string>Unless it starts with a &quot;+&quot; or &quot;-&quot; symbol</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_des2_stats">
-         <property name="text">
-          <string>Then it adds or subtracts the value instead. e.g. 10 or -10 or +14 are valid</string>
+          <string>If it starts with a &quot;+&quot; or &quot;-&quot; symbol it adds or subtracts that number instead.</string>
          </property>
         </widget>
        </item>
@@ -556,21 +559,21 @@
        <item>
         <widget class="QCheckBox" name="checkBox_israndom_roll_table">
          <property name="text">
-          <string>Select from the list randomly. (no dice roll, no matching)</string>
+          <string>Select from the list randomly &lt;Die Expression&gt; times.</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="checkBox_immutable_roll_table">
          <property name="text">
-          <string>Write the table into the stat block (instead of useing the table).</string>
+          <string>This is Not a template, just write this stuff into the stat block.</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_dice_roll_table">
          <property name="text">
-          <string>Dice Roll:</string>
+          <string>Die expression:</string>
          </property>
         </widget>
        </item>
@@ -579,64 +582,142 @@
          <property name="enabled">
           <bool>true</bool>
          </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="readOnly">
           <bool>false</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Add Item to table</string>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Example table:</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_10">
-          <item>
-           <widget class="QLabel" name="label_explain1_roll_table">
-            <property name="text">
-             <string>match for the dice roll, no spaces are allowed.</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_explain2_roll_table">
-            <property name="text">
-             <string>examples 20 or 1,3,5 or  1-4 or 9,8,7,18-20</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="lineEdit_item_match_roll_table"/>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_item_options_roll_table">
-            <property name="text">
-             <string>template for this item</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="comboBox_options_roll_table">
-            <property name="editable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_add_item_roll_table">
-            <property name="text">
-             <string>Add</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Die Expression: 1d6</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>1       : Great Axe</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>2-4   : Chicken Breast</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>5,6   : Bannana Bazooka</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>In the shop, when this template is applied. The app will </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>roll a 1d6 for you. And apply the entries that match the rolled number.</string>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_table_roll_table">
          <property name="text">
-          <string>This Roll Table</string>
+          <string>Numbers            : Something to write into the template.</string>
          </property>
         </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLineEdit" name="lineEdit_item_match_roll_table">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>10</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox_options_roll_table">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_add_item_roll_table">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>1</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>+</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QListWidget" name="listWidget_table_roll_table">
@@ -648,7 +729,7 @@
        <item>
         <widget class="QPushButton" name="pushButton_delete_item_roll_table">
          <property name="text">
-          <string>remove selected roll table item</string>
+          <string>Remove selected from list</string>
          </property>
         </widget>
        </item>

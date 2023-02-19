@@ -76,7 +76,7 @@
           <string>Add Selected Items to Current Encounter</string>
          </property>
          <property name="text">
-          <string>Copy to Encounter</string>
+          <string>Copy to Current Game</string>
          </property>
         </widget>
        </item>
@@ -86,7 +86,7 @@
           <string>Remove Selected items from Current Encounter</string>
          </property>
          <property name="text">
-          <string>Remove from Encounter</string>
+          <string>Remove from Game</string>
          </property>
         </widget>
        </item>
@@ -116,7 +116,7 @@
        <item>
         <widget class="QPushButton" name="pushButton">
          <property name="text">
-          <string>&lt;- Back (Esc)</string>
+          <string>&lt;- Save (Esc)</string>
          </property>
         </widget>
        </item>
@@ -126,6 +126,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_treeWidget">
        <item>
         <widget class="QListWidget" name="listWidget_vault">
+         <property name="toolTip">
+          <string>Add items from the Shop.</string>
+         </property>
          <property name="sortingEnabled">
           <bool>true</bool>
          </property>

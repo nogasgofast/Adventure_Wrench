@@ -33,6 +33,7 @@ class Vault(aw_db.Entity):
 
 class Templates(aw_db.Entity):
     name = Required(str)
+    is_folder = Optional(bool, default=False)
     over = Optional('Templates', reverse='under')
     under = Set('Templates', reverse='over')
     vault = Set('Vault', reverse='templates')
