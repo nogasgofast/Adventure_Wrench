@@ -21,9 +21,13 @@ the difficulty you are going for.
 | %h9             | Same as %h but divides it by 9. Works with numbers 2-9 Great for making healing or poison effects. |
 | %a              | Attack bonus calculated from challenge rating directly   |
 | %d              | Damage per round, calculated from "Challenge rating" divided by "Group of" on the shop page of the app. You will need to adjust this number down for things included in a multi-attack. I am still working on a way to enforce damage per round by  |
-| %e              | Elemental damage per round, calculated as 1/4th of damager per round. This is just a guess and may be adjusted later. |
-| %e9             | Same as %e only divides damage per round number specified. can use numbers 2-9 |
+| %d9             | Same as %d only divides damage per round number specified. can use numbers 2-9 |
 | %s              | Spell save DC for spell actions calculated directly from challange rating     |
+| %{ }            | Takes any dice notation in the {} and caluculates it. ie: ${ 1d1 + 1} would be replaced with 2.
+supports simple dice notation 1d20 or 4d6
+supports simple addition and subtraction 5 - 3
+supports top function 2d20T1 or 4d6t3
+support bottom function 6d10B2 6d10b2 |
 
 
 ## Examples

@@ -229,10 +229,25 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_2.addWidget(self.textEdit_content_lore)
 
+        self.horizontalLayout_buttons_lore = QHBoxLayout()
+        self.horizontalLayout_buttons_lore.setObjectName(u"horizontalLayout_buttons_lore")
+        self.pushButton_add_another_lore = QPushButton(self.page_lore)
+        self.pushButton_add_another_lore.setObjectName(u"pushButton_add_another_lore")
+
+        self.horizontalLayout_buttons_lore.addWidget(self.pushButton_add_another_lore)
+
         self.pushButton_delete_lore = QPushButton(self.page_lore)
         self.pushButton_delete_lore.setObjectName(u"pushButton_delete_lore")
 
-        self.verticalLayout_2.addWidget(self.pushButton_delete_lore)
+        self.horizontalLayout_buttons_lore.addWidget(self.pushButton_delete_lore)
+
+        self.pushButton_next_lore = QPushButton(self.page_lore)
+        self.pushButton_next_lore.setObjectName(u"pushButton_next_lore")
+
+        self.horizontalLayout_buttons_lore.addWidget(self.pushButton_next_lore)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_buttons_lore)
 
         self.verticalStackedWidget_forms.addWidget(self.page_lore)
         self.page_stats = QWidget()
@@ -245,6 +260,8 @@ class Ui_acadamy_dialog(object):
         self.verticalLayout_5.addWidget(self.label_name_stats)
 
         self.comboBox_name_stats = QComboBox(self.page_stats)
+        self.comboBox_name_stats.addItem("")
+        self.comboBox_name_stats.addItem("")
         self.comboBox_name_stats.addItem("")
         self.comboBox_name_stats.addItem("")
         self.comboBox_name_stats.addItem("")
@@ -280,10 +297,25 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_5.addItem(self.verticalSpacer_stats)
 
+        self.horizontalLayout_buttons_stats = QHBoxLayout()
+        self.horizontalLayout_buttons_stats.setObjectName(u"horizontalLayout_buttons_stats")
+        self.pushButton_add_another_stats = QPushButton(self.page_stats)
+        self.pushButton_add_another_stats.setObjectName(u"pushButton_add_another_stats")
+
+        self.horizontalLayout_buttons_stats.addWidget(self.pushButton_add_another_stats)
+
         self.pushButton_delete_stats = QPushButton(self.page_stats)
         self.pushButton_delete_stats.setObjectName(u"pushButton_delete_stats")
 
-        self.verticalLayout_5.addWidget(self.pushButton_delete_stats)
+        self.horizontalLayout_buttons_stats.addWidget(self.pushButton_delete_stats)
+
+        self.pushButton_next_stats = QPushButton(self.page_stats)
+        self.pushButton_next_stats.setObjectName(u"pushButton_next_stats")
+
+        self.horizontalLayout_buttons_stats.addWidget(self.pushButton_next_stats)
+
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_buttons_stats)
 
         self.verticalStackedWidget_forms.addWidget(self.page_stats)
         self.page_attribute = QWidget()
@@ -314,10 +346,25 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_4.addItem(self.verticalSpacer_3)
 
+        self.horizontalLayout_buttons_attribute = QHBoxLayout()
+        self.horizontalLayout_buttons_attribute.setObjectName(u"horizontalLayout_buttons_attribute")
+        self.pushButton_add_another_attribute = QPushButton(self.page_attribute)
+        self.pushButton_add_another_attribute.setObjectName(u"pushButton_add_another_attribute")
+
+        self.horizontalLayout_buttons_attribute.addWidget(self.pushButton_add_another_attribute)
+
         self.pushButton_delete_attribute = QPushButton(self.page_attribute)
         self.pushButton_delete_attribute.setObjectName(u"pushButton_delete_attribute")
 
-        self.verticalLayout_4.addWidget(self.pushButton_delete_attribute)
+        self.horizontalLayout_buttons_attribute.addWidget(self.pushButton_delete_attribute)
+
+        self.pushButton_next_attribute = QPushButton(self.page_attribute)
+        self.pushButton_next_attribute.setObjectName(u"pushButton_next_attribute")
+
+        self.horizontalLayout_buttons_attribute.addWidget(self.pushButton_next_attribute)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_buttons_attribute)
 
         self.verticalStackedWidget_forms.addWidget(self.page_attribute)
         self.page_item = QWidget()
@@ -365,10 +412,25 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_6.addWidget(self.textEdit_description_item)
 
+        self.horizontalLayout_buttons_item = QHBoxLayout()
+        self.horizontalLayout_buttons_item.setObjectName(u"horizontalLayout_buttons_item")
+        self.pushButton_add_another_item = QPushButton(self.page_item)
+        self.pushButton_add_another_item.setObjectName(u"pushButton_add_another_item")
+
+        self.horizontalLayout_buttons_item.addWidget(self.pushButton_add_another_item)
+
         self.pushButton_delete_item = QPushButton(self.page_item)
         self.pushButton_delete_item.setObjectName(u"pushButton_delete_item")
 
-        self.verticalLayout_6.addWidget(self.pushButton_delete_item)
+        self.horizontalLayout_buttons_item.addWidget(self.pushButton_delete_item)
+
+        self.pushButton_next_item = QPushButton(self.page_item)
+        self.pushButton_next_item.setObjectName(u"pushButton_next_item")
+
+        self.horizontalLayout_buttons_item.addWidget(self.pushButton_next_item)
+
+
+        self.verticalLayout_6.addLayout(self.horizontalLayout_buttons_item)
 
         self.verticalStackedWidget_forms.addWidget(self.page_item)
         self.page_action = QWidget()
@@ -416,10 +478,25 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_7.addWidget(self.textEdit_result_action)
 
+        self.horizontalLayout_buttons_action = QHBoxLayout()
+        self.horizontalLayout_buttons_action.setObjectName(u"horizontalLayout_buttons_action")
+        self.pushButton_add_another_action = QPushButton(self.page_action)
+        self.pushButton_add_another_action.setObjectName(u"pushButton_add_another_action")
+
+        self.horizontalLayout_buttons_action.addWidget(self.pushButton_add_another_action)
+
         self.pushButton_delete_action = QPushButton(self.page_action)
         self.pushButton_delete_action.setObjectName(u"pushButton_delete_action")
 
-        self.verticalLayout_7.addWidget(self.pushButton_delete_action)
+        self.horizontalLayout_buttons_action.addWidget(self.pushButton_delete_action)
+
+        self.pushButton_next_action = QPushButton(self.page_action)
+        self.pushButton_next_action.setObjectName(u"pushButton_next_action")
+
+        self.horizontalLayout_buttons_action.addWidget(self.pushButton_next_action)
+
+
+        self.verticalLayout_7.addLayout(self.horizontalLayout_buttons_action)
 
         self.verticalStackedWidget_forms.addWidget(self.page_action)
         self.page_roll_table = QWidget()
@@ -436,33 +513,15 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_3.addWidget(self.lineEdit_name_roll_table)
 
-        self.checkBox_israndom_roll_table = QCheckBox(self.page_roll_table)
-        self.checkBox_israndom_roll_table.setObjectName(u"checkBox_israndom_roll_table")
+        self.label_8 = QLabel(self.page_roll_table)
+        self.label_8.setObjectName(u"label_8")
 
-        self.verticalLayout_3.addWidget(self.checkBox_israndom_roll_table)
+        self.verticalLayout_3.addWidget(self.label_8)
 
-        self.checkBox_immutable_roll_table = QCheckBox(self.page_roll_table)
-        self.checkBox_immutable_roll_table.setObjectName(u"checkBox_immutable_roll_table")
+        self.label_11 = QLabel(self.page_roll_table)
+        self.label_11.setObjectName(u"label_11")
 
-        self.verticalLayout_3.addWidget(self.checkBox_immutable_roll_table)
-
-        self.label_dice_roll_table = QLabel(self.page_roll_table)
-        self.label_dice_roll_table.setObjectName(u"label_dice_roll_table")
-
-        self.verticalLayout_3.addWidget(self.label_dice_roll_table)
-
-        self.lineEdit_dice_roll_table = QLineEdit(self.page_roll_table)
-        self.lineEdit_dice_roll_table.setObjectName(u"lineEdit_dice_roll_table")
-        self.lineEdit_dice_roll_table.setEnabled(True)
-        sizePolicy2 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.lineEdit_dice_roll_table.sizePolicy().hasHeightForWidth())
-        self.lineEdit_dice_roll_table.setSizePolicy(sizePolicy2)
-        self.lineEdit_dice_roll_table.setMinimumSize(QSize(100, 0))
-        self.lineEdit_dice_roll_table.setReadOnly(False)
-
-        self.verticalLayout_3.addWidget(self.lineEdit_dice_roll_table)
+        self.verticalLayout_3.addWidget(self.label_11)
 
         self.label = QLabel(self.page_roll_table)
         self.label.setObjectName(u"label")
@@ -489,15 +548,23 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_3.addWidget(self.label_7)
 
-        self.label_8 = QLabel(self.page_roll_table)
-        self.label_8.setObjectName(u"label_8")
+        self.label_dice_roll_table = QLabel(self.page_roll_table)
+        self.label_dice_roll_table.setObjectName(u"label_dice_roll_table")
 
-        self.verticalLayout_3.addWidget(self.label_8)
+        self.verticalLayout_3.addWidget(self.label_dice_roll_table)
 
-        self.label_11 = QLabel(self.page_roll_table)
-        self.label_11.setObjectName(u"label_11")
+        self.lineEdit_dice_roll_table = QLineEdit(self.page_roll_table)
+        self.lineEdit_dice_roll_table.setObjectName(u"lineEdit_dice_roll_table")
+        self.lineEdit_dice_roll_table.setEnabled(True)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.lineEdit_dice_roll_table.sizePolicy().hasHeightForWidth())
+        self.lineEdit_dice_roll_table.setSizePolicy(sizePolicy2)
+        self.lineEdit_dice_roll_table.setMinimumSize(QSize(100, 0))
+        self.lineEdit_dice_roll_table.setReadOnly(False)
 
-        self.verticalLayout_3.addWidget(self.label_11)
+        self.verticalLayout_3.addWidget(self.lineEdit_dice_roll_table)
 
         self.label_table_roll_table = QLabel(self.page_roll_table)
         self.label_table_roll_table.setObjectName(u"label_table_roll_table")
@@ -546,10 +613,35 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_3.addWidget(self.pushButton_delete_item_roll_table)
 
+        self.checkBox_israndom_roll_table = QCheckBox(self.page_roll_table)
+        self.checkBox_israndom_roll_table.setObjectName(u"checkBox_israndom_roll_table")
+
+        self.verticalLayout_3.addWidget(self.checkBox_israndom_roll_table)
+
+        self.checkBox_immutable_roll_table = QCheckBox(self.page_roll_table)
+        self.checkBox_immutable_roll_table.setObjectName(u"checkBox_immutable_roll_table")
+
+        self.verticalLayout_3.addWidget(self.checkBox_immutable_roll_table)
+
+        self.horizontalLayout_button_roll_table = QHBoxLayout()
+        self.horizontalLayout_button_roll_table.setObjectName(u"horizontalLayout_button_roll_table")
+        self.pushButton_add_another_roll_table = QPushButton(self.page_roll_table)
+        self.pushButton_add_another_roll_table.setObjectName(u"pushButton_add_another_roll_table")
+
+        self.horizontalLayout_button_roll_table.addWidget(self.pushButton_add_another_roll_table)
+
         self.pushButton_delete_roll_table = QPushButton(self.page_roll_table)
         self.pushButton_delete_roll_table.setObjectName(u"pushButton_delete_roll_table")
 
-        self.verticalLayout_3.addWidget(self.pushButton_delete_roll_table)
+        self.horizontalLayout_button_roll_table.addWidget(self.pushButton_delete_roll_table)
+
+        self.pushButton_next_roll_table = QPushButton(self.page_roll_table)
+        self.pushButton_next_roll_table.setObjectName(u"pushButton_next_roll_table")
+
+        self.horizontalLayout_button_roll_table.addWidget(self.pushButton_next_roll_table)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_button_roll_table)
 
         self.verticalStackedWidget_forms.addWidget(self.page_roll_table)
 
@@ -579,7 +671,7 @@ class Ui_acadamy_dialog(object):
         self.checkBox_is_folder_template.setText(QCoreApplication.translate("acadamy_dialog", u"This is just a folder, so don't show it in places that use templates.", None))
         self.label_3.setText(QCoreApplication.translate("acadamy_dialog", u"Stat block areas:", None))
         self.comboBox_type_templates_page.setItemText(0, QCoreApplication.translate("acadamy_dialog", u"Lore", None))
-        self.comboBox_type_templates_page.setItemText(1, QCoreApplication.translate("acadamy_dialog", u"Ability Scores", None))
+        self.comboBox_type_templates_page.setItemText(1, QCoreApplication.translate("acadamy_dialog", u"Stat Modification", None))
         self.comboBox_type_templates_page.setItemText(2, QCoreApplication.translate("acadamy_dialog", u"Attributes", None))
         self.comboBox_type_templates_page.setItemText(3, QCoreApplication.translate("acadamy_dialog", u"Items", None))
         self.comboBox_type_templates_page.setItemText(4, QCoreApplication.translate("acadamy_dialog", u"Actions", None))
@@ -592,14 +684,18 @@ class Ui_acadamy_dialog(object):
         self.pushButton_delete_template.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
         self.label_name_lore.setText(QCoreApplication.translate("acadamy_dialog", u"Name", None))
         self.label_description_lore.setText(QCoreApplication.translate("acadamy_dialog", u"Lore description", None))
+        self.pushButton_add_another_lore.setText(QCoreApplication.translate("acadamy_dialog", u"Add Another", None))
         self.pushButton_delete_lore.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
-        self.label_name_stats.setText(QCoreApplication.translate("acadamy_dialog", u"Ability Score Name:", None))
+        self.pushButton_next_lore.setText(QCoreApplication.translate("acadamy_dialog", u"Next", None))
+        self.label_name_stats.setText(QCoreApplication.translate("acadamy_dialog", u"Stat Modification:", None))
         self.comboBox_name_stats.setItemText(0, QCoreApplication.translate("acadamy_dialog", u"Strength", None))
         self.comboBox_name_stats.setItemText(1, QCoreApplication.translate("acadamy_dialog", u"Dexterity", None))
         self.comboBox_name_stats.setItemText(2, QCoreApplication.translate("acadamy_dialog", u"Constitution", None))
         self.comboBox_name_stats.setItemText(3, QCoreApplication.translate("acadamy_dialog", u"Wisdom", None))
         self.comboBox_name_stats.setItemText(4, QCoreApplication.translate("acadamy_dialog", u"Intelligence", None))
         self.comboBox_name_stats.setItemText(5, QCoreApplication.translate("acadamy_dialog", u"Charisma", None))
+        self.comboBox_name_stats.setItemText(6, QCoreApplication.translate("acadamy_dialog", u"Hit Points", None))
+        self.comboBox_name_stats.setItemText(7, QCoreApplication.translate("acadamy_dialog", u"Armor Class", None))
 
         self.label_des1_stats.setText(QCoreApplication.translate("acadamy_dialog", u"This value overrides the value created in the shop.", None))
         self.label_des3_stats.setText(QCoreApplication.translate("acadamy_dialog", u"If it starts with a \"+\" or \"-\" symbol it adds or subtracts that number instead.", None))
@@ -609,34 +705,44 @@ class Ui_acadamy_dialog(object):
 #if QT_CONFIG(whatsthis)
         self.lineEdit_content_stats.setWhatsThis(QCoreApplication.translate("acadamy_dialog", u"<html><head/><body><p>accepts one number from 0  to 30. A template with a number set as a stat will override the stat to be that number. The number may have a minus or plus symbol directly before it. If a minus or plus is used the previous value of the stat is added to this value. But will stay within the range 0 to 30. </p></body></html>", None))
 #endif // QT_CONFIG(whatsthis)
+        self.pushButton_add_another_stats.setText(QCoreApplication.translate("acadamy_dialog", u"Add Another", None))
         self.pushButton_delete_stats.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
+        self.pushButton_next_stats.setText(QCoreApplication.translate("acadamy_dialog", u"Next", None))
         self.label_name_attribute.setText(QCoreApplication.translate("acadamy_dialog", u"Attribute Name", None))
         self.label_attribute_description.setText(QCoreApplication.translate("acadamy_dialog", u"Attribute description (optional)", None))
+        self.pushButton_add_another_attribute.setText(QCoreApplication.translate("acadamy_dialog", u"Add Another", None))
         self.pushButton_delete_attribute.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
+        self.pushButton_next_attribute.setText(QCoreApplication.translate("acadamy_dialog", u"Next", None))
         self.label_name_item.setText(QCoreApplication.translate("acadamy_dialog", u"Item Name", None))
         self.label_weight_item.setText(QCoreApplication.translate("acadamy_dialog", u"Weight (optional)", None))
         self.label_quantity_item.setText(QCoreApplication.translate("acadamy_dialog", u"Quantity", None))
         self.label_description_item.setText(QCoreApplication.translate("acadamy_dialog", u"<html><head/><body><p>Item description: (allows %d,%e) </p></body></html>", None))
+        self.pushButton_add_another_item.setText(QCoreApplication.translate("acadamy_dialog", u"Add Another", None))
         self.pushButton_delete_item.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
+        self.pushButton_next_item.setText(QCoreApplication.translate("acadamy_dialog", u"Next", None))
         self.label_name_action.setText(QCoreApplication.translate("acadamy_dialog", u"Action Name", None))
         self.label_cost_action.setText(QCoreApplication.translate("acadamy_dialog", u"Cost, i.e. \"1 dimond worth 1000gp\" or \"1 action\" or \"1 bonus action\"", None))
         self.label_limitations_action.setText(QCoreApplication.translate("acadamy_dialog", u"Limitations, i.e. \"targets cone area\" or \"range 20/60 feet\" ", None))
         self.label_description_action.setText(QCoreApplication.translate("acadamy_dialog", u"Result: %d, %e for auto damage and elemental damage", None))
+        self.pushButton_add_another_action.setText(QCoreApplication.translate("acadamy_dialog", u"Add Another", None))
         self.pushButton_delete_action.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
+        self.pushButton_next_action.setText(QCoreApplication.translate("acadamy_dialog", u"Next", None))
         self.label_name_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Roll Table Name:", None))
-        self.checkBox_israndom_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Select from the list randomly <Die Expression> times.", None))
-        self.checkBox_immutable_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"This is Not a template, just write this stuff into the stat block.", None))
-        self.label_dice_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Die expression:", None))
-        self.label.setText(QCoreApplication.translate("acadamy_dialog", u"Example table:", None))
-        self.label_10.setText(QCoreApplication.translate("acadamy_dialog", u"Die Expression: 1d6", None))
+        self.label_8.setText(QCoreApplication.translate("acadamy_dialog", u"In the shop, when a roll table is applied to something. The app will ", None))
+        self.label_11.setText(QCoreApplication.translate("acadamy_dialog", u"roll dice for you, and apply matching entries in the table to your template.", None))
+        self.label.setText(QCoreApplication.translate("acadamy_dialog", u"Example:", None))
+        self.label_10.setText(QCoreApplication.translate("acadamy_dialog", u"1d6  :", None))
         self.label_5.setText(QCoreApplication.translate("acadamy_dialog", u"1       : Great Axe", None))
         self.label_6.setText(QCoreApplication.translate("acadamy_dialog", u"2-4   : Chicken Breast", None))
         self.label_7.setText(QCoreApplication.translate("acadamy_dialog", u"5,6   : Bannana Bazooka", None))
-        self.label_8.setText(QCoreApplication.translate("acadamy_dialog", u"In the shop, when this template is applied. The app will ", None))
-        self.label_11.setText(QCoreApplication.translate("acadamy_dialog", u"roll a 1d6 for you. And apply the entries that match the rolled number.", None))
-        self.label_table_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Numbers            : Something to write into the template.", None))
+        self.label_dice_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Dice to Roll:", None))
+        self.label_table_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Match this         : What to add to the template if matched.", None))
         self.pushButton_add_item_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"+", None))
         self.pushButton_delete_item_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Remove selected from list", None))
+        self.checkBox_israndom_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Select from the list randomly <Die Expression> times.", None))
+        self.checkBox_immutable_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"This is Not a template, just write this stuff into the stat block.", None))
+        self.pushButton_add_another_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Add Another", None))
         self.pushButton_delete_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
+        self.pushButton_next_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Next", None))
     # retranslateUi
 

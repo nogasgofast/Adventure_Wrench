@@ -29,15 +29,14 @@ class PlayerDialog(QDialog):
         E = self.main.ui.listWidget_Encounter
         for row in range(0, E.count()):
             if E.item(row).isSelected():
-                if E.item(row).dbObj.count == 1:
-                    item = E.item(row)
-                    item.dbObj = self.main.db.Active[item.dbObj.id]
-                    self.target = item
-                    self.ui.lineEdit_name.setText(item.dbObj.name)
-                    self.ui.spinBox_hp.setValue(item.dbObj.hp)
-                    self.ui.spinBox_initiative.setValue(item.dbObj.initiative)
-                    self.ui.textEdit_description.setText(item.dbObj.stat_block)
-                    self.show()
+                item = E.item(row)
+                item.dbObj = self.main.db.Active[item.dbObj.id]
+                self.target = item
+                self.ui.lineEdit_name.setText(item.dbObj.name)
+                self.ui.spinBox_hp.setValue(item.dbObj.hp)
+                self.ui.spinBox_initiative.setValue(item.dbObj.initiative)
+                self.ui.textEdit_description.setText(item.dbObj.stat_block)
+                self.show()
 
 
     @db_session
@@ -52,21 +51,14 @@ class PlayerDialog(QDialog):
     @db_session
     def update_hp(self):
         hp = self.ui.spinBox_hp.value()
-        # reaquire state from db. Pony implementation requires this.
-        self.target.dbObj = self.main.db.Active[self.target.dbObj.id]
-        self.target.dbObj.hp = hp
-        self.target.dbObj.max_hp = hp
-        commit()
-        self.main.update_encounter_text(self.target)
+        self.main.ui.spinBox_main_hp.setValue(hp)
+        # self.main.update_hp(hp)
 
     @db_session
     def update_inititive(self):
         initiative = self.ui.spinBox_initiative.value()
-        # reaquire state from db. Pony implementation requires this.
-        self.target.dbObj = self.main.db.Active[self.target.dbObj.id]
-        self.target.dbObj.initiative = initiative
-        commit()
-        self.main.update_encounter_text(self.target)
+        self.main.ui.spinBox_main_initiative.setValue(initiative)
+        # self.main.update_initiative(initiative)
 
     @db_session
     def update_description(self):

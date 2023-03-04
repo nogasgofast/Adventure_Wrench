@@ -6,6 +6,9 @@ from ui.Acadamy_Dialog import Ui_acadamy_dialog
 
 
 class AcadamyDialog(QDialog):
+    # TODO add button focus changes to form page changes
+    # Hitting enter should always do the right thing.
+    # I may have to look at this for all other windows and pages.
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.ui_vault = parent
@@ -26,6 +29,21 @@ class AcadamyDialog(QDialog):
         self.ui.pushButton_delete_roll_table.clicked.connect(self.delete_detail)
         self.ui.pushButton_stack_template.clicked.connect(self.stack_template)
         self.ui.pushButton_back.clicked.connect(self.close)
+        # Add another buttons
+        self.ui.pushButton_add_another_lore.clicked.connect(lambda: self.add_detail('Lore'))
+        self.ui.pushButton_add_another_stats.clicked.connect(lambda: self.add_detail('Stat Modification'))
+        self.ui.pushButton_add_another_attribute.clicked.connect(lambda: self.add_detail('Attributes'))
+        self.ui.pushButton_add_another_item.clicked.connect(lambda: self.add_detail('Items'))
+        self.ui.pushButton_add_another_action.clicked.connect(lambda: self.add_detail('Actions'))
+        self.ui.pushButton_add_another_roll_table.clicked.connect(lambda: self.add_detail('Roll Table'))
+        # Next buttons
+        self.ui.pushButton_next_lore.clicked.connect(self.next_buttons)
+        self.ui.pushButton_next_stats.clicked.connect(self.next_buttons)
+        self.ui.pushButton_next_attribute.clicked.connect(self.next_buttons)
+        self.ui.pushButton_next_item.clicked.connect(self.next_buttons)
+        self.ui.pushButton_next_action.clicked.connect(self.next_buttons)
+        self.ui.pushButton_next_roll_table.clicked.connect(self.next_buttons)
+
 
         self.ui.listWidget_all_templates.clicked.connect(self.select_template)
         self.ui.listWidget_template.clicked.connect(self.select_detail)
@@ -68,6 +86,14 @@ class AcadamyDialog(QDialog):
                           'Actions': 6,
                           'Roll Table': 7}
         self.populate_listWidget_all_templates()
+
+
+    def next_buttons(self):
+        forms = self.ui.verticalStackedWidget_forms
+        for item in self.ui.listWidget_template.selectedItems():
+            item.setSelected(False)
+        self.ui.listWidget_template.item(0).setSelected(True)
+        forms.setCurrentIndex(self.pageIndex['template'])
 
 
     @db_session
@@ -433,7 +459,7 @@ class AcadamyDialog(QDialog):
         self.target.dbObj = db.Templates[self.target.dbObj.id]
         self.target.dbObj.name = name
         commit()
-        if dbObj.is_folder:
+        if self.target.dbObj.is_folder:
             self.target.setText(f"Folder: {name}")
         else:
             self.target.setText(f"{name}")
@@ -454,16 +480,18 @@ class AcadamyDialog(QDialog):
 
 
     @db_session
-    def add_detail(self):
+    def add_detail(self, selection=None):
         'add a template component to the selected template'
-        selection  = self.ui.comboBox_type_templates_page.currentText()
+        print("my selection ", selection)
+        if not selection:
+            selection  = self.ui.comboBox_type_templates_page.currentText()
         db = self.ui_vault.main.db
         parent = db.Templates[self.target.dbObj.id]
         forms = self.ui.verticalStackedWidget_forms
         match selection:
             case 'Lore':
                 dbObj = parent.lore.create()
-            case 'Ability Scores':
+            case 'Stat Modification':
                 dbObj = parent.stats.create()
             case 'Attributes':
                 dbObj = parent.attributes.create()

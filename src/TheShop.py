@@ -1,5 +1,6 @@
 # This Python file uses the following encoding: utf-8
-from PySide6.QtWidgets import (QDialog, QListWidgetItem)
+from PySide6.QtWidgets import (QDialog, QListWidgetItem, QMessageBox)
+from PySide6.QtCore import Qt
 from ui.TheShop_Dialog import Ui_TheShop
 from pony.orm import db_session, commit
 from lib.dice import Dice_factory
@@ -14,6 +15,7 @@ class TheShopDialog(QDialog):
         self.ui = Ui_TheShop()
         self.ui.setupUi(self)
         self.target = None
+        self.spinboxLock = False
 
         self.ui.pushButton_roll_stats.clicked.connect(self.roll_stats)
         self.ui.pushButton_back.clicked.connect(self.close)
@@ -24,12 +26,12 @@ class TheShopDialog(QDialog):
 
         self.ui.spinBox_cr.valueChanged.connect(self.update_cr)
         self.ui.spinBox_group_of.valueChanged.connect(self.update_group_of)
-        self.ui.spinBox_STR.valueChanged.connect(lambda x: self.update_stat(0, x))
-        self.ui.spinBox_DEX.valueChanged.connect(lambda x: self.update_stat(1, x))
-        self.ui.spinBox_CON.valueChanged.connect(lambda x: self.update_stat(2, x))
-        self.ui.spinBox_INT.valueChanged.connect(lambda x: self.update_stat(3, x))
-        self.ui.spinBox_WIS.valueChanged.connect(lambda x: self.update_stat(4, x))
-        self.ui.spinBox_CHA.valueChanged.connect(lambda x: self.update_stat(5, x))
+        self.ui.spinBox_STR.valueChanged.connect(lambda x: self.update_stat('STR', x))
+        self.ui.spinBox_DEX.valueChanged.connect(lambda x: self.update_stat('DEX', x))
+        self.ui.spinBox_CON.valueChanged.connect(lambda x: self.update_stat('CON', x))
+        self.ui.spinBox_INT.valueChanged.connect(lambda x: self.update_stat('INT', x))
+        self.ui.spinBox_WIS.valueChanged.connect(lambda x: self.update_stat('WIS', x))
+        self.ui.spinBox_CHA.valueChanged.connect(lambda x: self.update_stat('CHA', x))
 
         self.ui.lineEdit_name.textEdited.connect(self.update_name)
 
@@ -38,6 +40,8 @@ class TheShopDialog(QDialog):
 
     @db_session
     def update_cr(self):
+        if self.spinboxLock:
+            return
         db = self.vault.main.db
         dbObj = db.Vault[self.target.id]
         dbObj.cr = self.ui.spinBox_cr.value()
@@ -46,6 +50,8 @@ class TheShopDialog(QDialog):
 
     @db_session
     def update_group_of(self):
+        if self.spinboxLock:
+            return
         db = self.vault.main.db
         dbObj = db.Vault[self.target.id]
         dbObj.group_of = self.ui.spinBox_group_of.value()
@@ -53,12 +59,28 @@ class TheShopDialog(QDialog):
 
 
     @db_session
-    def update_stat(self, stat, val_as_unicode):
+    def update_stat(self, stat, value):
+        # Locks updates from happening on loads or just whenever i like.
+        # easier then using the spinbox's blocksignal function since i handle
+        # many spinboxes here.
+        if self.spinboxLock:
+            return
         db = self.vault.main.db
         dbObj = db.Vault[self.target.id]
-        scores = dbObj.attributes.split(',')
-        scores[stat] = str(val_as_unicode)
-        dbObj.attributes = ','.join(scores)
+        match stat:
+            case 'STR':
+                dbObj.ability_str = int(value)
+            case 'DEX':
+                dbObj.ability_dex = int(value)
+            case 'CON':
+                dbObj.ability_con = int(value)
+            case 'WIS':
+                dbObj.ability_wis = int(value)
+            case 'INT':
+                dbObj.ability_int = int(value)
+            case 'CHA':
+                dbObj.ability_cha = int(value)
+        commit()
         self.update_stat_block()
 
 
@@ -67,7 +89,11 @@ class TheShopDialog(QDialog):
         db = self.vault.main.db
         dbObj = db.Vault[self.target.id]
         dbObj.stat_block = self.ui.textEdit_stat_block.toPlainText()
-
+        for row in range(0, self.vault.ui.listWidget_vault.count()):
+            item = self.vault.ui.listWidget_vault.item(row)
+            if item.isSelected():
+                    item.setToolTip(dbObj.stat_block)
+                    break
 
     @db_session
     def load_vault_item(self):
@@ -79,19 +105,26 @@ class TheShopDialog(QDialog):
                 self.target = item.dbObj
                 break
         self.target = db.Vault[self.target.id]
-        # TODO update individual things
+
+        self.ui.lineEdit_name.blockSignals(True)
         self.ui.lineEdit_name.setText(self.target.name)
+        self.ui.lineEdit_name.blockSignals(False)
+
+        self.spinboxLock = True
         self.ui.spinBox_cr.setValue(self.target.cr)
         self.ui.spinBox_group_of.setValue(self.target.count)
-        stats = self.target.attributes.split(',')
-        stats = [ int(x) for x in stats ]
-        self.ui.spinBox_STR.setValue(stats[0])
-        self.ui.spinBox_DEX.setValue(stats[1])
-        self.ui.spinBox_CON.setValue(stats[2])
-        self.ui.spinBox_WIS.setValue(stats[3])
-        self.ui.spinBox_INT.setValue(stats[4])
-        self.ui.spinBox_CHA.setValue(stats[5])
+        self.ui.spinBox_STR.setValue(self.target.ability_str)
+        self.ui.spinBox_DEX.setValue(self.target.ability_dex)
+        self.ui.spinBox_CON.setValue(self.target.ability_con)
+        self.ui.spinBox_WIS.setValue(self.target.ability_wis)
+        self.ui.spinBox_INT.setValue(self.target.ability_int)
+        self.ui.spinBox_CHA.setValue(self.target.ability_cha)
+        self.spinboxLock = False
+
+        self.ui.textEdit_stat_block.blockSignals(True)
         self.ui.textEdit_stat_block.setPlainText(self.target.stat_block)
+        self.ui.textEdit_stat_block.blockSignals(False)
+
         self.update_applied_templates()
         self.update_selector_templates()
         self.show()
@@ -109,12 +142,9 @@ class TheShopDialog(QDialog):
     @db_session
     def new_vault_item(self):
         db = self.vault.main.db
-        self.target = db.Vault(name='*new vault item*',
-                               cr=1,
-                               count=1,
-                               attributes='10,10,10,10,10,10')
+        self.target = db.Vault()
         commit()
-        item = QListWidgetItem('*new vault item*')
+        item = QListWidgetItem('* * *')
         item.dbObj = self.target
         self.vault.ui.listWidget_vault.addItem(item)
         self.update_selector_templates()
@@ -122,100 +152,149 @@ class TheShopDialog(QDialog):
         self.show()
 
 
+    def get_auto_values(self, text, group_of, cr_info, dice_tower):
+        # Calculate Dice expressions inside %{ } brackets
+        m = re.search(r'%{(.*)}', text)
+        if m:
+            result = dice_tower.roll(m.group(1))
+            text = re.sub('%{.*}', str(result), text, count=1)
+
+        # Detect health and health division stuff
+        m = re.search(r'%h([2-9])?', text)
+        if m:
+            if m.group(1):
+                HP = (cr_info["hp"] // group_of) // int(m.group(1))
+                HP_view = (f'{HP} '
+                           f'({dice_tower.to_dice(HP)})')
+                text = re.sub('%h[2-9]', str(HP_view), text, count=1)
+            else:
+                HP = cr_info["hp"] // group_of
+                HP_view = (f'{HP} '
+                           f'({dice_tower.to_dice(HP)})')
+                text = re.sub('%h', str(HP_view), text, count=1)
+
+        # Detect Attack Bonus
+        attack_bonus = cr_info["atkBonus"]
+        text = re.sub('%a', str(attack_bonus), text, count=1)
+
+        # Detect damanage and Damage per sournd division.
+        dam_per_round = cr_info["damPerRound"] // group_of
+        m = re.search(r'%d([2-9])?', text)
+        if m:
+            if m.group(1):
+                print('found group ', m.group(1) )
+                adjusted_damage = dam_per_round // int(m.group(1))
+                damage_view = (f'{adjusted_damage} '
+                             f'({dice_tower.to_dice(adjusted_damage)})')
+                text = re.sub(r'%d[2-9]', damage_view, text, count=1)
+            else:
+                print('no group found ')
+                damage_view = (f'{dam_per_round} '
+                             f'({dice_tower.to_dice(dam_per_round)})')
+                text = re.sub(r'%d', damage_view, text, count=1)
+
+        # Detect Spell Save DC
+        spellSaveDC = cr_info['saveDC']
+        text = re.sub('%s', str(spellSaveDC), text)
+
+        # lastly repeat this process if you find more things to replace.
+        m = re.search(r'%[{hads]', text)
+        if m:
+            text = self.get_auto_values(text, group_of, cr_info, dice_tower)
+        return text
+
+
+    def stat_block_template(self, stat_block, group_of, name, cr, AC, HP_view, final_scores):
+
+        return stat_block_text
+
+
+    def compile_attr(self, native_attr, stat_mod):
+        'combines ui ability scores with templates'
+        if stat_mod is None:
+            return int(native_attr)
+        if '+' not in stat_mod and '-' not in stat_mod:
+            return int(stat_mod)
+        else:
+            return int(native_attr) + int(stat_mod)
+
+
+    @db_session
+    def load_scores(self, dbObj, stat_block):
+        scores = (
+            self.compile_attr(dbObj.ability_str,
+                         stat_block['Stats'].get('Strength')),
+            self.compile_attr(dbObj.ability_dex,
+                         stat_block['Stats'].get('Dexterity')),
+            self.compile_attr(dbObj.ability_con,
+                         stat_block['Stats'].get('Constitution')),
+            self.compile_attr(dbObj.ability_wis,
+                         stat_block['Stats'].get('Wisdom')),
+            self.compile_attr(dbObj.ability_int,
+                         stat_block['Stats'].get('Intelligence')),
+            self.compile_attr(dbObj.ability_cha,
+                         stat_block['Stats'].get('Charisma')))
+        return scores
+
+
     @db_session
     def update_stat_block(self):
         'responsible for creating stat blocks'
         db = self.vault.main.db
         dbObj = db.Vault[self.target.id]
-        stat_block = self.compile_templates()
         cr = self.ui.spinBox_cr.value()
         group_of = self.ui.spinBox_group_of.value()
         cr_info = Preset_data().get(cr)
         dice_tower = Dice_factory()
-        HP = cr_info["hp"] // group_of
-        dbObj.hp = HP
-        HP_view = f'{HP} ({dice_tower.to_dice(HP)})'
 
-        # pull in The Shop's stats to compile with these
-        def compile_attr(attribute, stat_mod):
-            'combines ui ability scores with templates'
-            if stat_mod is None:
-                return int(attribute)
-            if '+' not in stat_mod and '-' not in stat_mod:
-                return int(stat_mod)
-            else:
-                return int(attribute) + int(stat_mod)
-
-        def replace_auto_values(text):
-            m = re.search('%h([2-9])', text)
-            if m:
-                HP = (cr_info["hp"] // group_of) / m.group(1)
-                HP_view = (f'{HP} '
-                           f'({dice_tower.to_dice(HP)})')
-                text = re.sub('%h[2-9]', str(HP_view), text)
-            else:
-                HP = (cr_info["hp"] // group_of)
-                HP_view = (f'{HP} '
-                           f'({dice_tower.to_dice(HP)})')
-                text = re.sub('%h', str(HP_view), text)
-            attack_bonus = cr_info["atkBonus"]
-            text = re.sub('%a', str(attack_bonus), text)
-
-            damage = cr_info["damPerRound"] // group_of
-            damage_view = (f'{damage} '
-                           f'({dice_tower.to_dice(damage)})')
-            text = re.sub('%d', damage_view, text)
-
-            m = re.search('%e([2-9])', text)
-            if m:
-                elementalDamage = damage // m.group(1)
-                elem_view = (f'{elementalDamage} '
-                             f'({dice_tower.to_dice(elementalDamage)})')
-                text = re.sub('%e[2-9]', elem_view, text)
-            else:
-                elementalDamage = damage // 2
-                elem_view = (f'{elementalDamage} '
-                             f'({dice_tower.to_dice(elementalDamage)})')
-                text = re.sub('%e', elem_view, text)
-            spellSaveDC = cr_info['saveDC']
-            text = re.sub('%s', str(spellSaveDC), text)
-            return text
-
-        scores = dbObj.attributes.split(',')
-        names = ('Strength', 'Dexterity',
-                 'Constitution', 'Wisdom',
-                 'Intelligence', 'Charisma')
-        for row in range(0, 6):
-            scores[row] = compile_attr(scores[row],
-                                       stat_block['Stats'].get(names[row]))
+        stat_block = self.compile_templates()
+        scores = self.load_scores(dbObj, stat_block)
         stat_bar_heading = ('STR', 'DEX',
                             'CON', 'WIS',
                             'INT', 'CHA')
         final_scores = ''
+
         for row in range(0, 6):
             final_scores += f'{stat_bar_heading[row]}: {scores[row]:02}    '
+
+        # calculate hp
+        HP = self.compile_attr(cr_info["hp"],
+                          stat_block['Stats'].get('Hit Points')) // group_of
+        dbObj.hp = HP
+        HP_view = f'{HP} ({dice_tower.to_dice(HP)})'
+
+        # calculate AC
+        AC = self.compile_attr(cr_info["ac"],
+                          stat_block['Stats'].get('Armor Class'))
+
+        # get the name
         name = self.ui.lineEdit_name.text()
-        plainText = (f'{name}\n'
-                     f'CR: {cr}\n'
-                     f'HP: {HP_view}\n'
-                     f'{final_scores}\n')
+
+        # get stat_block template filled
+        stat_block_text = (f'{name}\n'
+                           f'CR: {cr}\n'
+                           f'AC: {AC}\n'
+                           f'HP: {HP_view}\n'
+                           f'{final_scores}\n')
         sections = ('Lore', 'Attributes',
                     'Items', 'Actions',
                     'Roll tables' )
         for section in range(0, len(sections)):
             if stat_block[sections[section]]:
-                plainText += f'\n====[ {sections[section]} ]===\n'
+                stat_block_text += f'\n====[ {sections[section]} ]===\n'
                 for key, text in stat_block[sections[section]].items():
-                    text = replace_auto_values(text)
-                    plainText += f'\n{text}\n'
-                plainText += '\n'
-        self.ui.textEdit_stat_block.setPlainText(plainText)
+                    text = self.get_auto_values(text, group_of,
+                                                cr_info, dice_tower)
+                    stat_block_text += f'\n{text}\n'
+                stat_block_text += '\n'
+
+        self.ui.textEdit_stat_block.setPlainText(stat_block_text)
         # and update vault tool-tip as well.
         vault_list = self.vault.ui.listWidget_vault
         for row in range(0, vault_list.count()):
             item = vault_list.item(row)
             if item.dbObj == self.target:
-                item.setToolTip(plainText)
+                item.setToolTip(stat_block_text)
 
     def read_match(self, matchList):
         matchList = matchList.split(',')
@@ -302,15 +381,19 @@ class TheShopDialog(QDialog):
         dbObj = db.Vault[self.target.id]
         dice_tower = Dice_factory()
         # roll 4d6 but keep the top 3
-        stats = [ dice_tower.roll('4d6t3') for r in range(6)]
+        stats = tuple([ dice_tower.roll('4d6t3') for r in range(6)])
         self.ui.spinBox_STR.setValue(stats[0])
+        dbObj.ability_str = stats[0]
         self.ui.spinBox_DEX.setValue(stats[1])
+        dbObj.ability_dex = stats[1]
         self.ui.spinBox_CON.setValue(stats[2])
+        dbObj.ability_con = stats[2]
         self.ui.spinBox_WIS.setValue(stats[3])
+        dbObj.ability_wis = stats[3]
         self.ui.spinBox_INT.setValue(stats[4])
+        dbObj.ability_int = stats[4]
         self.ui.spinBox_CHA.setValue(stats[5])
-        stats = [ str(s) for s in stats ]
-        dbObj.attributes = ','.join(stats)
+        dbObj.ability_cha = stats[5]
         commit()
         self.update_stat_block()
 
@@ -332,13 +415,16 @@ class TheShopDialog(QDialog):
         selected_template = self.ui.comboBox_selector_templates.currentData()
         dbObj = db.Templates[selected_template.id]
 
-        vault_item.templates.add(dbObj)
-        item = QListWidgetItem(dbObj.name)
-        item.dbObj = dbObj
-        templates_list.addItem(item)
-        self.update_stat_block()
-
-
+        if not templates_list.findItems(dbObj.name, Qt.MatchStartsWith):
+            vault_item.templates.add(dbObj)
+            item = QListWidgetItem(dbObj.name)
+            item.dbObj = dbObj
+            templates_list.addItem(item)
+            self.update_stat_block()
+        else:
+            msgBox = QMessageBox()
+            msgBox.setText("No duplicate templates allowed at this time")
+            msgBox.exec()
 
 
     @db_session
@@ -372,27 +458,6 @@ class TheShopDialog(QDialog):
                 break
         self.update_stat_block()
 
-    @db_session
-    def update_attributes(self, attribute):
-        db = self.vault.main.db
-        self.target = vault_item = db.Vault[self.target.id]
-        attributes = self.target.attributes.split(',')
-        match attribute:
-            case 'STR':
-                attributes[0] = self.ui.spinBox_STR.value()
-            case 'DEX':
-                attributes[1] = self.ui.spinBox_DEX.value()
-            case 'CON':
-                attributes[2] = self.ui.spinBox_CON.value()
-            case 'WIS':
-                attributes[3] = self.ui.spinBox_WIS.value()
-            case 'INT':
-                attributes[4] = self.ui.spinBox_INT.value()
-            case 'CHA':
-                attributes[5] = self.ui.spinBox_CHA.value()
-        self.target.attributes = ','.join(attributes)
-        commit()
-        self.update_stat_block()
 
     @db_session
     def update_target_cr(self):

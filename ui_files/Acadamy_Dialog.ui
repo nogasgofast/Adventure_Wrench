@@ -165,7 +165,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Ability Scores</string>
+           <string>Stat Modification</string>
           </property>
          </item>
          <item>
@@ -284,11 +284,29 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_delete_lore">
-         <property name="text">
-          <string>Delete</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_buttons_lore">
+         <item>
+          <widget class="QPushButton" name="pushButton_add_another_lore">
+           <property name="text">
+            <string>Add Another</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_delete_lore">
+           <property name="text">
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_next_lore">
+           <property name="text">
+            <string>Next</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -297,7 +315,7 @@
        <item>
         <widget class="QLabel" name="label_name_stats">
          <property name="text">
-          <string>Ability Score Name:</string>
+          <string>Stat Modification:</string>
          </property>
         </widget>
        </item>
@@ -331,6 +349,16 @@
          <item>
           <property name="text">
            <string>Charisma</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Hit Points</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Armor Class</string>
           </property>
          </item>
         </widget>
@@ -382,11 +410,29 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_delete_stats">
-         <property name="text">
-          <string>Delete</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_buttons_stats">
+         <item>
+          <widget class="QPushButton" name="pushButton_add_another_stats">
+           <property name="text">
+            <string>Add Another</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_delete_stats">
+           <property name="text">
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_next_stats">
+           <property name="text">
+            <string>Next</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -426,11 +472,29 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_delete_attribute">
-         <property name="text">
-          <string>Delete</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_buttons_attribute">
+         <item>
+          <widget class="QPushButton" name="pushButton_add_another_attribute">
+           <property name="text">
+            <string>Add Another</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_delete_attribute">
+           <property name="text">
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_next_attribute">
+           <property name="text">
+            <string>Next</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -481,11 +545,29 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_delete_item">
-         <property name="text">
-          <string>Delete</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_buttons_item">
+         <item>
+          <widget class="QPushButton" name="pushButton_add_another_item">
+           <property name="text">
+            <string>Add Another</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_delete_item">
+           <property name="text">
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_next_item">
+           <property name="text">
+            <string>Next</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -536,11 +618,29 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_delete_action">
-         <property name="text">
-          <string>Delete</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_buttons_action">
+         <item>
+          <widget class="QPushButton" name="pushButton_add_another_action">
+           <property name="text">
+            <string>Add Another</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_delete_action">
+           <property name="text">
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_next_action">
+           <property name="text">
+            <string>Next</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -557,23 +657,58 @@
         <widget class="QLineEdit" name="lineEdit_name_roll_table"/>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox_israndom_roll_table">
+        <widget class="QLabel" name="label_8">
          <property name="text">
-          <string>Select from the list randomly &lt;Die Expression&gt; times.</string>
+          <string>In the shop, when a roll table is applied to something. The app will </string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox_immutable_roll_table">
+        <widget class="QLabel" name="label_11">
          <property name="text">
-          <string>This is Not a template, just write this stuff into the stat block.</string>
+          <string>roll dice for you, and apply matching entries in the table to your template.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Example:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>1d6  :</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>1       : Great Axe</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>2-4   : Chicken Breast</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>5,6   : Bannana Bazooka</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_dice_roll_table">
          <property name="text">
-          <string>Die expression:</string>
+          <string>Dice to Roll:</string>
          </property>
         </widget>
        </item>
@@ -600,58 +735,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Example table:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>Die Expression: 1d6</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>1       : Great Axe</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>2-4   : Chicken Breast</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>5,6   : Bannana Bazooka</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_8">
-         <property name="text">
-          <string>In the shop, when this template is applied. The app will </string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_11">
-         <property name="text">
-          <string>roll a 1d6 for you. And apply the entries that match the rolled number.</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QLabel" name="label_table_roll_table">
          <property name="text">
-          <string>Numbers            : Something to write into the template.</string>
+          <string>Match this         : What to add to the template if matched.</string>
          </property>
         </widget>
        </item>
@@ -734,11 +820,43 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_delete_roll_table">
+        <widget class="QCheckBox" name="checkBox_israndom_roll_table">
          <property name="text">
-          <string>Delete</string>
+          <string>Select from the list randomly &lt;Die Expression&gt; times.</string>
          </property>
         </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox_immutable_roll_table">
+         <property name="text">
+          <string>This is Not a template, just write this stuff into the stat block.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_button_roll_table">
+         <item>
+          <widget class="QPushButton" name="pushButton_add_another_roll_table">
+           <property name="text">
+            <string>Add Another</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_delete_roll_table">
+           <property name="text">
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_next_roll_table">
+           <property name="text">
+            <string>Next</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>

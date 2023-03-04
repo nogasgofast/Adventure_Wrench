@@ -273,6 +273,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addItem(self.verticalSpacer_2)
 
+        self.label_version = QLabel(self.centralwidget)
+        self.label_version.setObjectName(u"label_version")
+        self.label_version.setOpenExternalLinks(True)
+        self.label_version.setTextInteractionFlags(Qt.LinksAccessibleByKeyboard|Qt.LinksAccessibleByMouse)
+
+        self.verticalLayout.addWidget(self.label_version)
+
 
         self.horizontalLayout_content_2.addLayout(self.verticalLayout)
 
@@ -342,5 +349,6 @@ class Ui_MainWindow(object):
         self.pushButton_w_star.setToolTip(QCoreApplication.translate("MainWindow", u"cycles on 6th press", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_w_star.setText(QCoreApplication.translate("MainWindow", u"\u2606", None))
+        self.label_version.setText(QCoreApplication.translate("MainWindow", u"Checking Version...", None))
     # retranslateUi
 

@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 import sys
+import requests
+from version import ver
 from ui.Main_Window import Ui_MainWindow
 from PySide6.QtWidgets import (QApplication, QMainWindow,
                               QDialog, QWidget,
@@ -65,7 +67,29 @@ class MainWindow(QMainWindow):
                                     self.update_initiative)
         self.ui.spinBox_main_hp.valueChanged.connect(
                                     self.update_hp)
+        self.check_version()
         self.load_session()
+
+
+    def check_version(self):
+        'Checking for latest version'
+        try:
+            r = requests.get("https://api.github.com/repos/nogasgofast/Adventure_Wrench/releases")
+            update_version = None
+            for release in r.json():
+                # tag_name = v0.20 v needs removing
+                remote_ver = [ int(x) for x in release["tag_name"][1:].split('.') ]
+                local_ver = [ int(x) for x in ver.split('.') ]
+                for i in range(0, 2):
+                    if remote_ver[i] > local_ver[i]:
+                        update_version = f'''New Version: <a href="{release["html_url"]}">
+                                      {release["name"]}</a>'''
+                        self.ui.label_version.setText(update_version)
+                        break
+                if not update_version:
+                    self.ui.label_version.setText(f"On latest version: v{ver}")
+        except:
+            self.ui.label_version.setText(f"Current Version: v{ver}")
 
 
     @db_session
@@ -375,7 +399,6 @@ class MainWindow(QMainWindow):
     def update_encounter_text(self, item):
         item.dbObj = self.db.Active[item.dbObj.id]
         if item.dbObj.count > 1:
-            print(item.dbObj.group_hp)
             format = '''%s | %s
     %s left with hp Sum: %s High: %s Low: %s
     %s%s%s%s''' % (

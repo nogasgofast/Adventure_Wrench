@@ -4,7 +4,7 @@ aw_db = Database()
 
 
 class Active(aw_db.Entity):
-    name = Optional(str, default=' *** ')
+    name = Optional(str, default='* * *')
     stat_block = Optional(str, default='')
     initiative = Optional(int, default=1)
     hp = Optional(int, default=1)
@@ -19,13 +19,18 @@ class Active(aw_db.Entity):
     from_vault = Optional('Vault', reverse='in_active')
 
 class Vault(aw_db.Entity):
-    name = Optional(str, default=' *** ')
+    name = Optional(str, default='* * *')
     initiative = Optional(int, default=1)
     hp = Optional(int, default=1)
     max_hp = Optional(int, default=1)
     group_hp = Optional(IntArray)
     stat_block = Optional(str, default='')
-    attributes = Optional(str)
+    ability_str = Optional(int, default=10)
+    ability_dex = Optional(int, default=10)
+    ability_con = Optional(int, default=10)
+    ability_int = Optional(int, default=10)
+    ability_wis = Optional(int, default=10)
+    ability_cha = Optional(int, default=10)
     cr = Optional(int, default=1)
     count = Optional(int, default=1)
     templates = Set('Templates', reverse='vault')
