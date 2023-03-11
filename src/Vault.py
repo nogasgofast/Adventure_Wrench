@@ -14,6 +14,8 @@ class VaultDialog(QDialog):
         self.ui.setupUi(self)
         self.ui_acadamy = AcadamyDialog(self)
         self.ui_ts = TheShopDialog(self)
+
+        self.ui.pushButton_back.clicked.connect(self.close)
         self.ui.pushButton_the_shop.clicked.connect(self.ui_ts.new_vault_item)
         self.ui.pushButton_acadamy.clicked.connect(self.ui_acadamy.show)
         self.ui.pushButton_add_to_encounter.clicked.connect(

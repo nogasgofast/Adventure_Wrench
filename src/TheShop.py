@@ -152,55 +152,99 @@ class TheShopDialog(QDialog):
         self.show()
 
 
-    def get_auto_values(self, text, group_of, cr_info, dice_tower):
-        # Calculate Dice expressions inside %{ } brackets
-        m = re.search(r'%{(.*)}', text)
-        if m:
-            result = dice_tower.roll(m.group(1))
-            text = re.sub('%{.*}', str(result), text, count=1)
+    def get_auto_values(self, text, group_of, cr_info, scores, dice_tower):
+        'computes and replaces template variables'
+        while True:
+            m = re.search(r'%(str|dex|con|wis|int|cha)', text)
+            if m:
+                match m.group(1).lower():
+                    case 'str':
+                        text = re.sub(r'%str', str((scores[0] - 10) // 2),
+                                      text, count=1)
+                        continue
+                    case 'dex':
+                        text = re.sub(r'%dex', str((scores[1] - 10) // 2),
+                                      text, count=1)
+                        continue
+                    case 'con':
+                        text = re.sub(r'%con', str((scores[2] - 10) // 2),
+                                      text, count=1)
+                        continue
+                    case 'wis':
+                        text = re.sub(r'%wis', str((scores[3] - 10) // 2),
+                                      text, count=1)
+                        continue
+                    case 'int':
+                        text = re.sub(r'%int', str((scores[4] - 10) // 2),
+                                      text, count=1)
+                        continue
+                    case 'cha':
+                        text = re.sub(r'%cha', str((scores[5] - 10) // 2),
+                                      text, count=1)
+                        continue
 
-        # Detect health and health division stuff
-        m = re.search(r'%h([2-9])?', text)
-        if m:
-            if m.group(1):
-                HP = (cr_info["hp"] // group_of) // int(m.group(1))
-                HP_view = (f'{HP} '
-                           f'({dice_tower.to_dice(HP)})')
-                text = re.sub('%h[2-9]', str(HP_view), text, count=1)
-            else:
-                HP = cr_info["hp"] // group_of
-                HP_view = (f'{HP} '
-                           f'({dice_tower.to_dice(HP)})')
-                text = re.sub('%h', str(HP_view), text, count=1)
+            # Calculate Dice expressions inside %{ } brackets
+            m = re.search(r'%{(.*)}', text)
+            if m:
+                result = dice_tower.roll(m.group(1))
+                text = re.sub('%{.*}', str(result), text, count=1)
+                continue
 
-        # Detect Attack Bonus
-        attack_bonus = cr_info["atkBonus"]
-        text = re.sub('%a', str(attack_bonus), text, count=1)
+            # Detect health and health division stuff
+            m = re.search(r'%h([2-9])?', text)
+            if m:
+                if m.group(1):
+                    HP = (cr_info["hp"] // group_of) // int(m.group(1))
+                    HP_view = (f'{HP} '
+                               f'({dice_tower.to_dice(HP)})')
+                    text = re.sub('%h[2-9]', str(HP_view), text, count=1)
+                    continue
+                else:
+                    HP = cr_info["hp"] // group_of
+                    HP_view = (f'{HP} '
+                               f'({dice_tower.to_dice(HP)})')
+                    text = re.sub('%h', str(HP_view), text, count=1)
+                    continue
 
-        # Detect damanage and Damage per sournd division.
-        dam_per_round = cr_info["damPerRound"] // group_of
-        m = re.search(r'%d([2-9])?', text)
-        if m:
-            if m.group(1):
-                print('found group ', m.group(1) )
-                adjusted_damage = dam_per_round // int(m.group(1))
-                damage_view = (f'{adjusted_damage} '
-                             f'({dice_tower.to_dice(adjusted_damage)})')
-                text = re.sub(r'%d[2-9]', damage_view, text, count=1)
-            else:
-                print('no group found ')
-                damage_view = (f'{dam_per_round} '
-                             f'({dice_tower.to_dice(dam_per_round)})')
-                text = re.sub(r'%d', damage_view, text, count=1)
+            # Detect Attack Bonus
+            m = re.search(r'%a', text)
+            if m:
+                attack_bonus = cr_info["atkBonus"]
+                text = re.sub('%a', str(attack_bonus), text, count=1)
+                continue
 
-        # Detect Spell Save DC
-        spellSaveDC = cr_info['saveDC']
-        text = re.sub('%s', str(spellSaveDC), text)
+            # Detect damanage and Damage per round division.
+            m = re.search(r'%d([2-9])?', text)
+            if m:
+                dam_per_round = cr_info["damPerRound"] // group_of
+                if m.group(1):
+                    print('found group ', m.group(1) )
+                    adjusted_damage = dam_per_round // int(m.group(1))
+                    damage_view = (f'{adjusted_damage} '
+                                 f'({dice_tower.to_dice(adjusted_damage)})')
+                    text = re.sub(r'%d[2-9]', damage_view, text, count=1)
+                    continue
+                else:
+                    print('no group found ')
+                    damage_view = (f'{dam_per_round} '
+                                 f'({dice_tower.to_dice(dam_per_round)})')
+                    text = re.sub(r'%d', damage_view, text, count=1)
+                    continue
 
-        # lastly repeat this process if you find more things to replace.
-        m = re.search(r'%[{hads]', text)
-        if m:
-            text = self.get_auto_values(text, group_of, cr_info, dice_tower)
+            # Detect Spell Save DC
+            m = re.search(r'%s', text)
+            if m:
+                spellSaveDC = cr_info['saveDC']
+                text = re.sub('%s', str(spellSaveDC), text, count=1)
+                continue
+            break
+
+        # # lastly repeat this process if you find more things to replace.
+        # m = re.search(r'%[{hads]', text)
+        # if m:
+        #     text = self.get_auto_values(text, group_of,
+        #                                 cr_info, stat_block,
+        #                                 dice_tower)
         return text
 
 
@@ -252,8 +296,8 @@ class TheShopDialog(QDialog):
         stat_bar_heading = ('STR', 'DEX',
                             'CON', 'WIS',
                             'INT', 'CHA')
-        final_scores = ''
 
+        final_scores = ''
         for row in range(0, 6):
             final_scores += f'{stat_bar_heading[row]}: {scores[row]:02}    '
 
@@ -284,7 +328,8 @@ class TheShopDialog(QDialog):
                 stat_block_text += f'\n====[ {sections[section]} ]===\n'
                 for key, text in stat_block[sections[section]].items():
                     text = self.get_auto_values(text, group_of,
-                                                cr_info, dice_tower)
+                                                cr_info, scores,
+                                                dice_tower)
                     stat_block_text += f'\n{text}\n'
                 stat_block_text += '\n'
 

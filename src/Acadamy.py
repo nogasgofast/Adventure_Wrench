@@ -30,6 +30,7 @@ class AcadamyDialog(QDialog):
         self.ui.pushButton_stack_template.clicked.connect(self.stack_template)
         self.ui.pushButton_back.clicked.connect(self.close)
         # Add another buttons
+        self.ui.pushButton_add_another_template.clicked.connect(self.new_template)
         self.ui.pushButton_add_another_lore.clicked.connect(lambda: self.add_detail('Lore'))
         self.ui.pushButton_add_another_stats.clicked.connect(lambda: self.add_detail('Stat Modification'))
         self.ui.pushButton_add_another_attribute.clicked.connect(lambda: self.add_detail('Attributes'))
@@ -43,10 +44,14 @@ class AcadamyDialog(QDialog):
         self.ui.pushButton_next_item.clicked.connect(self.next_buttons)
         self.ui.pushButton_next_action.clicked.connect(self.next_buttons)
         self.ui.pushButton_next_roll_table.clicked.connect(self.next_buttons)
+        # template to random tempalte converter
+        self.ui.pushButton_randomize_template.clicked.connect(self.template_to_random)
 
 
         self.ui.listWidget_all_templates.clicked.connect(self.select_template)
         self.ui.listWidget_template.clicked.connect(self.select_detail)
+        # TODO this feature is blocked by a code refactoring see rt_item_select.
+        # self.ui.listWidget_table_roll_table.clicked.connect(self.rt_item_select)
 
         self.ui.lineEdit_template_name.textEdited.connect(self.update_template_name)
         self.ui.lineEdit_name_lore.textEdited.connect(self.update_name_lore)
@@ -86,6 +91,115 @@ class AcadamyDialog(QDialog):
                           'Actions': 6,
                           'Roll Table': 7}
         self.populate_listWidget_all_templates()
+
+
+    # TODO rebuild database and everything that uses it.
+    # The explicit difference between lore/stats/attricutes/items
+    # causes me to make tokenizers all over the place. but because
+    # these details are all pretty much just data rows for templates
+    # I'll be rebuilding them all into one type of object/table
+    # then removing the tokenizers that showed up everywhere.
+    # this function does most of what it should beut find_name
+    # does not work.
+    # @db_session
+    # def rt_item_select(self):
+    #     db = self.ui_vault.main.db
+    #     roll_table_view = self.ui.listWidget_table_roll_table
+    #     match_field = self.ui.lineEdit_item_match_roll_table
+    #     option_field = self.ui.comboBox_options_roll_table
+    #
+    #     def find_name(dbObj):
+    #         if dbObj.lore:
+    #             name = dbObj.lore.to_strings()
+    #         elif dbObj.attribute:
+    #             name = dbObj.attribute.to_strings()
+    #         elif dbObj.stat:
+    #             name = dbObj.stat.to_strings()
+    #         elif dbObj.item:
+    #             name = dbObj.item.to_strings()
+    #         elif dbObj.action:
+    #             name = dbObj.action.to_strings()
+    #         elif dbObj.rtable:
+    #             name = dbObj.rtable.to_strings()
+    #         else:
+    #             raise Exception('Rtable_items object missing details')
+    #         print(name)
+    #         return name
+    #
+    #     for row in range(0, roll_table_view.count()):
+    #         item = roll_table_view.item(row)
+    #         if item.isSelected():
+    #             dbObj = db.Rtable_items[item.dbObj.id]
+    #             match_field.setText(dbObj.match)
+    #             index = option_field.findText(find_name(dbObj))
+    #             option_field.setCurrentIndex(index)
+
+
+    @db_session
+    def template_to_random(self):
+        'converts any template to randomized template'
+        db = self.ui_vault.main.db
+        dbObj = db.Templates[self.target.dbObj.id]
+        if dbObj.is_folder:
+            return
+        all_templates = self.ui.listWidget_all_templates
+        forms = self.ui.verticalStackedWidget_forms
+
+        # create a new template with this templates name
+        new_template = db.Templates(name=dbObj.name)
+        commit()
+        # set this templates is_folder property
+        dbObj.is_folder = True
+        commit()
+        self.update_template_name()
+        # create rollTable
+        new_roll_table = new_template.rtables.create(isRandom=False)
+        commit()
+        # import each high level item into a roll table. Count them.
+        count = 0
+        for lore in dbObj.lore:
+            count += 1
+            rt_item = new_roll_table.items.create(match=str(count),
+                                                  lore=lore)
+            commit()
+            rt_item.table = new_roll_table
+        for attribute in dbObj.attributes:
+            count += 1
+            rt_item = new_roll_table.items.create(match=str(count),
+                                                  attribute=attribute)
+            commit()
+            rt_item.table = new_roll_table
+        for item in dbObj.items:
+            count += 1
+            rt_item = new_roll_table.items.create(match=str(count),
+                                                  item=item)
+            commit()
+            rt_item.table = new_roll_table
+        for action in dbObj.actions:
+            count += 1
+            rt_item = new_roll_table.items.create(match=str(count),
+                                                  action=action)
+            commit()
+            rt_item.table = new_roll_table
+        for stat in dbObj.stats:
+            count += 1
+            rt_item = new_roll_table.items.create(match=str(count),
+                                                  stat=stat)
+            commit()
+            rt_item.table = new_roll_table
+        for rtable in dbObj.rtables:
+            count += 1
+            rt_item = new_roll_table.items.create(match=str(count),
+                                                  rtable=rtable)
+            commit()
+            rt_item.table = new_roll_table
+        # lastly set the number of sites for the dice
+        roll = '1d' + str(count)
+        new_roll_table.diceRoll = roll
+        # finally change page to new template.
+        self.new_template(x=False, template=new_template)
+        # refresh all templates view
+        self.select_template()
 
 
     def next_buttons(self):
@@ -482,7 +596,6 @@ class AcadamyDialog(QDialog):
     @db_session
     def add_detail(self, selection=None):
         'add a template component to the selected template'
-        print("my selection ", selection)
         if not selection:
             selection  = self.ui.comboBox_type_templates_page.currentText()
         db = self.ui_vault.main.db
@@ -591,13 +704,22 @@ class AcadamyDialog(QDialog):
 
 
     @db_session
-    def new_template(self):
-        new_template = self.ui_vault.main.db.Templates(name='*new template*')
-        commit()
+    def new_template(self, x=False, template=None):
+        'creates template and updates ui'
+        print(template)
+        db = self.ui_vault.main.db
+        if template is None:
+            new_template = db.Templates(name='*new template*')
+            commit()
+        else:
+            new_template = db.Templates[template.id]
         all_templates = self.ui.listWidget_all_templates
         forms = self.ui.verticalStackedWidget_forms
 
-        item = QListWidgetItem("*new template*")
+        if template is None:
+            item = QListWidgetItem("*new template*")
+        else:
+            item = QListWidgetItem(new_template.name)
         item.dbObj = new_template
         self.target = item
         all_templates.addItem(item)
@@ -612,6 +734,7 @@ class AcadamyDialog(QDialog):
 
     @db_session
     def construct_roll_table_name(self, dbObj):
+        'private method for name construction'
         db = self.ui_vault.main.db
         item = db.Rtable_items[dbObj.id]
         item_child = ''
@@ -631,6 +754,7 @@ class AcadamyDialog(QDialog):
 
     @db_session
     def init_page(self, dbObj):
+        'all your setup needs for every panel in this applet'
         db = self.ui_vault.main.db
         match type(dbObj):
             case db.Lore:

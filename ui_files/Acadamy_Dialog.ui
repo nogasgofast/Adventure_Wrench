@@ -125,22 +125,15 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Name</string>
+          <string>#### Template Name</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::MarkdownText</enum>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLineEdit" name="lineEdit_template_name"/>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="checkBox_is_folder_template">
-         <property name="toolTip">
-          <string>Useful for building roll tables. So you don't have wierd useless templates.</string>
-         </property>
-         <property name="text">
-          <string>This is just a folder, so don't show it in places that use templates.</string>
-         </property>
-        </widget>
        </item>
        <item>
         <widget class="Line" name="line_3">
@@ -152,7 +145,10 @@
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Stat block areas:</string>
+          <string>#### Add details to this template:</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::MarkdownText</enum>
          </property>
         </widget>
        </item>
@@ -207,7 +203,10 @@
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Stack a template on top of this one</string>
+          <string>#### Combine Templates</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::MarkdownText</enum>
          </property>
         </widget>
        </item>
@@ -236,6 +235,43 @@
         </widget>
        </item>
        <item>
+        <widget class="Line" name="line_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>#### Randomizer</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::MarkdownText</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_randomize_template">
+         <property name="toolTip">
+          <string>converts this template to a folder and uses it's contents to build a randomized template</string>
+         </property>
+         <property name="statusTip">
+          <string/>
+         </property>
+         <property name="text">
+          <string>Convert to Randomized Template</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox_is_folder_template">
+         <property name="text">
+          <string>Folder toggle. Hides this template in some places.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -249,11 +285,32 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_delete_template">
-         <property name="text">
-          <string>Delete</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QPushButton" name="pushButton_add_another_template">
+           <property name="text">
+            <string>Add Another</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_delete_template">
+           <property name="text">
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_next_template">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Next</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -659,14 +716,14 @@
        <item>
         <widget class="QLabel" name="label_8">
          <property name="text">
-          <string>In the shop, when a roll table is applied to something. The app will </string>
+          <string>In the shop, when a roll table is applied to something. Adventure Wrench</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_11">
          <property name="text">
-          <string>roll dice for you, and apply matching entries in the table to your template.</string>
+          <string>rolls dice for you, and writes all matching entries into the stat block.</string>
          </property>
         </widget>
        </item>
@@ -822,7 +879,7 @@
        <item>
         <widget class="QCheckBox" name="checkBox_israndom_roll_table">
          <property name="text">
-          <string>Select from the list randomly &lt;Die Expression&gt; times.</string>
+          <string>Select from the list randomly &lt;Dice to Roll&gt; times.</string>
          </property>
         </widget>
        </item>

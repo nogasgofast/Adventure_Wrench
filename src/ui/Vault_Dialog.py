@@ -75,10 +75,10 @@ class Ui_Vault(object):
 
         self.verticalLayout_menu.addItem(self.verticalSpacer)
 
-        self.pushButton = QPushButton(Vault)
-        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton_back = QPushButton(Vault)
+        self.pushButton_back.setObjectName(u"pushButton_back")
 
-        self.verticalLayout_menu.addWidget(self.pushButton)
+        self.verticalLayout_menu.addWidget(self.pushButton_back)
 
 
         self.horizontalLayout_content.addLayout(self.verticalLayout_menu)
@@ -127,7 +127,7 @@ class Ui_Vault(object):
         self.pushButton_delete_selected_items.setToolTip(QCoreApplication.translate("Vault", u"Remove selected from current Encounter as well as DM Vault.", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_delete_selected_items.setText(QCoreApplication.translate("Vault", u"Delete selected", None))
-        self.pushButton.setText(QCoreApplication.translate("Vault", u"<- Save (Esc)", None))
+        self.pushButton_back.setText(QCoreApplication.translate("Vault", u"<- Save (Esc)", None))
 #if QT_CONFIG(tooltip)
         self.listWidget_vault.setToolTip(QCoreApplication.translate("Vault", u"Add items from the Shop.", None))
 #endif // QT_CONFIG(tooltip)

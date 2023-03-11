@@ -17,17 +17,19 @@ the difficulty you are going for.
 
 | Stand-in Values | What they are |
 | --------------- | ------------- |
+| %str            | Strength mod after templates are compiled |
+| %dex            | Dexterity mod after templates are compiled |
+| %con            | Constitution mod after templates are compiled |
+| %wis            | Wisdom mod after templates are compiled |
+| %int            | Intelligence mod after templates are compiled |
+| %cha            | Charisma mod after templates are compiled |
 | %h              | This is current health value directly related to challenge rating, but should not be used often.  |
 | %h9             | Same as %h but divides it by 9. Works with numbers 2-9 Great for making healing or poison effects. |
 | %a              | Attack bonus calculated from challenge rating directly   |
 | %d              | Damage per round, calculated from "Challenge rating" divided by "Group of" on the shop page of the app. You will need to adjust this number down for things included in a multi-attack. I am still working on a way to enforce damage per round by  |
 | %d9             | Same as %d only divides damage per round number specified. can use numbers 2-9 |
 | %s              | Spell save DC for spell actions calculated directly from challange rating     |
-| %{ }            | Takes any dice notation in the {} and caluculates it. ie: ${ 1d1 + 1} would be replaced with 2.
-supports simple dice notation 1d20 or 4d6
-supports simple addition and subtraction 5 - 3
-supports top function 2d20T1 or 4d6t3
-support bottom function 6d10B2 6d10b2 |
+| %{ }            | Takes any dice notation in the {} and caluculates it. ie: ${ 1d1 + 1} would be replaced with 2. supports simple dice notation 1d20 or 4d6. supports simple addition and subtraction 5 - 3. supports top function 2d20T1 or 4d6t3. support bottom function 6d10B2 6d10b2 |
 
 
 ## Examples
@@ -97,26 +99,26 @@ long as that template or roll table has not been applied already.
 
 ## Install instructions
 
-If you are running 64bit windows or linux, likely all you need 
+If you are running 64bit windows or linux, likely all you need
 is to look up the latest [Release]https://github.com/nogasgofast/Adventure_Wrench/releases)
 for your platform.
 
-Then you can simply unzip and move the folder to where you want the files to be kept, and 
-if you are so inclined you can make a shortcut at that time. 
+Then you can simply unzip and move the folder to where you want the files to be kept, and
+if you are so inclined you can make a shortcut at that time.
 
-The application and all of it's dependencies will be in a self-contained folder the executable 
-name is adventure_wrench.
+The application and all of it's dependencies will be in a self-contained folder the executable
+file is "adventure_wrench".
 
 
-## Build instructions
+## Python install instructions
 
-If a binary does not work or does not work on your platform you can try building 
+If a binary does not work or does not work on your platform you can try building
 the application for your system.
 
-This application requires at least python3.10, all versions before that are untested.
+This application requires at least python 3.10, all versions before that are untested.
 
 On a local command line interface:
-git clone the project to a local folder. 
+git clone the project to a local folder.
 
 optionally create a virtual enviornment and make sure it's activated.
 
@@ -129,7 +131,7 @@ python main.py
 
 ## creating binary distrobutions
 
-First you have to build the application as stated in Build instructions.
+First you have to build the application as stated in python intall instructions.
 Then you can do the following:
 pip install cx_Freeze
 Make sure to read how cx_Freeze works and is used. Might be important info.
@@ -142,7 +144,7 @@ python linux-setup.py build
 or
 python windows-setup.py build
 
-The distibution will be in a build/ folder. 
+The distibution will be in a build/ folder.
 
 
 ## Questions
