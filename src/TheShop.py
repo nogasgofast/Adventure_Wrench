@@ -145,10 +145,13 @@ class TheShopDialog(QDialog):
         self.target = db.Vault()
         commit()
         item = QListWidgetItem('* * *')
+        self.ui.lineEdit_name.setText('* * *')
         item.dbObj = self.target
+
         self.vault.ui.listWidget_vault.addItem(item)
         self.update_selector_templates()
         self.update_stat_block()
+        self.ui.listWidget_templates.clear()
         self.show()
 
 
@@ -218,14 +221,14 @@ class TheShopDialog(QDialog):
             if m:
                 dam_per_round = cr_info["damPerRound"] // group_of
                 if m.group(1):
-                    print('found group ', m.group(1) )
+                    # print('found group ', m.group(1) )
                     adjusted_damage = dam_per_round // int(m.group(1))
                     damage_view = (f'{adjusted_damage} '
                                  f'({dice_tower.to_dice(adjusted_damage)})')
                     text = re.sub(r'%d[2-9]', damage_view, text, count=1)
                     continue
                 else:
-                    print('no group found ')
+                    # print('no group found ')
                     damage_view = (f'{dam_per_round} '
                                  f'({dice_tower.to_dice(dam_per_round)})')
                     text = re.sub(r'%d', damage_view, text, count=1)
@@ -248,11 +251,6 @@ class TheShopDialog(QDialog):
         return text
 
 
-    def stat_block_template(self, stat_block, group_of, name, cr, AC, HP_view, final_scores):
-
-        return stat_block_text
-
-
     def compile_attr(self, native_attr, stat_mod):
         'combines ui ability scores with templates'
         if stat_mod is None:
@@ -263,27 +261,27 @@ class TheShopDialog(QDialog):
             return int(native_attr) + int(stat_mod)
 
 
-    @db_session
     def load_scores(self, dbObj, stat_block):
         scores = (
             self.compile_attr(dbObj.ability_str,
-                         stat_block['Stats'].get('Strength')),
+                         stat_block['stat'].get('Strength')),
             self.compile_attr(dbObj.ability_dex,
-                         stat_block['Stats'].get('Dexterity')),
+                         stat_block['stat'].get('Dexterity')),
             self.compile_attr(dbObj.ability_con,
-                         stat_block['Stats'].get('Constitution')),
+                         stat_block['stat'].get('Constitution')),
             self.compile_attr(dbObj.ability_wis,
-                         stat_block['Stats'].get('Wisdom')),
+                         stat_block['stat'].get('Wisdom')),
             self.compile_attr(dbObj.ability_int,
-                         stat_block['Stats'].get('Intelligence')),
+                         stat_block['stat'].get('Intelligence')),
             self.compile_attr(dbObj.ability_cha,
-                         stat_block['Stats'].get('Charisma')))
+                         stat_block['stat'].get('Charisma')))
         return scores
 
 
     @db_session
     def update_stat_block(self):
         'responsible for creating stat blocks'
+        # print("updating stat block")
         db = self.vault.main.db
         dbObj = db.Vault[self.target.id]
         cr = self.ui.spinBox_cr.value()
@@ -303,13 +301,13 @@ class TheShopDialog(QDialog):
 
         # calculate hp
         HP = self.compile_attr(cr_info["hp"],
-                          stat_block['Stats'].get('Hit Points')) // group_of
+                          stat_block['stat'].get('Hit Points')) // group_of
         dbObj.hp = HP
         HP_view = f'{HP} ({dice_tower.to_dice(HP)})'
 
         # calculate AC
         AC = self.compile_attr(cr_info["ac"],
-                          stat_block['Stats'].get('Armor Class'))
+                          stat_block['stat'].get('Armor Class'))
 
         # get the name
         name = self.ui.lineEdit_name.text()
@@ -320,13 +318,16 @@ class TheShopDialog(QDialog):
                            f'AC: {AC}\n'
                            f'HP: {HP_view}\n'
                            f'{final_scores}\n')
-        sections = ('Lore', 'Attributes',
-                    'Items', 'Actions',
-                    'Roll tables' )
-        for section in range(0, len(sections)):
-            if stat_block[sections[section]]:
-                stat_block_text += f'\n====[ {sections[section]} ]===\n'
-                for key, text in stat_block[sections[section]].items():
+        sections = ('lore', 'attribute',
+                    'item', 'action',
+                    'rtable' )
+
+        for section in sections:
+            if stat_block[section]:
+                # print(f"stat_block: {sections[section]}")
+                stat_block_text += f'\n====[ {section} ]====\n'
+                for key, text in stat_block[section].items():
+                    # print(f'{key}:{text}:{group_of}:{cr_info}:{scores}:{dice_tower}')
                     text = self.get_auto_values(text, group_of,
                                                 cr_info, scores,
                                                 dice_tower)
@@ -359,64 +360,100 @@ class TheShopDialog(QDialog):
 
     @db_session
     def compile_templates(self):
+        # print("entering compile_templates")
         db = self.vault.main.db
-        details = {'Lore':{},
-                   'Stats':{},
-                   'Attributes':{},
-                   'Items': {},
-                   'Actions': {},
-                   'Roll tables': {} }
+        details = {'lore':{},
+                   'stat':{},
+                   'attribute':{},
+                   'item': {},
+                   'action': {},
+                   'rtable': {} }
 
-        def stack_rtable(details, rtable):
-            if rtable.immutable:
-                details['Roll tables'][rtable.name] = rtable.to_strings()
+        def stack_rtable(details, rtable, deny_list):
+            'only works on detail_type="rtable"'
+            dice_tower = Dice_factory()
+            if rtable.onlyPrint:
+                # do nothing but print the table.
+                # Does not count items as duplicates.
+                # Does not stack items with other stuff.
+                items = []
+                for rtable_xfer in rtable.roll_table_items:
+                    rtable_item = rtable_xfer.table_item
+                    if rtable_item.id not in deny_list:
+                        deny_list.append(rtable_item.id)
+                        items.append((rtable_xfer.match, rtable_item.to_display()))
+                items = [f'{x[0]}: {x[1]}' for x in items]
+                display = f'==[{rtable.dice_roll}: {rtable.name}]==\n\n' + \
+                           '\n\n'.join(sorted(items))
+                details['rtable'][rtable.id] = display
+            elif rtable.is_random:
+                # get a list of the items ignore matching.
+                items = [ x for x in rtable.roll_table_items.table_item]
+                # Roll the table dice
+                times_to_roll = dice_tower.roll(rtable.dice_roll)
+                # pick from the table this many times.
+                for i in range(0, times_to_roll):
+                    rolled_dice = dice_tower.roll('1d' + \
+                                             str(len(items)))
+                    item_index = rolled_dice - 1
+                    # pick this item from the list without matching.
+                    item = items[item_index]
+                    if item.id not in deny_list:
+                            deny_list.append(item.id)
+                            details, deny_list = stack(details,
+                                                       item,
+                                                       deny_list)
             else:
-                dice_tower = Dice_factory()
-                result = dice_tower.roll(rtable.diceRoll)
-                for item in rtable.items:
-                    if result in self.read_match(item.match):
-                        if item.lore:
-                            details['Lore'][item.lore.name] = item.lore.to_strings()
-                        if item.attribute:
-                            details['Attributes'][item.attribute.name] = item.attribute.to_strings()
-                        if item.stat:
-                            details['Stats'][item.stat.name] = item.stat.description
-                        if item.item:
-                            details['Items'][item.item.name] = item.item.to_strings()
-                        if item.action:
-                            details['Actions'][item.action.name] = item.action.to_strings()
-                        if item.template:
-                            details = stack(details, item.template)
-                        if item.rtable:
-                            stack_rtable(details, item.rtable)
-            return details
+                # roll the table dice
+                result = dice_tower.roll(rtable.dice_roll)
+                # check all matches
+                rolled_dice = dice_tower.roll(rtable.dice_roll)
+                for rtable_xfer in rtable.roll_table_items:
+                    item = rtable_xfer.table_item
+                    if rolled_dice in self.read_match(rtable_xfer.match) and item.id not in deny_list:
+                        deny_list.append(item.id)
+                        details, deny_list = stack(details,
+                                                   item,
+                                                   deny_list)
+            return details, deny_list
 
-        def stack_details(details, template):
-            for item in template.lore:
-                details['Lore'][item.name] = item.to_strings()
-            for item in template.stats:
-                details['Stats'][item.name] = item.description
-            for item in template.attributes:
-                details['Attributes'][item.name] = item.to_strings()
-            for item in template.items:
-                details['Items'][item.name] = item.to_strings()
-            for item in template.actions:
-                details['Actions'][item.name] = item.to_strings()
-            for table in template.rtables:
-                stack_rtable(details, table)
-            return details
+        def stack_details(details, template, deny_list):
+            match template.detail_type:
+                case 'stat':
+                    display = template.description
+                    details[template.detail_type][template.id] = display
+                case 'lore' | 'attribute' | 'item' | 'action':
+                    display = template.to_display()
+                    details[template.detail_type][template.id] = display
+                case 'rtable':
+                    details, deny_list = stack_rtable(details, template, deny_list)
+                case 'template':
+                    details, deny_list = stack(details, template, deny_list)
+            return details, deny_list
 
-        def stack(details, template):
-            # start with the template we were given.
-            details = stack_details(details, template)
-            # compile all the templates under that.
-            for sub_template in template.under:
-                details = stack(details, sub_template)
-            return details
+        def stack(details, template, deny_list=[]):
+            'stack should only act on detail_type="templates"'
+            # from here we need to go down one level and read members.
+            if template.detail_type not in ['template', 'rtable']:
+                details, deny_list = stack_details(details, template, deny_list)
+            elif template.detail_type == 'rtable':
+                details, deny_list = stack_rtable(details, template, deny_list)
+            else:
+                for sub_template in template.under_me:
+                    if sub_template.id not in deny_list:
+                        print(f"ACCESS=>{sub_template.name}")
+                        deny_list.append(sub_template.id)
+                        details, deny_list = stack(details, sub_template, deny_list)
+            return details, deny_list
 
         vault_item = db.Vault[self.target.id]
+        deny_list = []
+        # vault item members should ONLY be templates
         for template in vault_item.templates:
-            details = stack(details, template)
+            if template.id not in deny_list:
+                deny_list.append(template.id)
+                details, deny_list = stack(details, template, deny_list)
+        print(f'OUTPUT:{details}\n[{deny_list}]')
         return details
 
 
@@ -445,7 +482,7 @@ class TheShopDialog(QDialog):
     @db_session
     def update_selector_templates(self):
         db = self.vault.main.db
-        all_templates = db.Templates.select()
+        all_templates = db.Templates.select(detail_type='template')
         self.ui.comboBox_selector_templates.clear()
         for template in all_templates:
             if not template.is_folder:
@@ -461,6 +498,7 @@ class TheShopDialog(QDialog):
         dbObj = db.Templates[selected_template.id]
 
         if not templates_list.findItems(dbObj.name, Qt.MatchStartsWith):
+            print("add_template func")
             vault_item.templates.add(dbObj)
             item = QListWidgetItem(dbObj.name)
             item.dbObj = dbObj

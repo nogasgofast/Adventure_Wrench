@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Acadamy_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.2
+## Created by: Qt User Interface Compiler version 6.5.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -41,21 +41,6 @@ class Ui_acadamy_dialog(object):
         self.label_all_templates.setObjectName(u"label_all_templates")
 
         self.verticalLayout.addWidget(self.label_all_templates)
-
-        self.horizontalLayout_filter = QHBoxLayout()
-        self.horizontalLayout_filter.setObjectName(u"horizontalLayout_filter")
-        self.label_filter = QLabel(acadamy_dialog)
-        self.label_filter.setObjectName(u"label_filter")
-
-        self.horizontalLayout_filter.addWidget(self.label_filter)
-
-        self.lineEdit_filter = QLineEdit(acadamy_dialog)
-        self.lineEdit_filter.setObjectName(u"lineEdit_filter")
-
-        self.horizontalLayout_filter.addWidget(self.lineEdit_filter)
-
-
-        self.verticalLayout.addLayout(self.horizontalLayout_filter)
 
         self.listWidget_all_templates = QListWidget(acadamy_dialog)
         self.listWidget_all_templates.setObjectName(u"listWidget_all_templates")
@@ -166,21 +151,6 @@ class Ui_acadamy_dialog(object):
         self.label_4.setTextFormat(Qt.MarkdownText)
 
         self.verticalLayout_9.addWidget(self.label_4)
-
-        self.horizontalLayout_2 = QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.label_filter_templates_page = QLabel(self.page_new_template)
-        self.label_filter_templates_page.setObjectName(u"label_filter_templates_page")
-
-        self.horizontalLayout_2.addWidget(self.label_filter_templates_page)
-
-        self.lineEdit_filter_templates_page = QLineEdit(self.page_new_template)
-        self.lineEdit_filter_templates_page.setObjectName(u"lineEdit_filter_templates_page")
-
-        self.horizontalLayout_2.addWidget(self.lineEdit_filter_templates_page)
-
-
-        self.verticalLayout_9.addLayout(self.horizontalLayout_2)
 
         self.comboBox_stack_template = QComboBox(self.page_new_template)
         self.comboBox_stack_template.setObjectName(u"comboBox_stack_template")
@@ -655,10 +625,10 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_3.addWidget(self.checkBox_israndom_roll_table)
 
-        self.checkBox_immutable_roll_table = QCheckBox(self.page_roll_table)
-        self.checkBox_immutable_roll_table.setObjectName(u"checkBox_immutable_roll_table")
+        self.checkBox_interpret_roll_table = QCheckBox(self.page_roll_table)
+        self.checkBox_interpret_roll_table.setObjectName(u"checkBox_interpret_roll_table")
 
-        self.verticalLayout_3.addWidget(self.checkBox_immutable_roll_table)
+        self.verticalLayout_3.addWidget(self.checkBox_interpret_roll_table)
 
         self.horizontalLayout_button_roll_table = QHBoxLayout()
         self.horizontalLayout_button_roll_table.setObjectName(u"horizontalLayout_button_roll_table")
@@ -697,7 +667,6 @@ class Ui_acadamy_dialog(object):
         acadamy_dialog.setWindowTitle(QCoreApplication.translate("acadamy_dialog", u"Acadamy", None))
         self.pushButton_new_template.setText(QCoreApplication.translate("acadamy_dialog", u"New template", None))
         self.label_all_templates.setText(QCoreApplication.translate("acadamy_dialog", u"All Templates", None))
-        self.label_filter.setText(QCoreApplication.translate("acadamy_dialog", u"Filter", None))
         self.label_template_details.setText(QCoreApplication.translate("acadamy_dialog", u"Template", None))
         self.pushButton_back.setText(QCoreApplication.translate("acadamy_dialog", u"<- Save (Esc)", None))
         self.label_splash.setText("")
@@ -712,7 +681,6 @@ class Ui_acadamy_dialog(object):
 
         self.pushButton_add_detail.setText(QCoreApplication.translate("acadamy_dialog", u"Add", None))
         self.label_4.setText(QCoreApplication.translate("acadamy_dialog", u"#### Combine Templates", None))
-        self.label_filter_templates_page.setText(QCoreApplication.translate("acadamy_dialog", u"Filter", None))
         self.pushButton_stack_template.setText(QCoreApplication.translate("acadamy_dialog", u"Stack", None))
         self.label_13.setText(QCoreApplication.translate("acadamy_dialog", u"#### Randomizer", None))
 #if QT_CONFIG(tooltip)
@@ -722,7 +690,7 @@ class Ui_acadamy_dialog(object):
         self.pushButton_randomize_template.setStatusTip("")
 #endif // QT_CONFIG(statustip)
         self.pushButton_randomize_template.setText(QCoreApplication.translate("acadamy_dialog", u"Convert to Randomized Template", None))
-        self.checkBox_is_folder_template.setText(QCoreApplication.translate("acadamy_dialog", u"Folder toggle. Hides this template in some places.", None))
+        self.checkBox_is_folder_template.setText(QCoreApplication.translate("acadamy_dialog", u"Folder toggle. Removes template from template only lists.", None))
         self.pushButton_add_another_template.setText(QCoreApplication.translate("acadamy_dialog", u"Add Another", None))
         self.pushButton_delete_template.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
         self.pushButton_next_template.setText(QCoreApplication.translate("acadamy_dialog", u"Next", None))
@@ -784,7 +752,7 @@ class Ui_acadamy_dialog(object):
         self.pushButton_add_item_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"+", None))
         self.pushButton_delete_item_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Remove selected from list", None))
         self.checkBox_israndom_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Select from the list randomly <Dice to Roll> times.", None))
-        self.checkBox_immutable_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"This is Not a template, just write this stuff into the stat block.", None))
+        self.checkBox_interpret_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"This is Not a template, just write this stuff into the stat block.", None))
         self.pushButton_add_another_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Add Another", None))
         self.pushButton_delete_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
         self.pushButton_next_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Next", None))

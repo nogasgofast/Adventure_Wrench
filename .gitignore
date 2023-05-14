@@ -3,3 +3,6 @@ TODO.txt
 *.pickle
 env/*
 src/awdb.sqlite
+src/build*
+.project
+adventure_wrench.*

@@ -51,14 +51,14 @@ class PlayerDialog(QDialog):
     @db_session
     def update_hp(self):
         hp = self.ui.spinBox_hp.value()
+        # bouned change back to main
         self.main.ui.spinBox_main_hp.setValue(hp)
-        # self.main.update_hp(hp)
 
     @db_session
     def update_inititive(self):
         initiative = self.ui.spinBox_initiative.value()
+        # bouned change back to main
         self.main.ui.spinBox_main_initiative.setValue(initiative)
-        # self.main.update_initiative(initiative)
 
     @db_session
     def update_description(self):
@@ -75,6 +75,7 @@ class PlayerDialog(QDialog):
 
     @db_session
     def add_player(self):
+        'adds a new entery to the initiative tracker'
         player = self.main.db.Active(player=True)
         commit()
         item = QListWidgetItem("{player.initiative} | {player.name} | hp:{player.hp}")
@@ -83,6 +84,10 @@ class PlayerDialog(QDialog):
         self.main.update_encounter_text(item)
         self.target = item
         self.main.ui.listWidget_Encounter.addItem(item)
+        # Clear selections and focus on the added thing.
+        for thing in self.main.ui.listWidget_Encounter.selectedItems():
+            thing.setSelected(False)
+        item.setSelected(True)
         # clear ui for adding a new player
         self.ui.lineEdit_name.setText('')
         self.ui.lineEdit_name.setFocus()

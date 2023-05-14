@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Vault_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.2
+## Created by: Qt User Interface Compiler version 6.5.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -87,6 +87,7 @@ class Ui_Vault(object):
         self.verticalLayout_treeWidget.setObjectName(u"verticalLayout_treeWidget")
         self.listWidget_vault = QListWidget(Vault)
         self.listWidget_vault.setObjectName(u"listWidget_vault")
+        self.listWidget_vault.setStyleSheet(u"")
         self.listWidget_vault.setSortingEnabled(True)
 
         self.verticalLayout_treeWidget.addWidget(self.listWidget_vault)
@@ -105,31 +106,31 @@ class Ui_Vault(object):
 
     def retranslateUi(self, Vault):
         Vault.setWindowTitle(QCoreApplication.translate("Vault", u"DM Vault", None))
-        self.label_2.setText(QCoreApplication.translate("Vault", u"## Add Stuff", None))
+        self.label_2.setText(QCoreApplication.translate("Vault", u"## Vault", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_acadamy.setToolTip(QCoreApplication.translate("Vault", u"add/edit templates usable in the shop.", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_acadamy.setText(QCoreApplication.translate("Vault", u"Acadamy (templates)", None))
+        self.pushButton_acadamy.setText(QCoreApplication.translate("Vault", u"Templates", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_the_shop.setToolTip(QCoreApplication.translate("Vault", u"Add something new to the vault using templates.", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_the_shop.setText(QCoreApplication.translate("Vault", u"Shop (apply templates)", None))
-        self.label.setText(QCoreApplication.translate("Vault", u"## Tools", None))
+        self.pushButton_the_shop.setText(QCoreApplication.translate("Vault", u"Add ->", None))
+        self.label.setText(QCoreApplication.translate("Vault", u"### Current Encounter", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_add_to_encounter.setToolTip(QCoreApplication.translate("Vault", u"Add Selected Items to Current Encounter", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_add_to_encounter.setText(QCoreApplication.translate("Vault", u"Copy to Current Game", None))
+        self.pushButton_add_to_encounter.setText(QCoreApplication.translate("Vault", u"<- Copy", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_remove_from_encounter.setToolTip(QCoreApplication.translate("Vault", u"Remove Selected items from Current Encounter", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_remove_from_encounter.setText(QCoreApplication.translate("Vault", u"Remove from Game", None))
+        self.pushButton_remove_from_encounter.setText(QCoreApplication.translate("Vault", u"<- Delete", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_delete_selected_items.setToolTip(QCoreApplication.translate("Vault", u"Remove selected from current Encounter as well as DM Vault.", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_delete_selected_items.setText(QCoreApplication.translate("Vault", u"Delete selected", None))
+        self.pushButton_delete_selected_items.setText(QCoreApplication.translate("Vault", u"Delete ->", None))
         self.pushButton_back.setText(QCoreApplication.translate("Vault", u"<- Save (Esc)", None))
 #if QT_CONFIG(tooltip)
-        self.listWidget_vault.setToolTip(QCoreApplication.translate("Vault", u"Add items from the Shop.", None))
+        self.listWidget_vault.setToolTip("")
 #endif // QT_CONFIG(tooltip)
     # retranslateUi
 

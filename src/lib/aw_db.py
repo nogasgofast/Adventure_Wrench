@@ -37,107 +37,47 @@ class Vault(aw_db.Entity):
     in_active = Set('Active', reverse='from_vault')
 
 class Templates(aw_db.Entity):
-    name = Required(str)
-    is_folder = Optional(bool, default=False)
-    over = Optional('Templates', reverse='under')
-    under = Set('Templates', reverse='over')
+    'all types of details.'
     vault = Set('Vault', reverse='templates')
-    lore = Set('Lore')
-    attributes = Set('Attributes', reverse='template')
-    items = Set('Items', reverse='template')
-    actions = Set('Actions', reverse='template')
-    stats = Set('Stats', reverse='template')
-    rtables = Set('Rtables', reverse='used_in_templates')
-    rtable_items = Set('Rtable_items')
-
-class Lore(aw_db.Entity):
+    over_me = Set('Templates', reverse='under_me')
+    under_me = Set('Templates', reverse='over_me')
     name = Optional(str)
+    # lore, stat, attribute, item, action, rtable, template
+    detail_type = Required(str)
+    rtable_over_me = Set('Rtable_items', reverse='table_item')
     description = Optional(str)
-    template = Required('Templates')
-    rtable_items = Set('Rtable_items')
-    def to_strings(self):
-        return (f'{self.name}:\n'
-                f'    {self.description}')
-
-class Stats(aw_db.Entity):
-    name = Optional(str)
-    description = Optional(str)
-    template = Required('Templates')
-    rtable_items = Set('Rtable_items')
-    def to_strings(self):
-        return f'{self.name}: {self.description}'
-
-class Attributes(aw_db.Entity):
-    name = Optional(str)
-    content = Optional(str)
-    template = Required('Templates')
-    rtable_items = Set('Rtable_items')
-    def to_strings(self):
-        return f'{self.name}: {self.content}'
-
-class Items(aw_db.Entity):
-    name = Optional(str)
     weight = Optional(str)
-    quantity = Optional(int)
-    description = Optional(str)
-    template = Required('Templates')
-    rtable_items = Set('Rtable_items')
-    def to_strings(self):
-        return (f'{self.name}:\n'
-                f'    {self.description}')
-
-class Actions(aw_db.Entity):
-    name = Optional(str)
+    quantity = Optional(int, default=1)
     cost = Optional(str)
     limitations = Optional(str)
     result = Optional(str)
-    template = Required('Templates')
-    rtable_items = Set('Rtable_items')
-    def to_strings(self):
-        return (f'{self.name}:\n'
-                f'    cost: {self.cost}\n'
-                f'    limitations: {self.limitations}\n\n'
-                f'    {self.result}')
-
-class Rtables(aw_db.Entity):
-    name = Optional(str)
-    isRandom = Required(bool, default=False)
-    immutable = Required(bool, default=True)
-    diceRoll = Optional(str)
-    items = Set('Rtable_items', reverse='table')
-    used_in_templates = Set('Templates')
-    used_in_rtable_items = Set('Rtable_items', reverse='rtable')
-    def to_strings(self):
-        items = []
-        for i in self.items:
-            items.append(i.to_strings())
-        return f'{self.name}: {self.diceRoll}\n' + ''.join(sorted(items))
+    is_random = Optional(bool, default=False)
+    onlyPrint = Optional(bool, default=True)
+    dice_roll = Optional(str)
+    # This is how to go up the tree
+    roll_table_items = Set('Rtable_items', reverse='rtable')
+    # templates
+    is_folder = Optional(bool, default=False)
+    def to_display(self):
+        match self.detail_type:
+            case 'lore' | 'item':
+                print("returning lore or item")
+                return (f'{self.name}:\n'
+                        f'    {self.description}')
+            case 'stat' | 'attribute':
+                return f'{self.name}: {self.description}'
+            case 'action':
+                return (f'=[{self.name}]=:\n'
+                        f'    cost: {self.cost}\n'
+                        f'    limitations: {self.limitations}\n    ' +
+                        '\n    '.join(self.result.split('\n')))
 
 class Rtable_items(aw_db.Entity):
-    table = Required('Rtables')
+    # table for going up tree
+    rtable = Required('Templates', reverse='roll_table_items')
     match = Optional(str)
-    lore = Optional('Lore', reverse='rtable_items')
-    attribute = Optional('Attributes', reverse='rtable_items')
-    stat = Optional('Stats', reverse='rtable_items')
-    item = Optional('Items', reverse='rtable_items')
-    action = Optional('Actions', reverse='rtable_items')
-    template = Optional('Templates', reverse='rtable_items')
-    rtable = Optional('Rtables', reverse='used_in_rtable_items')
-    def to_strings(self):
-        if self.lore:
-            thing = self.lore
-        if self.attribute:
-            thing = self.attribute
-        if self.stat:
-            thing = self.stat
-        if self.item:
-            thing = self.item
-        if self.action:
-            thing = self.action
-        if self.rtable:
-            thing = rtable
-        thing = thing.to_strings()
-        return f'    {self.match}: {thing}\n'
+    # and as you might guess going down the tree
+    table_item = Optional('Templates', reverse='rtable_over_me')
 
 
 if __name__ == '__main__':

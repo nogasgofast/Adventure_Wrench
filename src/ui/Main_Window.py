@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Main_Window.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.2
+## Created by: Qt User Interface Compiler version 6.5.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -26,6 +26,25 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(800, 585)
+        MainWindow.setAutoFillBackground(False)
+        MainWindow.setStyleSheet(u"QWidget {\n"
+"	background-color: rgb(222, 221, 218);\n"
+"}\n"
+"\n"
+"QToolTip {\n"
+"	border: 5px solid orange;\n"
+"	background-color: #39537d;\n"
+"    color: #FFF;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"color: #594624;\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"background-color: #39537d;\n"
+"color: white;\n"
+"}")
         self.actionSave = QAction(MainWindow)
         self.actionSave.setObjectName(u"actionSave")
         self.actionOpen = QAction(MainWindow)
@@ -38,6 +57,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_head.setObjectName(u"horizontalLayout_head")
         self.label_5 = QLabel(self.centralwidget)
         self.label_5.setObjectName(u"label_5")
+        self.label_5.setStyleSheet(u"")
         self.label_5.setTextFormat(Qt.MarkdownText)
         self.label_5.setAlignment(Qt.AlignCenter)
 
@@ -56,7 +76,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.listWidget_Encounter = QListWidget(self.centralwidget)
         self.listWidget_Encounter.setObjectName(u"listWidget_Encounter")
-        self.listWidget_Encounter.setStyleSheet(u"font: 75 12pt \"Cantarell\";")
+        self.listWidget_Encounter.setStyleSheet(u"")
         self.listWidget_Encounter.setSelectionMode(QAbstractItemView.ExtendedSelection)
 
         self.verticalLayout_3.addWidget(self.listWidget_Encounter)
@@ -120,6 +140,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
         self.label_3.setSizePolicy(sizePolicy)
+        self.label_3.setStyleSheet(u"")
         self.label_3.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_4.addWidget(self.label_3)
@@ -138,6 +159,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.label_4 = QLabel(self.centralwidget)
         self.label_4.setObjectName(u"label_4")
+        self.label_4.setStyleSheet(u"")
         self.label_4.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.label_4)
@@ -231,6 +253,7 @@ class Ui_MainWindow(object):
 
         self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
+        self.label_2.setStyleSheet(u"")
         self.label_2.setTextFormat(Qt.MarkdownText)
 
         self.verticalLayout.addWidget(self.label_2)

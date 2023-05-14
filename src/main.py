@@ -177,7 +177,6 @@ class MainWindow(QMainWindow):
 
     @db_session
     def update_initiative(self):
-        # print("update_creature_initiative")
         if self.suppress_spinbox_update:
             pass
         else:
@@ -242,7 +241,7 @@ class MainWindow(QMainWindow):
                     groupHP = [x + diff for x in groupHP]
                     groupHP = [x for x in groupHP if x > 0]
                     item.dbObj.group_hp = groupHP
-                    item.dbObj.count = len(groupHP)
+                    item.dbObj.count = len([ x for x in groupHP if x > 0])
                 else:
                     hp = item.dbObj.hp + diff
                     if hp < 0:

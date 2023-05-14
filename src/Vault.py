@@ -1,7 +1,7 @@
 from pony.orm import db_session, commit
 from ui.Vault_Dialog import Ui_Vault
 from PySide6.QtWidgets import QDialog, QListWidgetItem
-from PySide6.QtGui import QBrush, QColor
+from PySide6.QtGui import QBrush, QColor, QFont
 from Acadamy import AcadamyDialog
 from TheShop import TheShopDialog
 from lib.dice import Dice_factory
@@ -59,6 +59,10 @@ class VaultDialog(QDialog):
                            f'{vault_item.name}')
             item.dbObj = vault_item
             item.setToolTip(vault_item.stat_block)
+            red, green, blue = (0,255,0)
+            painter = QBrush(QColor(red,green,blue))
+            item.setBackground(painter)
+            item.setFont(QFont("Times", 16, QFont.Bold))
             self.ui.listWidget_vault.addItem(item)
 
     @db_session
@@ -71,6 +75,7 @@ class VaultDialog(QDialog):
             dbObj = db.Vault[item.dbObj.id]
             if dbObj == target:
                 item.setText(target.name)
+                item.setFont(QFont("Times", 16, QFont.Bold))
 
 
     @db_session

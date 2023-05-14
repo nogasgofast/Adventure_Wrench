@@ -34,20 +34,6 @@
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_filter">
-       <item>
-        <widget class="QLabel" name="label_filter">
-         <property name="text">
-          <string>Filter</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit_filter"/>
-       </item>
-      </layout>
-     </item>
-     <item>
       <widget class="QListWidget" name="listWidget_all_templates">
        <property name="sortingEnabled">
         <bool>true</bool>
@@ -211,20 +197,6 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QLabel" name="label_filter_templates_page">
-           <property name="text">
-            <string>Filter</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEdit_filter_templates_page"/>
-         </item>
-        </layout>
-       </item>
-       <item>
         <widget class="QComboBox" name="comboBox_stack_template"/>
        </item>
        <item>
@@ -267,7 +239,7 @@
        <item>
         <widget class="QCheckBox" name="checkBox_is_folder_template">
          <property name="text">
-          <string>Folder toggle. Hides this template in some places.</string>
+          <string>Folder toggle. Removes template from template only lists.</string>
          </property>
         </widget>
        </item>
@@ -884,7 +856,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox_immutable_roll_table">
+        <widget class="QCheckBox" name="checkBox_interpret_roll_table">
          <property name="text">
           <string>This is Not a template, just write this stuff into the stat block.</string>
          </property>
