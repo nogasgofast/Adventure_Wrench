@@ -1,39 +1,65 @@
-#!/usr/bin/python3
+#!/bin/env python
 
-import sys
+import sys, os
 import requests
+import configparser
 from version import ver
 from ui.Main_Window import Ui_MainWindow
 from PySide6.QtWidgets import (QApplication, QMainWindow,
-                              QDialog, QWidget,
-                              QListWidgetItem)
+                              QWidget, QListWidgetItem,
+                              QMessageBox, QFileDialog)
 from PySide6.QtGui import QBrush, QColor, QFont
 from pony.orm import db_session, commit
-from lib.aw_db import aw_db
+from lib.aw_db import database_factory
 from Player import PlayerDialog
 from Vault import VaultDialog
 
+config_name = 'awconfig.ini'
+db_default_name = 'save/default.sqlite'
 
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+        # read config
+        self.db = database_factory()
+        self.config_file = configparser.ConfigParser()
+        self.config_file.read(config_name)
+        if 'Game' in self.config_file:
+            db_file = self.config_file['Game']['db']
+        else:
+            # make default configs/database name
+            try:
+                os.mkdir('save')
+            except FileExistsError:
+                pass
+            self.config_file['Game'] = { 'db': db_default_name }
+            with open(db_default_name, 'w') as fh:
+                self.config_file.write(fh)
+            db_file = db_default_name
         try:
-            aw_db.bind(provider="sqlite", filename="awdb.sqlite", create_db=True)
-            aw_db.generate_mapping(create_tables=True)
-            self.db = aw_db
+            # connect to database and try to create missing items if needed.
+            self.db.bind(provider="sqlite", filename=db_file, create_db=True)
+            self.db.generate_mapping(create_tables=True)
         except Exception as e:
             print("aw_db.sqlite Failed to load: {e}")
             raise e
+
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # Setting the game name based on the save file name.
+        game_name = os.path.basename(db_file)
+        game_name = os.path.splitext(game_name)[0]
+        self.ui.label_current_game.setText(f'Current Game: {game_name}')
+
         self.ui_vault = VaultDialog(self)
         self.ui_p = PlayerDialog(self)
+
         self.suppress_spinbox_update = False
-
-
         self.ui_p.setModal(True)
 
+        self.ui.pushButton_switch_game.clicked.connect(self.switch_game)
         self.ui.pushButton_vault.clicked.connect(self.ui_vault.show)
         self.ui.pushButton_players.clicked.connect(self.ui_p.add_player)
         self.ui.pushButton_Inititave.clicked.connect(self.advance_initiative)
@@ -60,16 +86,51 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_remove.clicked.connect(self.remove)
 
         self.ui.listWidget_Encounter.itemDoubleClicked.connect(self.ui_p.update_player)
-        # connect to quick update fields
         self.ui.listWidget_Encounter.itemSelectionChanged.connect(
                                     self.spinBox_update)
+
         self.ui.spinBox_main_initiative.valueChanged.connect(
                                     self.update_initiative)
         self.ui.spinBox_main_hp.valueChanged.connect(
                                     self.update_hp)
+
         self.check_version()
         self.load_session()
 
+
+    def switch_game(self):
+        file_name, filtered_by = QFileDialog.getOpenFileName(self, "Switch Game",
+                                               'save/', 'sqlite databases (*.sqlite)')
+        if file_name:
+            # use relative path.
+            file_name = os.path.basename(file_name)
+            relative_path = f'save/{file_name}'
+            try:
+                # print(file_name)
+                self.config_file['Game'] = { 'db': relative_path }
+                with open(config_name, 'w') as fh:
+                    self.config_file.write(fh)
+                try:
+                    self.ui_p.close()
+                    self.ui_vault.close()
+                    del(self.db)
+                    self.db = database_factory()
+                    self.db.bind(provider="sqlite",
+                               filename=relative_path,
+                               create_db=False)
+                    self.db.generate_mapping(create_tables=False)
+                except Exception as e:
+                    print("aw_db.sqlite Failed to load: {e}")
+                    raise e
+                self.ui_vault.load_vault()
+                self.ui_vault.ui_acadamy.load_acadamy()
+                self.load_session()
+                # just use the name not the extention here
+                game_name = os.path.splitext(file_name)[0]
+                self.ui.label_current_game.setText(f'Current Game: {game_name}')
+            except Exception as e:
+                print(f"Failed to load: {e}")
+                raise e
 
     def check_version(self):
         'Checking for latest version'
@@ -150,6 +211,7 @@ class MainWindow(QMainWindow):
     @db_session
     def load_session(self):
         all_Active = self.db.Active.select()
+        self.ui.listWidget_Encounter.clear()
         for thing in all_Active:
             item = QListWidgetItem()
             item.dbObj = thing

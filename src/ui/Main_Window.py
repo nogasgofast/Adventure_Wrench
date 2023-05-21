@@ -55,13 +55,13 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.horizontalLayout_head = QHBoxLayout()
         self.horizontalLayout_head.setObjectName(u"horizontalLayout_head")
-        self.label_5 = QLabel(self.centralwidget)
-        self.label_5.setObjectName(u"label_5")
-        self.label_5.setStyleSheet(u"")
-        self.label_5.setTextFormat(Qt.MarkdownText)
-        self.label_5.setAlignment(Qt.AlignCenter)
+        self.label_current_game = QLabel(self.centralwidget)
+        self.label_current_game.setObjectName(u"label_current_game")
+        self.label_current_game.setStyleSheet(u"")
+        self.label_current_game.setTextFormat(Qt.MarkdownText)
+        self.label_current_game.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_head.addWidget(self.label_5)
+        self.horizontalLayout_head.addWidget(self.label_current_game)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -296,6 +296,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addItem(self.verticalSpacer_2)
 
+        self.pushButton_switch_game = QPushButton(self.centralwidget)
+        self.pushButton_switch_game.setObjectName(u"pushButton_switch_game")
+
+        self.verticalLayout.addWidget(self.pushButton_switch_game)
+
         self.label_version = QLabel(self.centralwidget)
         self.label_version.setObjectName(u"label_version")
         self.label_version.setOpenExternalLinks(True)
@@ -320,7 +325,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Adventure Wrench", None))
         self.actionSave.setText(QCoreApplication.translate("MainWindow", u"Save", None))
         self.actionOpen.setText(QCoreApplication.translate("MainWindow", u"Open", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"## Current Game", None))
+        self.label_current_game.setText(QCoreApplication.translate("MainWindow", u"## Current Game", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"### Add Stuff", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_players.setToolTip(QCoreApplication.translate("MainWindow", u"Add players and simple things to the current game.", None))
@@ -372,6 +377,7 @@ class Ui_MainWindow(object):
         self.pushButton_w_star.setToolTip(QCoreApplication.translate("MainWindow", u"cycles on 6th press", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_w_star.setText(QCoreApplication.translate("MainWindow", u"\u2606", None))
+        self.pushButton_switch_game.setText(QCoreApplication.translate("MainWindow", u"Switch Game", None))
         self.label_version.setText(QCoreApplication.translate("MainWindow", u"Checking Version...", None))
     # retranslateUi
 

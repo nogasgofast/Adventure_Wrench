@@ -89,7 +89,61 @@ class AcadamyDialog(QDialog):
                           'Items': 5,
                           'Actions': 6,
                           'Roll Table': 7}
-        self.populate_listWidget_all_templates()
+        self.load_acadamy()
+
+
+    @db_session
+    def create_fingerprint(self):
+        'Not used, maybe later'
+        db = self.ui_vault.main.db
+        dbObj = db.Templates[self.target.dbObj.id]
+        fingerprint = ''
+        section_filled = False
+        # create stat area
+        for i in dbObj.under_me.select(detail_type = 'stat').count():
+            fingerprint += 's'
+            section_filled = True
+        if section_filled:
+            fingerprint += ','
+            section_filled = False
+        # create attribute area
+        for i in dbObj.under_me.select(detail_type = 'attribute').count():
+            fingerprint += 'a'
+            section_filled = True
+        if section_filled:
+            fingerprint += ','
+            section_filled = False
+        for i in dbObj.under_me.select(detail_type = 'action').count():
+            fingerprint += 'w'
+            section_filled = True
+        if section_filled:
+            fingerprint += ','
+            section_filled = False
+        for i in dbObj.under_me.select(detail_type = 'lore').count():
+            fingerprint += 'l'
+            section_filled = True
+        if section_filled:
+            fingerprint += ','
+            section_filled = False
+        for i in dbObj.under_me.select(detail_type = 'item').count():
+            fingerprint += 'i'
+            section_filled = True
+        if section_filled:
+            fingerprint += ','
+            section_filled = False
+        for i in dbObj.under_me.select(detail_type = 'rtable').count():
+            fingerprint += 'r'
+            section_filled = True
+        if section_filled:
+            fingerprint += ','
+            section_filled = False
+        for i in dbObj.under_me.select(detail_type = 'template').count():
+            fingerprint += 't'
+            section_filled = True
+        if section_filled:
+            fingerprint += ','
+            section_filled = False
+        return f'[{fingerprint}]'
 
 
     @db_session
@@ -457,10 +511,12 @@ class AcadamyDialog(QDialog):
                 forms.setCurrentIndex(self.pageIndex['template'])
 
     @db_session
-    def populate_listWidget_all_templates(self):
+    def load_acadamy(self):
         'initialize templates view'
         db = self.ui_vault.main.db
+        self.ui.listWidget_template.clear()
         templates_view = self.ui.listWidget_all_templates
+        templates_view.clear()
         for dbObj in db.Templates.select(detail_type='template'):
             if dbObj.is_folder:
                 item = QListWidgetItem(f"Folder: {dbObj.name}")

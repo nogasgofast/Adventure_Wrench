@@ -569,4 +569,4 @@ class TheShopDialog(QDialog):
         self.target = vault_item = db.Vault[self.target.id]
         vault_item.name = self.ui.lineEdit_name.text()
         self.vault.update_vault_item(self.target)
-        self.update_stat_block()
+        # self.update_stat_block()

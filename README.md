@@ -97,6 +97,26 @@ and so on. When applied to something this roll table will apply another template
 long as that template or roll table has not been applied already.
 
 
+## Making A Game to distribute
+### I have the game all written up, what now?
+1. close the application.
+2. go into the "save" folder in the program directory and rename default.sqlite to <campaign name>.sqlite
+3. Share that renamed file to a friend, tell them to drop it into the "save" folder and use the "switch game" button.
+4. Starting up the appication will start a new empty game named default.sqlite in the save folder.
+5. If you want to switch back to the campaign you can use the "swtich game" button.
+
+### I have a different game started already!
+1. close the application
+2. open the "save" folder and rename default.sqlite to <something_else>.sqlite
+3. re-open the application and write your campaign.
+4. Follow the instructions above for "I have the game all written up, what now?"
+5. If you want to switch back to your old game at any time use the "switch game" button.
+
+### 1337 hack3rs only
+The awconfig.ini file should have the name of the currently used database file in it.
+The change game button just edits this file and forces the user to restart the application.
+that is all.
+
 ## Install instructions
 
 If you are running 64bit windows or linux, likely all you need

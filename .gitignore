@@ -6,3 +6,6 @@ src/awdb.sqlite
 src/build*
 .project
 adventure_wrench.*
+awconfig.ini
+save
+save/*

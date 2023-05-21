@@ -41,7 +41,7 @@ color: white;
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_head">
       <item>
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="label_current_game">
         <property name="styleSheet">
          <string notr="true"/>
         </property>
@@ -88,7 +88,7 @@ color: white;
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
         <property name="spacing">
          <number>6</number>
         </property>
@@ -511,6 +511,13 @@ color: white;
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_switch_game">
+          <property name="text">
+           <string>Switch Game</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_version">

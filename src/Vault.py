@@ -54,6 +54,7 @@ class VaultDialog(QDialog):
     @db_session
     def load_vault(self):
         all_vault_items = self.main.db.Vault.select()
+        self.ui.listWidget_vault.clear()
         for vault_item in all_vault_items:
             item = QListWidgetItem(
                            f'{vault_item.name}')

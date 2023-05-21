@@ -93,7 +93,17 @@ class PlayerDialog(QDialog):
         self.ui.lineEdit_name.setFocus()
         self.ui.spinBox_hp.setValue(1)
         self.ui.spinBox_initiative.setValue(1)
-        self.ui.textEdit_description.setText('')
+        self.ui.textEdit_description.setText('''AC: <>
+STR: 10    DEX: 10    CON: 10    WIS: 10    INT: 10    CHA: 10
+
+====[ Status Effects ]====
+====[ Attributes ]====
+====[ Actions ]====
+=[Action 1]=:
+    cost: 1 action
+    limitations: targets 1, melee
+    <> to hit
+    On hit: <>''')
         self.show()
 
     @db_session
