@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Vault_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.0
+## Created by: Qt User Interface Compiler version 6.5.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -24,6 +24,7 @@ class Ui_Vault(object):
         if not Vault.objectName():
             Vault.setObjectName(u"Vault")
         Vault.resize(673, 583)
+        Vault.setStyleSheet(u"")
         self.verticalLayout_3 = QVBoxLayout(Vault)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout_content = QHBoxLayout()
@@ -41,11 +42,13 @@ class Ui_Vault(object):
 
         self.pushButton_acadamy = QPushButton(Vault)
         self.pushButton_acadamy.setObjectName(u"pushButton_acadamy")
+        self.pushButton_acadamy.setAutoDefault(False)
 
         self.verticalLayout_menu.addWidget(self.pushButton_acadamy)
 
         self.pushButton_the_shop = QPushButton(Vault)
         self.pushButton_the_shop.setObjectName(u"pushButton_the_shop")
+        self.pushButton_the_shop.setAutoDefault(False)
 
         self.verticalLayout_menu.addWidget(self.pushButton_the_shop)
 
@@ -58,16 +61,19 @@ class Ui_Vault(object):
 
         self.pushButton_add_to_encounter = QPushButton(Vault)
         self.pushButton_add_to_encounter.setObjectName(u"pushButton_add_to_encounter")
+        self.pushButton_add_to_encounter.setAutoDefault(False)
 
         self.verticalLayout_menu.addWidget(self.pushButton_add_to_encounter)
 
         self.pushButton_remove_from_encounter = QPushButton(Vault)
         self.pushButton_remove_from_encounter.setObjectName(u"pushButton_remove_from_encounter")
+        self.pushButton_remove_from_encounter.setAutoDefault(False)
 
         self.verticalLayout_menu.addWidget(self.pushButton_remove_from_encounter)
 
         self.pushButton_delete_selected_items = QPushButton(Vault)
         self.pushButton_delete_selected_items.setObjectName(u"pushButton_delete_selected_items")
+        self.pushButton_delete_selected_items.setAutoDefault(False)
 
         self.verticalLayout_menu.addWidget(self.pushButton_delete_selected_items)
 
@@ -77,6 +83,7 @@ class Ui_Vault(object):
 
         self.pushButton_back = QPushButton(Vault)
         self.pushButton_back.setObjectName(u"pushButton_back")
+        self.pushButton_back.setAutoDefault(False)
 
         self.verticalLayout_menu.addWidget(self.pushButton_back)
 

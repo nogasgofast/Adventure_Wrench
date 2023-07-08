@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>DM Vault</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_content">
@@ -45,6 +48,9 @@
          <property name="text">
           <string>Templates</string>
          </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -54,6 +60,9 @@
          </property>
          <property name="text">
           <string>Add -&gt;</string>
+         </property>
+         <property name="autoDefault">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -78,6 +87,9 @@
          <property name="text">
           <string>&lt;- Copy</string>
          </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -88,6 +100,9 @@
          <property name="text">
           <string>&lt;- Delete</string>
          </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -97,6 +112,9 @@
          </property>
          <property name="text">
           <string>Delete -&gt;</string>
+         </property>
+         <property name="autoDefault">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -117,6 +135,9 @@
         <widget class="QPushButton" name="pushButton_back">
          <property name="text">
           <string>&lt;- Save (Esc)</string>
+         </property>
+         <property name="autoDefault">
+          <bool>false</bool>
          </property>
         </widget>
        </item>

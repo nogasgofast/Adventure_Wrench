@@ -18,8 +18,29 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
-	background-color: rgb(222, 221, 218);
+  color: black;
+  background-color: rgb(222, 221, 218);
 }
+
+
+QListWidget QTreeWidget{
+   color: #000;
+   selection-color: #FFF;
+   selection-background-color: #55A;
+}
+
+QListWidget::item:selected:!active{
+   color: #000;
+   selection-color: #FFF;
+   selection-background-color: #55A;
+}
+
+QTreeWidget::item:selected:!active{
+   color: #000;
+   selection-color: #FFF;
+   selection-background-color: #55A;
+}
+
 
 QToolTip {
 	border: 5px solid orange;

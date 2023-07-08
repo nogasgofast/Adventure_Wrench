@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Player_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.0
+## Created by: Qt User Interface Compiler version 6.5.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -132,6 +132,7 @@ class Ui_Player(object):
 
         self.pushButton_back = QPushButton(Player)
         self.pushButton_back.setObjectName(u"pushButton_back")
+        self.pushButton_back.setAutoDefault(False)
 
         self.verticalLayout.addWidget(self.pushButton_back)
 

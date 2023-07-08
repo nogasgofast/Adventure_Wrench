@@ -60,7 +60,7 @@ class VaultDialog(QDialog):
                            f'{vault_item.name}')
             item.dbObj = vault_item
             item.setToolTip(vault_item.stat_block)
-            red, green, blue = (0,255,0)
+            red, green, blue = (172,171,168)
             painter = QBrush(QColor(red,green,blue))
             item.setBackground(painter)
             item.setFont(QFont("Times", 16, QFont.Bold))

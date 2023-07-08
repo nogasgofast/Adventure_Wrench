@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Main_Window.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.0
+## Created by: Qt User Interface Compiler version 6.5.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -28,8 +28,29 @@ class Ui_MainWindow(object):
         MainWindow.resize(800, 585)
         MainWindow.setAutoFillBackground(False)
         MainWindow.setStyleSheet(u"QWidget {\n"
-"	background-color: rgb(222, 221, 218);\n"
+"  color: black;\n"
+"  background-color: rgb(222, 221, 218);\n"
 "}\n"
+"\n"
+"\n"
+"QListWidget QTreeWidget{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"QListWidget::item:selected:!active{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"QTreeWidget::item:selected:!active{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
 "\n"
 "QToolTip {\n"
 "	border: 5px solid orange;\n"

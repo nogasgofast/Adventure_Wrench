@@ -1,8 +1,9 @@
 
-from pony.orm import db_session, commit
-from PySide6.QtWidgets import (QDialog, QListWidgetItem, QMessageBox)
+from pony.orm import db_session, commit, desc
+from PySide6.QtWidgets import (QDialog, QListWidgetItem,
+                               QTreeWidgetItem, QMessageBox)
+from PySide6.QtCore import Qt, QSignalBlocker
 from ui.Acadamy_Dialog import Ui_acadamy_dialog
-
 
 
 class AcadamyDialog(QDialog):
@@ -17,18 +18,19 @@ class AcadamyDialog(QDialog):
         self.ui.verticalStackedWidget_forms.setCurrentIndex(0)
 
         self.ui.pushButton_new_template.clicked.connect(self.new_template)
-        self.ui.pushButton_delete_lore.clicked.connect(self.delete_detail)
-        self.ui.pushButton_delete_stats.clicked.connect(self.delete_detail)
         self.ui.pushButton_add_detail.clicked.connect(self.add_detail)
-        self.ui.pushButton_delete_template.clicked.connect(self.delete_template)
-        self.ui.pushButton_delete_attribute.clicked.connect(self.delete_detail)
-        self.ui.pushButton_delete_item.clicked.connect(self.delete_detail)
-        self.ui.pushButton_delete_action.clicked.connect(self.delete_detail)
         self.ui.pushButton_add_item_roll_table.clicked.connect(self.add_item_roll_table)
-        self.ui.pushButton_delete_item_roll_table.clicked.connect(self.delete_item_roll_table)
-        self.ui.pushButton_delete_roll_table.clicked.connect(self.delete_detail)
         self.ui.pushButton_stack_template.clicked.connect(self.stack_template)
         self.ui.pushButton_back.clicked.connect(self.close)
+        # deletion buttons
+        self.ui.pushButton_delete_item_roll_table.clicked.connect(self.delete_item_roll_table)
+        self.ui.pushButton_delete_lore.clicked.connect(self.delete_detail)
+        self.ui.pushButton_delete_attribute.clicked.connect(self.delete_detail)
+        self.ui.pushButton_delete_stats.clicked.connect(self.delete_detail)
+        self.ui.pushButton_delete_item.clicked.connect(self.delete_detail)
+        self.ui.pushButton_delete_template.clicked.connect(self.delete_template)
+        self.ui.pushButton_delete_action.clicked.connect(self.delete_detail)
+        self.ui.pushButton_delete_roll_table.clicked.connect(self.delete_detail)
         # Add another buttons
         self.ui.pushButton_add_another_template.clicked.connect(self.new_template)
         self.ui.pushButton_add_another_lore.clicked.connect(lambda: self.add_detail('Lore'))
@@ -46,23 +48,23 @@ class AcadamyDialog(QDialog):
         self.ui.pushButton_next_roll_table.clicked.connect(self.next_buttons)
         # template to random tempalte converter
         self.ui.pushButton_randomize_template.clicked.connect(self.template_to_random)
-
-
-        self.ui.listWidget_all_templates.clicked.connect(self.select_template)
-        self.ui.listWidget_template.clicked.connect(self.select_detail)
+        # This is how I auto-update a bunch of things.
+        self.ui.treeWidget_all_templates.currentItemChanged.connect(self.select_template)
         self.ui.listWidget_table_roll_table.clicked.connect(self.rt_item_select)
 
         self.ui.lineEdit_template_name.textEdited.connect(self.update_template_name)
-        self.ui.lineEdit_name_lore.textEdited.connect(self.update_name_lore)
+        self.ui.lineEdit_name_lore.textEdited.connect(self.update_template_name)
+        self.ui.lineEdit_name_attribute.textEdited.connect(self.update_template_name)
+        self.ui.lineEdit_name_item.textEdited.connect(self.update_template_name)
+        self.ui.lineEdit_name_action.textEdited.connect(self.update_template_name)
+        self.ui.lineEdit_name_roll_table.textEdited.connect(self.update_template_name)
+
         self.ui.lineEdit_content_stats.textEdited.connect(self.update_content_stats)
-        self.ui.lineEdit_name_attribute.textEdited.connect(self.update_name_attribute)
         self.ui.lineEdit_content_attribute.textEdited.connect(self.update_content_attribute)
-        self.ui.lineEdit_name_item.textEdited.connect(self.update_name_item)
+
         self.ui.lineEdit_weight_item.textEdited.connect(self.update_weight_item)
-        self.ui.lineEdit_name_action.textEdited.connect(self.update_name_action)
         self.ui.lineEdit_cost_action.textEdited.connect(self.update_cost_action)
         self.ui.lineEdit_limitations_action.textEdited.connect(self.update_limitations_action)
-        self.ui.lineEdit_name_roll_table.textEdited.connect(self.update_name_roll_table)
         self.ui.lineEdit_dice_roll_table.textEdited.connect(self.update_dice_roll_table)
 
         self.ui.spinBox_quantity_item.valueChanged.connect(self.update_quantity_item)
@@ -77,8 +79,6 @@ class AcadamyDialog(QDialog):
         self.ui.checkBox_interpret_roll_table.stateChanged.connect(self.update_immutable_roll_table)
         self.ui.checkBox_is_folder_template.stateChanged.connect(self.update_is_folder)
 
-        self.target = None
-        self.detail_target = None
         # This mapping lets me diss-connect combobox positions from pageIndex.
         # and instead use page names directly.
         self.pageIndex = {'splash': 0,
@@ -96,7 +96,9 @@ class AcadamyDialog(QDialog):
     def create_fingerprint(self):
         'Not used, maybe later'
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.target.dbObj.id]
+        templates = self.ui.treeWidget_all_templates
+        template = templaste.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         fingerprint = ''
         section_filled = False
         # create stat area
@@ -167,21 +169,22 @@ class AcadamyDialog(QDialog):
     def template_to_random(self):
         'converts any template to randomized template'
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.target.dbObj.id]
+        templates = self.ui.treeWidget_all_templates
+        template = templaste.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         if dbObj.is_folder:
             return
-        all_templates = self.ui.listWidget_all_templates
         forms = self.ui.verticalStackedWidget_forms
 
         # create a new template with this templates name
-        new_template = db.Templates(name=dbObj.name, detail_type='template')
+        template = db.Templates(name=dbObj.name, detail_type='template')
         commit()
         # set this templates is_folder property
         dbObj.is_folder = True
         commit()
         self.update_template_name()
         # create rollTable
-        new_roll_table = new_template.under_me.create(detail_type='rtable',
+        new_roll_table = template.under_me.create(detail_type='rtable',
                                                       name=dbObj.name)
         commit()
         # import each high level item into a roll table. Count them.
@@ -197,77 +200,89 @@ class AcadamyDialog(QDialog):
         roll = '1d' + str(count)
         new_roll_table.dice_roll = roll
         # finally change page to new template.
-        self.new_template(x=False, template=new_template)
-        # refresh all templates view
-        self.select_template()
+        self.new_template(x=False, template=template)
 
 
     def next_buttons(self):
         forms = self.ui.verticalStackedWidget_forms
-        for item in self.ui.listWidget_template.selectedItems():
-            item.setSelected(False)
-        self.ui.listWidget_template.item(0).setSelected(True)
+        item = self.ui.treeWidget_all_templates.currentItem()
+        nextItem = self.ui.treeWidget_all_templates.itemBelow(item)
+        self.ui.treeWidget_all_templates.setCurrentItem(nextItem)
         forms.setCurrentIndex(self.pageIndex['template'])
 
 
     @db_session
     def update_is_folder(self):
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.target.dbObj.id]
+        templates = self.ui.treeWidget_all_templates
+        template = templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         dbObj.is_folder = self.ui.checkBox_is_folder_template.isChecked()
         if dbObj.is_folder:
-            self.target.setText(f"Folder: {dbObj.name}")
+            template.setText(0, f"Folder: {dbObj.name}")
         else:
-            self.target.setText(f"{dbObj.name}")
-        self.init_detail_view()
+            template.setText(0, f"{dbObj.name}")
 
 
     @db_session
     def stack_template(self):
         db = self.ui_vault.main.db
         template_selecter = self.ui.comboBox_stack_template
-        template = db.Templates[self.target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         child = template_selecter.currentData()
         child = db.Templates[child.id]
-        template.under_me.add(child)
-        self.init_detail_view()
-
-
-    @db_session
-    def update_name_roll_table(self):
-        db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
-        dbObj.name = self.ui.lineEdit_name_roll_table.text()
+        childItem = QTreeWidgetItem(template)
+        # this is fine, child.name can't be a folder. It would not be
+        # an option in the ui.
+        childItem.setText(0, child.name)
+        childItem.dbObj = dbObj
+        dbObj.under_me.add(child)
         commit()
-        self.update_detail(dbObj)
+        def add_level(parent):
+            for dbObj in parent.dbObj.under_me.select():
+                item = QTreeWidgetItem(parent)
+                item.dbObj = dbObj
+                item.setText(0, dbObj.name)
+                if len(dbObj.under_me) > 0:
+                    add_level(item)
+        add_level(child)
+
 
     @db_session
     def update_israndom_roll_table(self):
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         dbObj.is_random = self.ui.checkBox_israndom_roll_table.isChecked()
 
 
     @db_session
     def update_immutable_roll_table(self):
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         dbObj.onlyPrint = self.ui.checkBox_interpret_roll_table.isChecked()
 
 
     @db_session
     def update_dice_roll_table(self):
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         dbObj.dice_roll = self.ui.lineEdit_dice_roll_table.text()
-        commit()
-        self.update_detail(dbObj)
 
 
     @db_session
     def add_item_roll_table(self):
         db = self.ui_vault.main.db
-        rollTable = db.Templates[self.detail_target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        rollTable = db.Templates[template.dbObj.id]
         match  = self.ui.lineEdit_item_match_roll_table.text()
         child = self.ui.comboBox_options_roll_table.currentData()
         child = db.Templates[child.id]
@@ -293,143 +308,96 @@ class AcadamyDialog(QDialog):
 
 
     @db_session
-    def update_name_action(self):
-        db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
-        dbObj.name = self.ui.lineEdit_name_action.text()
-        commit()
-        self.update_detail(dbObj)
-
-
-    @db_session
     def update_cost_action(self):
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         dbObj.cost = self.ui.lineEdit_cost_action.text()
-        commit()
-        self.update_detail(dbObj)
 
 
     @db_session
     def update_limitations_action(self):
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         dbObj.limitations = self.ui.lineEdit_limitations_action.text()
-        commit()
-        self.update_detail(dbObj)
 
 
     @db_session
     def update_result_action(self):
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         dbObj.result = self.ui.textEdit_result_action.toPlainText()
-        commit()
-        self.update_detail(dbObj)
-
-
-    @db_session
-    def update_name_item(self):
-        db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
-        dbObj.name = self.ui.lineEdit_name_item.text()
-        commit()
-        self.update_detail(dbObj)
 
 
     @db_session
     def update_weight_item(self):
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         dbObj.weight = self.ui.lineEdit_weight_item.text()
-        commit()
-        self.update_detail(dbObj)
 
 
     @db_session
     def update_quantity_item(self):
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         dbObj.quantity = self.ui.spinBox_quantity_item.value()
-        commit()
-        self.update_detail(dbObj)
 
 
     @db_session
     def update_description_item(self):
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         dbObj.description = self.ui.textEdit_description_item.toPlainText()
-        commit()
-        self.update_detail(dbObj)
 
-    @db_session
-    def update_name_attribute(self):
-        db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
-        dbObj.name = self.ui.lineEdit_name_attribute.text()
-        commit()
-        self.update_detail(dbObj)
 
     @db_session
     def update_content_attribute(self):
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         dbObj.description = self.ui.lineEdit_content_attribute.text()
-        commit()
-        self.update_detail(dbObj)
 
-
-    @db_session
-    def update_name_stats(self):
-        db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
-        dbObj.name = self.ui.comboBox_name_stats.currentText()
-        commit()
-        self.update_detail(dbObj)
 
     @db_session
     def update_content_stats(self):
         db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         dbObj.description = self.ui.lineEdit_content_stats.text()
-        commit()
-        self.update_detail(dbObj)
 
 
     @db_session
     def delete_template(self):
         db = self.ui_vault.main.db
         forms = self.ui.verticalStackedWidget_forms
-        all_templates = self.ui.listWidget_all_templates
-        dbObj = db.Templates[self.target.dbObj.id]
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        parent = template.parent()
+        dbObj = db.Templates[template.dbObj.id]
         # delete child stuff that's not templates contained here.
         [ t.delete() for t in dbObj.under_me if not t.detail_type == 'template' ]
         commit()
         dbObj.delete()
         commit()
-        index = all_templates.indexFromItem(self.target)
-        all_templates.item(index.row()).setSelected(False)
-        all_templates.takeItem(index.row())
+        if parent:
+            parent.removeChild(template)
+        else:
+            index = all_templates.indexOfTopLevelItem(template)
+            all_templates.takeTopLevelItem(index)
         forms.setCurrentIndex(self.pageIndex['splash'])
-        self.ui.listWidget_template.clear()
-        self.select_template()
-
-
-    @db_session
-    def update_name_lore(self):
-        db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
-        dbObj.name = self.ui.lineEdit_name_lore.text()
-        commit()
-        self.update_detail(dbObj)
-
-
-    @db_session
-    def update_content_lore(self):
-        db = self.ui_vault.main.db
-        dbObj = db.Templates[self.detail_target.dbObj.id]
-        dbObj.description = self.ui.textEdit_content_lore.toPlainText()
 
 
     @db_session
@@ -437,35 +405,38 @@ class AcadamyDialog(QDialog):
         'deletes any detail in detail_view'
         db = self.ui_vault.main.db
         forms = self.ui.verticalStackedWidget_forms
-        detail_templates = self.ui.listWidget_template
-        dbObj = db.Templates[self.detail_target.dbObj.id]
+        templates = self.ui.treeWidget_all_templates
+        template = templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
         dbObj.delete()
         commit()
-        detail_templates = self.ui.listWidget_template
-        index = detail_templates.indexFromItem(self.detail_target)
-        detail_templates.takeItem(index.row())
+        parent = template.parent()
+        parent.removeChild(template)
+        templates.setCurrentItem(parent)
         # pre-emptivly changed to the templates page in case we can't select
         # anything else.
         forms.setCurrentIndex(self.pageIndex['template'])
-        self.select_detail()
 
 
     @db_session
-    def select_detail(self):
+    def update_content_lore(self):
+        db = self.ui_vault.main.db
+        templates = self.ui.treeWidget_all_templates
+        template = templates.currentItem()
+        dbObj = db.Templates[template.dbObj.id]
+        dbObj.description = self.ui.textEdit_content_lore.toPlainText()
+
+
+    @db_session
+    def select_template(self, current, previous):
         'sets self.detail_target and changes the form page'
         db = self.ui_vault.main.db
-        detail_templates = self.ui.listWidget_template
+        templates = self.ui.treeWidget_all_templates
         forms = self.ui.verticalStackedWidget_forms
-        item = None
-        for row in range(0, detail_templates.count()):
-            if detail_templates.item(row).isSelected():
-                item = detail_templates.item(row)
-                break
-        if not item:
-            return
-        self.detail_target = item
-        self.init_page(item.dbObj)
-        match item.dbObj.detail_type:
+
+        item = db.Templates[current.dbObj.id]
+        self.init_page(current.dbObj.id)
+        match item.detail_type:
             case 'lore':
                 forms.setCurrentIndex(self.pageIndex['Lore'])
             case 'stat':
@@ -479,111 +450,96 @@ class AcadamyDialog(QDialog):
             case 'rtable':
                 forms.setCurrentIndex(self.pageIndex['Roll Table'])
             case 'template':
-                all_temp_view = self.ui.listWidget_all_templates
-                # for all rows
-                dbObj = db.Templates[item.dbObj.id]
-                for row in range(0, all_temp_view.count()):
-                    template_item = all_temp_view.item(row)
-                    template_item.dbObj = db.Templates[template_item.dbObj.id]
-                    # if we found the matching object in the other view
-                    if template_item.dbObj == dbObj:
-                        for selection in all_temp_view.selectedItems():
-                            selection.setSelected(False)
-                        all_temp_view.item(row).setSelected(True)
-                        self.target = template_item
-                        self.init_page(template_item.dbObj)
-                        self.init_detail_view()
-                        forms.setCurrentIndex(self.pageIndex['template'])
-                        break
-
-
-
-    def select_template(self):
-        'sets self.target and changes to the templates page'
-        templates_view = self.ui.listWidget_all_templates
-        forms = self.ui.verticalStackedWidget_forms
-        for row in range(0, templates_view.count()):
-            if templates_view.item(row).isSelected():
-                item = templates_view.item(row)
-                self.target = item
-                self.init_page(self.target.dbObj)
-                self.init_detail_view()
                 forms.setCurrentIndex(self.pageIndex['template'])
+
 
     @db_session
     def load_acadamy(self):
         'initialize templates view'
         db = self.ui_vault.main.db
-        self.ui.listWidget_template.clear()
-        templates_view = self.ui.listWidget_all_templates
+        templates_view = self.ui.treeWidget_all_templates
         templates_view.clear()
+        def add_level(parent):
+            for dbObj in parent.dbObj.under_me.select():
+                item = QTreeWidgetItem(parent)
+                item.dbObj = dbObj
+                if dbObj.is_folder:
+                    item.setText(0, f"Folder: {dbObj.name}")
+                else:
+                    item.setText(0, dbObj.name)
+                if len(dbObj.under_me) > 0:
+                    add_level(item)
+        # Build the tree
         for dbObj in db.Templates.select(detail_type='template'):
-            if dbObj.is_folder:
-                item = QListWidgetItem(f"Folder: {dbObj.name}")
-            else:
-                item = QListWidgetItem(dbObj.name)
+            item = QTreeWidgetItem(templates_view)
             item.dbObj = dbObj
-            templates_view.addItem(item)
+            if dbObj.is_folder:
+                item.setText(0, f"Folder: {dbObj.name}")
+            else:
+                item.setText(0, dbObj.name)
+            if len(dbObj.under_me) > 0:
+                add_level(item)
+        templates_view.sortItems(0, Qt.AscendingOrder)
 
 
     @db_session
-    def update_template_name(self):
+    def update_template_name(self, newText):
         'pretty self explanitory, it is for a text field update'
         db = self.ui_vault.main.db
-        name = self.ui.lineEdit_template_name.text()
-        self.target.dbObj = db.Templates[self.target.dbObj.id]
-        self.target.dbObj.name = name
+        currentItem = self.ui.treeWidget_all_templates.currentItem()
+        # Get Name
+        name = newText
+        # update database
+        dbObj = db.Templates[currentItem.dbObj.id]
+        dbObj.name = name
         commit()
-        if self.target.dbObj.is_folder:
-            self.target.setText(f"Folder: {name}")
+        # update current item
+        if dbObj.is_folder:
+            currentItem.setText(0, f"Folder: {dbObj.name}")
         else:
-            self.target.setText(f"{name}")
-        self.init_detail_view()
+            currentItem.setText(0, dbObj.name)
 
-
-    def update_detail(self, dbObj):
-        'change name of one item in template panel'
-        indent = 0
-        oldName = self.detail_target.text()
-        newName = self.detail_target.text().removeprefix('    ')
-        while not oldName == newName:
-            indent += 1
-            oldName = newName
-            newName = oldName.removeprefix('    ')
-        title = ('    ' * indent) + self.construct_detail_name(dbObj)
-        self.detail_target.setText(title)
+    @db_session
+    def update_name_stats(self, newComboIndex):
+        newName = self.ui.comboBox_name_stats.currentText()
+        self.update_template_name(newName)
 
 
     @db_session
     def add_detail(self, selection=None):
         'add a template component to the selected template'
         if not selection:
-            selection  = self.ui.comboBox_type_templates_page.currentText()
+            selection = self.ui.comboBox_type_templates_page.currentText()
         db = self.ui_vault.main.db
-        parent = db.Templates[self.target.dbObj.id]
         forms = self.ui.verticalStackedWidget_forms
+        templates = self.ui.treeWidget_all_templates
+        template = templates.currentItem()
+        selected_item = db.Templates[template.dbObj.id]
         match selection:
             case 'Lore':
-                dbObj = parent.under_me.create(detail_type='lore')
+                dbObj = selected_item.under_me.create(detail_type='lore')
             case 'Stat Modification':
-                dbObj = parent.under_me.create(detail_type='stat')
+                dbObj = selected_item.under_me.create(detail_type='stat')
             case 'Attributes':
-                dbObj = parent.under_me.create(detail_type='attribute')
+                dbObj = selected_item.under_me.create(detail_type='attribute')
             case 'Items':
-                dbObj = parent.under_me.create(detail_type='item')
+                dbObj = selected_item.under_me.create(detail_type='item')
             case 'Actions':
-                dbObj = parent.under_me.create(detail_type='action')
+                dbObj = selected_item.under_me.create(detail_type='action')
             case 'Roll Table':
-                dbObj = parent.under_me.create(detail_type='rtable')
+                dbObj = selected_item.under_me.create(detail_type='rtable')
         commit()
-        name = '    ' + self.construct_detail_name(dbObj)
-        item = QListWidgetItem(name)
+        # This prevents details from being added under other details.
+        if not selected_item.detail_type == 'template':
+            item = QTreeWidgetItem(template.parent())
+        else:
+            item = QTreeWidgetItem(template)
         item.dbObj = dbObj
-        self.detail_target = item
-        self.ui.listWidget_template.addItem(item)
-        item.setSelected(True)
-        self.init_page(dbObj)
-        forms.setCurrentIndex(self.pageIndex[selection])
+        # well understood initialization area.
+        templates.setCurrentItem(item)
+        templates.sortItems(0, Qt.AscendingOrder)
+        # self.init_page(item.dbObj.id)
+        # forms.setCurrentIndex(self.pageIndex[selection])
 
 
     @db_session
@@ -623,58 +579,26 @@ class AcadamyDialog(QDialog):
 
 
     @db_session
-    def init_detail_view(self):
-        'destrutive rebuilding of the detail_view'
-        db = self.ui_vault.main.db
-        template_detail = self.ui.listWidget_template
-        template_detail.clear()
-        template = db.Templates[self.target.dbObj.id]
-        self.detail_target = template
-        parent = QListWidgetItem(self.construct_detail_name(template))
-        parent.dbObj = template
-        template_detail.addItem(parent)
-
-        indent = 1
-        def create_detail_view(template, indent):
-            for row in template.under_me:
-                title = ('    ' * indent) + self.construct_detail_name(row)
-                item = QListWidgetItem(title)
-                item.dbObj = row
-                template_detail.addItem(item)
-                # TODO this does not recurse right under the new regime
-                if row.detail_type == 'template':
-                    create_detail_view(row, indent + 1)
-        create_detail_view(template, indent)
-
-
-
-    @db_session
     def new_template(self, x=False, template=None):
         'creates template and updates ui'
         db = self.ui_vault.main.db
+        all_templates = self.ui.treeWidget_all_templates
         if template is None:
-            new_template = db.Templates(name='*new template*',
-                                        detail_type='template')
+            dbObj = db.Templates(name='*new template*',
+                                 detail_type='template')
             commit()
         else:
-            new_template = db.Templates[template.id]
-        all_templates = self.ui.listWidget_all_templates
-        forms = self.ui.verticalStackedWidget_forms
-
+            dbObj = db.Templates[template.id]
+        item = QTreeWidgetItem(all_templates)
+        item.dbObj = dbObj
         if template is None:
-            item = QListWidgetItem("*new template*")
+            item.setText(0, "*new template*")
         else:
-            item = QListWidgetItem(new_template.name)
-        item.dbObj = new_template
-        self.target = item
-        all_templates.addItem(item)
-        index = all_templates.indexFromItem(item)
-        all_templates.item(index.row()).setSelected(True)
+            item.setText(0, template.name)
 
-        self.init_page(item.dbObj)
-        # change right side page to new template editor
-        forms.setCurrentIndex(self.pageIndex['template'])
-        self.init_detail_view()
+        all_templates.setCurrentItem(item)
+        all_templates.sortItems(0, Qt.AscendingOrder)
+        # signal fired by setCurrentItem initializes page.
 
 
     @db_session
@@ -691,30 +615,45 @@ class AcadamyDialog(QDialog):
     def init_page(self, dbObj):
         'all your setup needs for every panel in this applet'
         db = self.ui_vault.main.db
-        dbObj = db.Templates[dbObj.id]
+        dbObj = db.Templates[dbObj]
         match dbObj.detail_type:
             case 'lore':
+                name = QSignalBlocker(self.ui.lineEdit_name_lore)
                 self.ui.lineEdit_name_lore.setText(dbObj.name)
+                content = QSignalBlocker(self.ui.textEdit_content_lore)
                 self.ui.textEdit_content_lore.setPlainText(dbObj.description)
             case 'stat':
                 index = self.ui.comboBox_name_stats.findText(dbObj.name)
+                name = QSignalBlocker(self.ui.comboBox_name_stats)
                 self.ui.comboBox_name_stats.setCurrentIndex(index)
+                content = QSignalBlocker(self.ui.lineEdit_content_stats)
                 self.ui.lineEdit_content_stats.setText(dbObj.description)
             case 'attribute':
+                name = QSignalBlocker(self.ui.lineEdit_name_attribute)
                 self.ui.lineEdit_name_attribute.setText(dbObj.name)
+                content = QSignalBlocker(self.ui.lineEdit_content_attribute)
                 self.ui.lineEdit_content_attribute.setText(dbObj.description)
             case 'action':
+                name = QSignalBlocker(self.ui.lineEdit_name_action)
                 self.ui.lineEdit_name_action.setText(dbObj.name)
+                cost = QSignalBlocker(self.ui.lineEdit_cost_action)
                 self.ui.lineEdit_cost_action.setText(dbObj.cost)
+                limitations = QSignalBlocker(self.ui.lineEdit_limitations_action)
                 self.ui.lineEdit_limitations_action.setText(dbObj.limitations)
+                result = QSignalBlocker(self.ui.textEdit_result_action)
                 self.ui.textEdit_result_action.setPlainText(dbObj.result)
             case 'item':
+                name = QSignalBlocker(self.ui.lineEdit_name_item)
                 self.ui.lineEdit_name_item.setText(dbObj.name)
+                weight = QSignalBlocker(self.ui.lineEdit_weight_item)
                 self.ui.lineEdit_weight_item.setText(str(dbObj.weight))
                 if dbObj.quantity:
+                    quantity = QSignalBlocker(self.ui.spinBox_quantity_item)
                     self.ui.spinBox_quantity_item.setValue(dbObj.quantity)
                 else:
+                    quantity = QSignalBlocker(self.ui.spinBox_quantity_item)
                     self.ui.spinBox_quantity_item.setValue(1)
+                description = QSignalBlocker(self.ui.textEdit_description_item)
                 self.ui.textEdit_description_item.setPlainText(dbObj.description)
             case 'rtable':
                 table = []
@@ -726,11 +665,17 @@ class AcadamyDialog(QDialog):
                     else:
                         i.delete()
                 cBoxItems = [ x for x in db.Templates.select()]
+                name = QSignalBlocker(self.ui.lineEdit_name_roll_table)
                 self.ui.lineEdit_name_roll_table.setText(dbObj.name)
+                israndom = QSignalBlocker(self.ui.checkBox_israndom_roll_table)
                 self.ui.checkBox_israndom_roll_table.setChecked(dbObj.is_random)
+                interpret = QSignalBlocker(self.ui.checkBox_interpret_roll_table)
                 self.ui.checkBox_interpret_roll_table.setChecked(dbObj.onlyPrint)
+                dice_roll = QSignalBlocker(self.ui.lineEdit_dice_roll_table)
                 self.ui.lineEdit_dice_roll_table.setText(dbObj.dice_roll)
+                item_match = QSignalBlocker(self.ui.lineEdit_item_match_roll_table)
                 self.ui.lineEdit_item_match_roll_table.clear()
+                options = QSignalBlocker(self.ui.comboBox_options_roll_table)
                 self.ui.comboBox_options_roll_table.clear()
                 for obj in cBoxItems:
                     self.ui.comboBox_options_roll_table.addItem(
@@ -739,8 +684,11 @@ class AcadamyDialog(QDialog):
                 for list_item in table:
                     self.ui.listWidget_table_roll_table.addItem(list_item)
             case 'template':
+                name = QSignalBlocker(self.ui.lineEdit_template_name)
                 self.ui.lineEdit_template_name.setText(dbObj.name)
+                is_folder = QSignalBlocker(self.ui.checkBox_is_folder_template)
                 self.ui.checkBox_is_folder_template.setChecked(dbObj.is_folder)
+                stack = QSignalBlocker(self.ui.comboBox_stack_template)
                 self.ui.comboBox_stack_template.clear()
                 # just templates please
                 all_templates = db.Templates.select(detail_type='template')

@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'TheShop_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.0
+## Created by: Qt User Interface Compiler version 6.5.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -93,6 +93,7 @@ class Ui_TheShop(object):
 
         self.pushButton_roll_stats = QPushButton(self.groupBox_shop)
         self.pushButton_roll_stats.setObjectName(u"pushButton_roll_stats")
+        self.pushButton_roll_stats.setAutoDefault(False)
 
         self.verticalLayout_2.addWidget(self.pushButton_roll_stats)
 
@@ -215,6 +216,7 @@ class Ui_TheShop(object):
 
         self.pushButton_reset_stat_block = QPushButton(self.groupBox_shop)
         self.pushButton_reset_stat_block.setObjectName(u"pushButton_reset_stat_block")
+        self.pushButton_reset_stat_block.setAutoDefault(False)
 
         self.verticalLayout_display_template.addWidget(self.pushButton_reset_stat_block)
 
@@ -237,6 +239,7 @@ class Ui_TheShop(object):
         self.horizontalLayout_back.setObjectName(u"horizontalLayout_back")
         self.pushButton_back = QPushButton(TheShop)
         self.pushButton_back.setObjectName(u"pushButton_back")
+        self.pushButton_back.setAutoDefault(False)
 
         self.horizontalLayout_back.addWidget(self.pushButton_back)
 
@@ -246,6 +249,7 @@ class Ui_TheShop(object):
 
         self.pushButton_delete_shop = QPushButton(TheShop)
         self.pushButton_delete_shop.setObjectName(u"pushButton_delete_shop")
+        self.pushButton_delete_shop.setAutoDefault(False)
 
         self.horizontalLayout_back.addWidget(self.pushButton_delete_shop)
 
@@ -267,6 +271,7 @@ class Ui_TheShop(object):
 
         self.pushButton_add_templates = QPushButton(self.groupBox_templates)
         self.pushButton_add_templates.setObjectName(u"pushButton_add_templates")
+        self.pushButton_add_templates.setAutoDefault(False)
 
         self.verticalLayout.addWidget(self.pushButton_add_templates)
 
@@ -283,6 +288,7 @@ class Ui_TheShop(object):
 
         self.pushButton_remove_templates = QPushButton(self.groupBox_templates)
         self.pushButton_remove_templates.setObjectName(u"pushButton_remove_templates")
+        self.pushButton_remove_templates.setAutoDefault(False)
 
         self.verticalLayout.addWidget(self.pushButton_remove_templates)
 

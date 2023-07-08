@@ -24,36 +24,40 @@
        <property name="text">
         <string>New template</string>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_all_templates">
-       <property name="text">
-        <string>All Templates</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QListWidget" name="listWidget_all_templates">
-       <property name="sortingEnabled">
-        <bool>true</bool>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="label_template_details">
        <property name="text">
-        <string>Template</string>
+        <string>Templates</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QListWidget" name="listWidget_template"/>
+      <widget class="QTreeWidget" name="treeWidget_all_templates">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="headerHidden">
+        <bool>true</bool>
+       </property>
+       <column>
+        <property name="text">
+         <string notr="true">1</string>
+        </property>
+       </column>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_back">
        <property name="text">
         <string>&lt;- Save (Esc)</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -69,7 +73,7 @@
    <item>
     <widget class="QStackedWidget" name="verticalStackedWidget_forms">
      <property name="currentIndex">
-      <number>1</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="page_splash">
       <layout class="QFormLayout" name="formLayout">
@@ -177,6 +181,9 @@
          <property name="text">
           <string>Add</string>
          </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -203,6 +210,9 @@
         <widget class="QPushButton" name="pushButton_stack_template">
          <property name="text">
           <string>Stack</string>
+         </property>
+         <property name="autoDefault">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -234,6 +244,9 @@
          <property name="text">
           <string>Convert to Randomized Template</string>
          </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -263,12 +276,18 @@
            <property name="text">
             <string>Add Another</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_delete_template">
            <property name="text">
             <string>Delete</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -279,6 +298,9 @@
            </property>
            <property name="text">
             <string>Next</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -319,6 +341,9 @@
            <property name="text">
             <string>Add Another</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -326,12 +351,18 @@
            <property name="text">
             <string>Delete</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_next_lore">
            <property name="text">
             <string>Next</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -395,14 +426,14 @@
        <item>
         <widget class="QLabel" name="label_des1_stats">
          <property name="text">
-          <string>This value overrides the value created in the shop.</string>
+          <string/>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_des3_stats">
          <property name="text">
-          <string>If it starts with a &quot;+&quot; or &quot;-&quot; symbol it adds or subtracts that number instead.</string>
+          <string>If it starts with a &quot;+&quot; or &quot;-&quot; symbol it adds or subtracts instead of replacing.</string>
          </property>
         </widget>
        </item>
@@ -445,6 +476,9 @@
            <property name="text">
             <string>Add Another</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -452,12 +486,18 @@
            <property name="text">
             <string>Delete</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_next_stats">
            <property name="text">
             <string>Next</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -507,6 +547,9 @@
            <property name="text">
             <string>Add Another</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -514,12 +557,18 @@
            <property name="text">
             <string>Delete</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_next_attribute">
            <property name="text">
             <string>Next</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -580,6 +629,9 @@
            <property name="text">
             <string>Add Another</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -587,12 +639,18 @@
            <property name="text">
             <string>Delete</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_next_item">
            <property name="text">
             <string>Next</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -634,8 +692,14 @@
        </item>
        <item>
         <widget class="QLabel" name="label_description_action">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;%a gets replaced automaticly with level appropriate attack&lt;/p&gt;&lt;p&gt;%d and %e get replaced with level appropriate damage&lt;/p&gt;&lt;p&gt;You can divide the damage into smaller portions by adding a number to the end. i.e. %d2 is half damage %d9 is 1/9th damage. the only valid numbers are [2-9]. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="whatsThis">
+          <string/>
+         </property>
          <property name="text">
-          <string>Result: %d, %e for auto damage and elemental damage</string>
+          <string>Result: allows %a, %d, and %e. Hover over this for help.</string>
          </property>
         </widget>
        </item>
@@ -653,6 +717,9 @@
            <property name="text">
             <string>Add Another</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -660,12 +727,18 @@
            <property name="text">
             <string>Delete</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_next_action">
            <property name="text">
             <string>Next</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -869,6 +942,9 @@
            <property name="text">
             <string>Add Another</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -876,12 +952,18 @@
            <property name="text">
             <string>Delete</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_next_roll_table">
            <property name="text">
             <string>Next</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
            </property>
           </widget>
          </item>

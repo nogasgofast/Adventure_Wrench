@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Acadamy_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.0
+## Created by: Qt User Interface Compiler version 6.5.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,10 +16,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDialog,
-    QFormLayout, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QListWidget, QListWidgetItem, QPushButton,
-    QSizePolicy, QSpacerItem, QSpinBox, QStackedWidget,
-    QTextEdit, QVBoxLayout, QWidget)
+    QFormLayout, QFrame, QHBoxLayout, QHeaderView,
+    QLabel, QLineEdit, QListWidget, QListWidgetItem,
+    QPushButton, QSizePolicy, QSpacerItem, QSpinBox,
+    QStackedWidget, QTextEdit, QTreeWidget, QTreeWidgetItem,
+    QVBoxLayout, QWidget)
 import images_rc
 
 class Ui_acadamy_dialog(object):
@@ -34,32 +35,28 @@ class Ui_acadamy_dialog(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.pushButton_new_template = QPushButton(acadamy_dialog)
         self.pushButton_new_template.setObjectName(u"pushButton_new_template")
+        self.pushButton_new_template.setAutoDefault(False)
 
         self.verticalLayout.addWidget(self.pushButton_new_template)
-
-        self.label_all_templates = QLabel(acadamy_dialog)
-        self.label_all_templates.setObjectName(u"label_all_templates")
-
-        self.verticalLayout.addWidget(self.label_all_templates)
-
-        self.listWidget_all_templates = QListWidget(acadamy_dialog)
-        self.listWidget_all_templates.setObjectName(u"listWidget_all_templates")
-        self.listWidget_all_templates.setSortingEnabled(True)
-
-        self.verticalLayout.addWidget(self.listWidget_all_templates)
 
         self.label_template_details = QLabel(acadamy_dialog)
         self.label_template_details.setObjectName(u"label_template_details")
 
         self.verticalLayout.addWidget(self.label_template_details)
 
-        self.listWidget_template = QListWidget(acadamy_dialog)
-        self.listWidget_template.setObjectName(u"listWidget_template")
+        self.treeWidget_all_templates = QTreeWidget(acadamy_dialog)
+        __qtreewidgetitem = QTreeWidgetItem()
+        __qtreewidgetitem.setText(0, u"1");
+        self.treeWidget_all_templates.setHeaderItem(__qtreewidgetitem)
+        self.treeWidget_all_templates.setObjectName(u"treeWidget_all_templates")
+        self.treeWidget_all_templates.setStyleSheet(u"")
+        self.treeWidget_all_templates.setHeaderHidden(True)
 
-        self.verticalLayout.addWidget(self.listWidget_template)
+        self.verticalLayout.addWidget(self.treeWidget_all_templates)
 
         self.pushButton_back = QPushButton(acadamy_dialog)
         self.pushButton_back.setObjectName(u"pushButton_back")
+        self.pushButton_back.setAutoDefault(False)
 
         self.verticalLayout.addWidget(self.pushButton_back)
 
@@ -136,6 +133,7 @@ class Ui_acadamy_dialog(object):
 
         self.pushButton_add_detail = QPushButton(self.page_new_template)
         self.pushButton_add_detail.setObjectName(u"pushButton_add_detail")
+        self.pushButton_add_detail.setAutoDefault(False)
 
         self.verticalLayout_9.addWidget(self.pushButton_add_detail)
 
@@ -159,6 +157,7 @@ class Ui_acadamy_dialog(object):
 
         self.pushButton_stack_template = QPushButton(self.page_new_template)
         self.pushButton_stack_template.setObjectName(u"pushButton_stack_template")
+        self.pushButton_stack_template.setAutoDefault(False)
 
         self.verticalLayout_9.addWidget(self.pushButton_stack_template)
 
@@ -177,6 +176,7 @@ class Ui_acadamy_dialog(object):
 
         self.pushButton_randomize_template = QPushButton(self.page_new_template)
         self.pushButton_randomize_template.setObjectName(u"pushButton_randomize_template")
+        self.pushButton_randomize_template.setAutoDefault(False)
 
         self.verticalLayout_9.addWidget(self.pushButton_randomize_template)
 
@@ -193,17 +193,20 @@ class Ui_acadamy_dialog(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.pushButton_add_another_template = QPushButton(self.page_new_template)
         self.pushButton_add_another_template.setObjectName(u"pushButton_add_another_template")
+        self.pushButton_add_another_template.setAutoDefault(False)
 
         self.horizontalLayout_4.addWidget(self.pushButton_add_another_template)
 
         self.pushButton_delete_template = QPushButton(self.page_new_template)
         self.pushButton_delete_template.setObjectName(u"pushButton_delete_template")
+        self.pushButton_delete_template.setAutoDefault(False)
 
         self.horizontalLayout_4.addWidget(self.pushButton_delete_template)
 
         self.pushButton_next_template = QPushButton(self.page_new_template)
         self.pushButton_next_template.setObjectName(u"pushButton_next_template")
         self.pushButton_next_template.setEnabled(False)
+        self.pushButton_next_template.setAutoDefault(False)
 
         self.horizontalLayout_4.addWidget(self.pushButton_next_template)
 
@@ -240,16 +243,19 @@ class Ui_acadamy_dialog(object):
         self.horizontalLayout_buttons_lore.setObjectName(u"horizontalLayout_buttons_lore")
         self.pushButton_add_another_lore = QPushButton(self.page_lore)
         self.pushButton_add_another_lore.setObjectName(u"pushButton_add_another_lore")
+        self.pushButton_add_another_lore.setAutoDefault(False)
 
         self.horizontalLayout_buttons_lore.addWidget(self.pushButton_add_another_lore)
 
         self.pushButton_delete_lore = QPushButton(self.page_lore)
         self.pushButton_delete_lore.setObjectName(u"pushButton_delete_lore")
+        self.pushButton_delete_lore.setAutoDefault(False)
 
         self.horizontalLayout_buttons_lore.addWidget(self.pushButton_delete_lore)
 
         self.pushButton_next_lore = QPushButton(self.page_lore)
         self.pushButton_next_lore.setObjectName(u"pushButton_next_lore")
+        self.pushButton_next_lore.setAutoDefault(False)
 
         self.horizontalLayout_buttons_lore.addWidget(self.pushButton_next_lore)
 
@@ -308,16 +314,19 @@ class Ui_acadamy_dialog(object):
         self.horizontalLayout_buttons_stats.setObjectName(u"horizontalLayout_buttons_stats")
         self.pushButton_add_another_stats = QPushButton(self.page_stats)
         self.pushButton_add_another_stats.setObjectName(u"pushButton_add_another_stats")
+        self.pushButton_add_another_stats.setAutoDefault(False)
 
         self.horizontalLayout_buttons_stats.addWidget(self.pushButton_add_another_stats)
 
         self.pushButton_delete_stats = QPushButton(self.page_stats)
         self.pushButton_delete_stats.setObjectName(u"pushButton_delete_stats")
+        self.pushButton_delete_stats.setAutoDefault(False)
 
         self.horizontalLayout_buttons_stats.addWidget(self.pushButton_delete_stats)
 
         self.pushButton_next_stats = QPushButton(self.page_stats)
         self.pushButton_next_stats.setObjectName(u"pushButton_next_stats")
+        self.pushButton_next_stats.setAutoDefault(False)
 
         self.horizontalLayout_buttons_stats.addWidget(self.pushButton_next_stats)
 
@@ -357,16 +366,19 @@ class Ui_acadamy_dialog(object):
         self.horizontalLayout_buttons_attribute.setObjectName(u"horizontalLayout_buttons_attribute")
         self.pushButton_add_another_attribute = QPushButton(self.page_attribute)
         self.pushButton_add_another_attribute.setObjectName(u"pushButton_add_another_attribute")
+        self.pushButton_add_another_attribute.setAutoDefault(False)
 
         self.horizontalLayout_buttons_attribute.addWidget(self.pushButton_add_another_attribute)
 
         self.pushButton_delete_attribute = QPushButton(self.page_attribute)
         self.pushButton_delete_attribute.setObjectName(u"pushButton_delete_attribute")
+        self.pushButton_delete_attribute.setAutoDefault(False)
 
         self.horizontalLayout_buttons_attribute.addWidget(self.pushButton_delete_attribute)
 
         self.pushButton_next_attribute = QPushButton(self.page_attribute)
         self.pushButton_next_attribute.setObjectName(u"pushButton_next_attribute")
+        self.pushButton_next_attribute.setAutoDefault(False)
 
         self.horizontalLayout_buttons_attribute.addWidget(self.pushButton_next_attribute)
 
@@ -423,16 +435,19 @@ class Ui_acadamy_dialog(object):
         self.horizontalLayout_buttons_item.setObjectName(u"horizontalLayout_buttons_item")
         self.pushButton_add_another_item = QPushButton(self.page_item)
         self.pushButton_add_another_item.setObjectName(u"pushButton_add_another_item")
+        self.pushButton_add_another_item.setAutoDefault(False)
 
         self.horizontalLayout_buttons_item.addWidget(self.pushButton_add_another_item)
 
         self.pushButton_delete_item = QPushButton(self.page_item)
         self.pushButton_delete_item.setObjectName(u"pushButton_delete_item")
+        self.pushButton_delete_item.setAutoDefault(False)
 
         self.horizontalLayout_buttons_item.addWidget(self.pushButton_delete_item)
 
         self.pushButton_next_item = QPushButton(self.page_item)
         self.pushButton_next_item.setObjectName(u"pushButton_next_item")
+        self.pushButton_next_item.setAutoDefault(False)
 
         self.horizontalLayout_buttons_item.addWidget(self.pushButton_next_item)
 
@@ -489,16 +504,19 @@ class Ui_acadamy_dialog(object):
         self.horizontalLayout_buttons_action.setObjectName(u"horizontalLayout_buttons_action")
         self.pushButton_add_another_action = QPushButton(self.page_action)
         self.pushButton_add_another_action.setObjectName(u"pushButton_add_another_action")
+        self.pushButton_add_another_action.setAutoDefault(False)
 
         self.horizontalLayout_buttons_action.addWidget(self.pushButton_add_another_action)
 
         self.pushButton_delete_action = QPushButton(self.page_action)
         self.pushButton_delete_action.setObjectName(u"pushButton_delete_action")
+        self.pushButton_delete_action.setAutoDefault(False)
 
         self.horizontalLayout_buttons_action.addWidget(self.pushButton_delete_action)
 
         self.pushButton_next_action = QPushButton(self.page_action)
         self.pushButton_next_action.setObjectName(u"pushButton_next_action")
+        self.pushButton_next_action.setAutoDefault(False)
 
         self.horizontalLayout_buttons_action.addWidget(self.pushButton_next_action)
 
@@ -634,16 +652,19 @@ class Ui_acadamy_dialog(object):
         self.horizontalLayout_button_roll_table.setObjectName(u"horizontalLayout_button_roll_table")
         self.pushButton_add_another_roll_table = QPushButton(self.page_roll_table)
         self.pushButton_add_another_roll_table.setObjectName(u"pushButton_add_another_roll_table")
+        self.pushButton_add_another_roll_table.setAutoDefault(False)
 
         self.horizontalLayout_button_roll_table.addWidget(self.pushButton_add_another_roll_table)
 
         self.pushButton_delete_roll_table = QPushButton(self.page_roll_table)
         self.pushButton_delete_roll_table.setObjectName(u"pushButton_delete_roll_table")
+        self.pushButton_delete_roll_table.setAutoDefault(False)
 
         self.horizontalLayout_button_roll_table.addWidget(self.pushButton_delete_roll_table)
 
         self.pushButton_next_roll_table = QPushButton(self.page_roll_table)
         self.pushButton_next_roll_table.setObjectName(u"pushButton_next_roll_table")
+        self.pushButton_next_roll_table.setAutoDefault(False)
 
         self.horizontalLayout_button_roll_table.addWidget(self.pushButton_next_roll_table)
 
@@ -657,7 +678,7 @@ class Ui_acadamy_dialog(object):
 
         self.retranslateUi(acadamy_dialog)
 
-        self.verticalStackedWidget_forms.setCurrentIndex(1)
+        self.verticalStackedWidget_forms.setCurrentIndex(6)
 
 
         QMetaObject.connectSlotsByName(acadamy_dialog)
@@ -666,8 +687,7 @@ class Ui_acadamy_dialog(object):
     def retranslateUi(self, acadamy_dialog):
         acadamy_dialog.setWindowTitle(QCoreApplication.translate("acadamy_dialog", u"Acadamy", None))
         self.pushButton_new_template.setText(QCoreApplication.translate("acadamy_dialog", u"New template", None))
-        self.label_all_templates.setText(QCoreApplication.translate("acadamy_dialog", u"All Templates", None))
-        self.label_template_details.setText(QCoreApplication.translate("acadamy_dialog", u"Template", None))
+        self.label_template_details.setText(QCoreApplication.translate("acadamy_dialog", u"Templates", None))
         self.pushButton_back.setText(QCoreApplication.translate("acadamy_dialog", u"<- Save (Esc)", None))
         self.label_splash.setText("")
         self.label_2.setText(QCoreApplication.translate("acadamy_dialog", u"#### Template Name", None))
@@ -709,8 +729,8 @@ class Ui_acadamy_dialog(object):
         self.comboBox_name_stats.setItemText(6, QCoreApplication.translate("acadamy_dialog", u"Hit Points", None))
         self.comboBox_name_stats.setItemText(7, QCoreApplication.translate("acadamy_dialog", u"Armor Class", None))
 
-        self.label_des1_stats.setText(QCoreApplication.translate("acadamy_dialog", u"This value overrides the value created in the shop.", None))
-        self.label_des3_stats.setText(QCoreApplication.translate("acadamy_dialog", u"If it starts with a \"+\" or \"-\" symbol it adds or subtracts that number instead.", None))
+        self.label_des1_stats.setText("")
+        self.label_des3_stats.setText(QCoreApplication.translate("acadamy_dialog", u"If it starts with a \"+\" or \"-\" symbol it adds or subtracts instead of replacing.", None))
 #if QT_CONFIG(tooltip)
         self.lineEdit_content_stats.setToolTip(QCoreApplication.translate("acadamy_dialog", u"can have + or - to add or remove points from the base score. Or without them the value is replaced", None))
 #endif // QT_CONFIG(tooltip)
@@ -735,7 +755,13 @@ class Ui_acadamy_dialog(object):
         self.label_name_action.setText(QCoreApplication.translate("acadamy_dialog", u"Action Name", None))
         self.label_cost_action.setText(QCoreApplication.translate("acadamy_dialog", u"Cost, i.e. \"1 dimond worth 1000gp\" or \"1 action\" or \"1 bonus action\"", None))
         self.label_limitations_action.setText(QCoreApplication.translate("acadamy_dialog", u"Limitations, i.e. \"targets cone area\" or \"range 20/60 feet\" ", None))
-        self.label_description_action.setText(QCoreApplication.translate("acadamy_dialog", u"Result: %d, %e for auto damage and elemental damage", None))
+#if QT_CONFIG(tooltip)
+        self.label_description_action.setToolTip(QCoreApplication.translate("acadamy_dialog", u"<html><head/><body><p>%a gets replaced automaticly with level appropriate attack</p><p>%d and %e get replaced with level appropriate damage</p><p>You can divide the damage into smaller portions by adding a number to the end. i.e. %d2 is half damage %d9 is 1/9th damage. the only valid numbers are [2-9]. </p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(whatsthis)
+        self.label_description_action.setWhatsThis("")
+#endif // QT_CONFIG(whatsthis)
+        self.label_description_action.setText(QCoreApplication.translate("acadamy_dialog", u"Result: allows %a, %d, and %e. Hover over this for help.", None))
         self.pushButton_add_another_action.setText(QCoreApplication.translate("acadamy_dialog", u"Add Another", None))
         self.pushButton_delete_action.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
         self.pushButton_next_action.setText(QCoreApplication.translate("acadamy_dialog", u"Next", None))
