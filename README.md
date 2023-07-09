@@ -151,7 +151,7 @@ python main.py
 
 ## creating binary distrobutions
 
-First you have to build the application as stated in python intall instructions.
+First you have to build the application as stated in python install instructions.
 Then you can do the following:
 pip install cx_Freeze
 Make sure to read how cx_Freeze works and is used. Might be important info.
