@@ -253,28 +253,33 @@ class TheShopDialog(QDialog):
 
     def compile_attr(self, native_attr, stat_mod):
         'combines ui ability scores with templates'
+        # print(stat_mod)
         if stat_mod is None:
+            # print('none')
             return int(native_attr)
         if '+' not in stat_mod and '-' not in stat_mod:
+            # print(f'change to: {stat_mod}')
             return int(stat_mod)
         else:
+            # print('doin maths')
             return int(native_attr) + int(stat_mod)
 
 
     def load_scores(self, dbObj, stat_block):
         scores = (
             self.compile_attr(dbObj.ability_str,
-                         stat_block['stat'].get('Strength')),
+                              stat_block['stat'].get('Strength')),
             self.compile_attr(dbObj.ability_dex,
-                         stat_block['stat'].get('Dexterity')),
+                              stat_block['stat'].get('Dexterity')),
             self.compile_attr(dbObj.ability_con,
-                         stat_block['stat'].get('Constitution')),
+                              stat_block['stat'].get('Constitution')),
             self.compile_attr(dbObj.ability_wis,
-                         stat_block['stat'].get('Wisdom')),
+                              stat_block['stat'].get('Wisdom')),
             self.compile_attr(dbObj.ability_int,
-                         stat_block['stat'].get('Intelligence')),
+                              stat_block['stat'].get('Intelligence')),
             self.compile_attr(dbObj.ability_cha,
-                         stat_block['stat'].get('Charisma')))
+                              stat_block['stat'].get('Charisma')))
+        # print(f"load scores: {scores}")
         return scores
 
 
@@ -300,8 +305,8 @@ class TheShopDialog(QDialog):
             final_scores += f'{stat_bar_heading[row]}: {scores[row]:02}    '
 
         # calculate hp
-        HP = self.compile_attr(cr_info["hp"],
-                          stat_block['stat'].get('Hit Points')) // group_of
+        HP = self.compile_attr(cr_info["hp"] // group_of,
+                          stat_block['stat'].get('Hit Points'))
         dbObj.hp = HP
         HP_view = f'{HP} ({dice_tower.to_dice(HP)})'
 
@@ -312,12 +317,18 @@ class TheShopDialog(QDialog):
         # get the name
         name = self.ui.lineEdit_name.text()
 
+        mods = ''
+        for key, value in stat_block['stat'].items():
+            mods += f'{key}: {value}\n'
+
         # get stat_block template filled
         stat_block_text = (f'{name}\n'
                            f'CR: {cr}\n'
                            f'AC: {AC}\n'
                            f'HP: {HP_view}\n'
-                           f'{final_scores}\n')
+                           f'{final_scores}\n'
+                           f'{mods}')
+
         sections = ('lore', 'attribute',
                     'item', 'action',
                     'rtable' )
@@ -421,7 +432,7 @@ class TheShopDialog(QDialog):
             match template.detail_type:
                 case 'stat':
                     display = template.description
-                    details[template.detail_type][template.id] = display
+                    details[template.detail_type][template.name] = display
                 case 'lore' | 'attribute' | 'item' | 'action':
                     display = template.to_display()
                     details[template.detail_type][template.id] = display
@@ -434,6 +445,7 @@ class TheShopDialog(QDialog):
         def stack(details, template, deny_list=[]):
             'stack should only act on detail_type="templates"'
             # from here we need to go down one level and read members.
+            # print(f'detail_type: {template.detail_type}')
             if template.detail_type not in ['template', 'rtable']:
                 details, deny_list = stack_details(details, template, deny_list)
             elif template.detail_type == 'rtable':
@@ -441,7 +453,7 @@ class TheShopDialog(QDialog):
             else:
                 for sub_template in template.under_me:
                     if sub_template.id not in deny_list:
-                        print(f"ACCESS=>{sub_template.name}")
+                        # print(f"ACCESS=>{sub_template.name}")
                         deny_list.append(sub_template.id)
                         details, deny_list = stack(details, sub_template, deny_list)
             return details, deny_list
@@ -453,7 +465,7 @@ class TheShopDialog(QDialog):
             if template.id not in deny_list:
                 deny_list.append(template.id)
                 details, deny_list = stack(details, template, deny_list)
-        print(f'OUTPUT:{details}\n[{deny_list}]')
+        # print(f'OUTPUT:{details}\n[{deny_list}]')
         return details
 
 
@@ -498,7 +510,7 @@ class TheShopDialog(QDialog):
         dbObj = db.Templates[selected_template.id]
 
         if not templates_list.findItems(dbObj.name, Qt.MatchStartsWith):
-            print("add_template func")
+            # print("add_template func")
             vault_item.templates.add(dbObj)
             item = QListWidgetItem(dbObj.name)
             item.dbObj = dbObj

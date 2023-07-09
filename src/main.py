@@ -3,7 +3,6 @@
 import sys, os
 import requests
 import configparser
-from version import ver
 from ui.Main_Window import Ui_MainWindow
 from PySide6.QtWidgets import (QApplication, QMainWindow,
                               QWidget, QListWidgetItem,
@@ -14,51 +13,21 @@ from lib.aw_db import database_factory
 from Player import PlayerDialog
 from Vault import VaultDialog
 
-config_name = 'awconfig.ini'
-db_default_name = 'save/default.sqlite'
-
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         # read config
         self.db = database_factory()
-        self.config_file = configparser.ConfigParser()
-        self.config_file.read(config_name)
-        if 'Game' in self.config_file:
-            db_file = self.config_file['Game']['db']
-        else:
-            # make default configs/database name
-            try:
-                os.mkdir('save')
-            except FileExistsError:
-                pass
-            self.config_file['Game'] = { 'db': db_default_name }
-            with open(db_default_name, 'w') as fh:
-                self.config_file.write(fh)
-            db_file = db_default_name
-        try:
-            # connect to database and try to create missing items if needed.
-            self.db.bind(provider="sqlite", filename=db_file, create_db=True)
-            self.db.generate_mapping(create_tables=True)
-        except Exception as e:
-            print("aw_db.sqlite Failed to load: {e}")
-            raise e
+        self.config_setup()
 
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-
-        # Setting the game name based on the save file name.
-        game_name = os.path.basename(db_file)
-        game_name = os.path.splitext(game_name)[0]
-        self.ui.label_current_game.setText(f'Current Game: {game_name}')
-
+        # initialize views.
         self.ui_vault = VaultDialog(self)
         self.ui_p = PlayerDialog(self)
-
         self.suppress_spinbox_update = False
         self.ui_p.setModal(True)
 
+        # connect views to button logic
         self.ui.pushButton_switch_game.clicked.connect(self.switch_game)
         self.ui.pushButton_vault.clicked.connect(self.ui_vault.show)
         self.ui.pushButton_players.clicked.connect(self.ui_p.add_player)
@@ -98,6 +67,39 @@ class MainWindow(QMainWindow):
         self.load_session()
 
 
+    def config_setup(self):
+        self.config_name = 'awconfig.ini'
+        self.db_default_name = 'save/default.sqlite'
+        self.config_file = configparser.ConfigParser()
+        self.config_file.read(self.config_name)
+
+        if 'Game' in self.config_file:
+            db_file = self.config_file['Game']['db']
+        else:
+            # make default configs/database name
+            try:
+                os.mkdir('save')
+            except FileExistsError:
+                pass
+            self.config_file['Game'] = { 'db': self.db_default_name }
+            with open(self.config_name, 'w') as fh:
+                self.config_file.write(fh)
+            db_file = self.db_default_name
+        try:
+            # connect to database and try to create missing items if needed.
+            self.db.bind(provider="sqlite", filename=db_file, create_db=True)
+            self.db.generate_mapping(create_tables=True)
+        except Exception as e:
+            print("aw_db.sqlite Failed to load: {e}")
+            raise e
+
+        # Setting the game name based on the save file name.
+        game_name = os.path.basename(db_file)
+        game_name = os.path.splitext(game_name)[0]
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+        self.ui.label_current_game.setText(f'Current Game: {game_name}')
+
     def switch_game(self):
         file_name, filtered_by = QFileDialog.getOpenFileName(self, "Switch Game",
                                                'save/', 'sqlite databases (*.sqlite)')
@@ -108,7 +110,7 @@ class MainWindow(QMainWindow):
             try:
                 # print(file_name)
                 self.config_file['Game'] = { 'db': relative_path }
-                with open(config_name, 'w') as fh:
+                with open(self.config_name, 'w') as fh:
                     self.config_file.write(fh)
                 try:
                     self.ui_p.close()
@@ -134,18 +136,23 @@ class MainWindow(QMainWindow):
 
     def check_version(self):
         'Checking for latest version'
+        from version import ver
         try:
             r = requests.get("https://api.github.com/repos/nogasgofast/Adventure_Wrench/releases")
             update_version = None
             for release in r.json():
-                # tag_name = v0.20 v needs removing
                 remote_ver = [ int(x) for x in release["tag_name"][1:].split('.') ]
                 local_ver = [ int(x) for x in ver.split('.') ]
                 for i in range(0, 2):
                     if remote_ver[i] > local_ver[i]:
                         update_version = f'''New Version: <a href="{release["html_url"]}">
-                                      {release["name"]}</a>'''
+                                             {release["name"]}</a>'''
                         self.ui.label_version.setText(update_version)
+                        break
+                    elif remote_ver[i] == local_ver[i]:
+                        continue
+                    else:
+                        # Our version is better go ahead and stop.
                         break
                 if not update_version:
                     self.ui.label_version.setText(f"On latest version: v{ver}")
@@ -222,6 +229,7 @@ class MainWindow(QMainWindow):
     @db_session
     def spinBox_update(self):
         # print("spinBox_update")
+        # TODO switch to signal blocking here.
         self.suppress_spinbox_update = True
         for row in range(0, self.ui.listWidget_Encounter.count()):
             if self.ui.listWidget_Encounter.item(row).isSelected():

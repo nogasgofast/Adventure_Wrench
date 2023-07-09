@@ -61,7 +61,7 @@ def database_factory():
         def to_display(self):
             match self.detail_type:
                 case 'lore' | 'item':
-                    print("returning lore or item")
+                    # print("returning lore or item")
                     return (f'{self.name}:\n'
                             f'    {self.description}')
                 case 'stat' | 'attribute':

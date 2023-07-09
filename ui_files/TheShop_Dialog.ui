@@ -283,7 +283,7 @@
             <item>
              <widget class="QTextEdit" name="textEdit_stat_block">
               <property name="toolTip">
-               <string>This box gets over-written a lot. But you can edit it directly in a pinch.(do it after your done chaning everything else then save and never look back.</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This box gets over-written by the controlls on this page. If you make changes here, make sure it's the only thing, or the last thing you do on this page. Even after you save it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="lineWrapMode">
                <enum>QTextEdit::NoWrap</enum>

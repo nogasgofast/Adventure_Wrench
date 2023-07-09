@@ -320,7 +320,7 @@ class Ui_TheShop(object):
         self.label_display_templates.setText(QCoreApplication.translate("TheShop", u"Stat block", None))
         self.pushButton_reset_stat_block.setText(QCoreApplication.translate("TheShop", u"Re-Roll templates", None))
 #if QT_CONFIG(tooltip)
-        self.textEdit_stat_block.setToolTip(QCoreApplication.translate("TheShop", u"This box gets over-written a lot. But you can edit it directly in a pinch.(do it after your done chaning everything else then save and never look back.", None))
+        self.textEdit_stat_block.setToolTip(QCoreApplication.translate("TheShop", u"<html><head/><body><p>This box gets over-written by the controlls on this page. If you make changes here, make sure it's the only thing, or the last thing you do on this page. Even after you save it.</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_back.setText(QCoreApplication.translate("TheShop", u"<- Save (Esc)", None))
         self.pushButton_delete_shop.setText(QCoreApplication.translate("TheShop", u"Delete from vault", None))
