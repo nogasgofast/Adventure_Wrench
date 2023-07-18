@@ -206,8 +206,8 @@ class AcadamyDialog(QDialog):
     def next_buttons(self):
         forms = self.ui.verticalStackedWidget_forms
         item = self.ui.treeWidget_all_templates.currentItem()
-        nextItem = self.ui.treeWidget_all_templates.itemBelow(item)
-        self.ui.treeWidget_all_templates.setCurrentItem(nextItem)
+        parent = item.parent()
+        self.ui.treeWidget_all_templates.setCurrentItem(parent)
         forms.setCurrentIndex(self.pageIndex['template'])
 
 
@@ -508,32 +508,39 @@ class AcadamyDialog(QDialog):
     @db_session
     def add_detail(self, selection=None):
         'add a template component to the selected template'
+        print(f"function input: {selection}")
         if not selection:
             selection = self.ui.comboBox_type_templates_page.currentText()
         db = self.ui_vault.main.db
         forms = self.ui.verticalStackedWidget_forms
         templates = self.ui.treeWidget_all_templates
         template = templates.currentItem()
+        parent = template.parent()
         selected_item = db.Templates[template.dbObj.id]
+        parent_item = db.Templates[parent.dbObj.id]
+        print(f"selection {selection}")
+        print(f"template {template.dbObj.name}")
+        print(f"selected_item {selected_item.name}")
         match selection:
             case 'Lore':
-                dbObj = selected_item.under_me.create(detail_type='lore')
+                dbObj = parent_item.under_me.create(detail_type='lore')
             case 'Stat Modification':
-                dbObj = selected_item.under_me.create(detail_type='stat')
+                dbObj = parent_item.under_me.create(detail_type='stat')
             case 'Attributes':
-                dbObj = selected_item.under_me.create(detail_type='attribute')
+                dbObj = parent_item.under_me.create(detail_type='attribute')
             case 'Items':
-                dbObj = selected_item.under_me.create(detail_type='item')
+                dbObj = parent_item.under_me.create(detail_type='item')
             case 'Actions':
-                dbObj = selected_item.under_me.create(detail_type='action')
+                dbObj = parent_item.under_me.create(detail_type='action')
             case 'Roll Table':
-                dbObj = selected_item.under_me.create(detail_type='rtable')
+                dbObj = parent_item.under_me.create(detail_type='rtable')
         commit()
         # This prevents details from being added under other details.
-        if not selected_item.detail_type == 'template':
-            item = QTreeWidgetItem(template.parent())
-        else:
+        if selected_item.detail_type == 'template':
             item = QTreeWidgetItem(template)
+        else:
+            item = QTreeWidgetItem(parent)
+
         item.dbObj = dbObj
         # well understood initialization area.
         templates.setCurrentItem(item)
