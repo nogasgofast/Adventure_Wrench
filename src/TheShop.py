@@ -89,6 +89,7 @@ class TheShopDialog(QDialog):
         db = self.vault.main.db
         dbObj = db.Vault[self.target.id]
         dbObj.stat_block = self.ui.textEdit_stat_block.toPlainText()
+
         for row in range(0, self.vault.ui.listWidget_vault.count()):
             item = self.vault.ui.listWidget_vault.item(row)
             if item.isSelected():
@@ -148,7 +149,20 @@ class TheShopDialog(QDialog):
         self.ui.lineEdit_name.setText('* * *')
         item.dbObj = self.target
 
+        # Add Items
         self.vault.ui.listWidget_vault.addItem(item)
+        # clear selections
+        selectedItems = self.vault.ui.listWidget_vault.selectedItems()
+        for i in selectedItems:
+            i.isSelected = False
+        # set selection to currently added item.
+        # TODO: this is how we ensure this item is updated when changes are made.
+        # Although this is a poor way to do it since the user might
+        # change selections in other ways in the ui. So a better method
+        # would be to target this item for updates using something like 
+        # it's object identity
+        self.vault.ui.listWidget_vault.setCurrentItem(item)
+
         self.update_selector_templates()
         self.update_stat_block()
         self.ui.listWidget_templates.clear()
@@ -346,12 +360,9 @@ class TheShopDialog(QDialog):
                 stat_block_text += '\n'
 
         self.ui.textEdit_stat_block.setPlainText(stat_block_text)
-        # and update vault tool-tip as well.
-        vault_list = self.vault.ui.listWidget_vault
-        for row in range(0, vault_list.count()):
-            item = vault_list.item(row)
-            if item.dbObj == self.target:
-                item.setToolTip(stat_block_text)
+        # updates the vault item in the database and other pages.
+        self.save_stat_block_Changes()
+
 
     def read_match(self, matchList):
         matchList = matchList.split(',')
