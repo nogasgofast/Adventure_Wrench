@@ -49,7 +49,8 @@ class AcadamyDialog(QDialog):
         # template to random tempalte converter
         self.ui.pushButton_randomize_template.clicked.connect(self.template_to_random)
         # This is how I auto-update a bunch of things.
-        self.ui.treeWidget_all_templates.currentItemChanged.connect(self.select_template)
+        self.ui.treeWidget_all_templates.itemClicked.connect(self.select_template)
+
         self.ui.listWidget_table_roll_table.clicked.connect(self.rt_item_select)
 
         self.ui.lineEdit_template_name.textEdited.connect(self.update_template_name)
@@ -169,38 +170,53 @@ class AcadamyDialog(QDialog):
     def template_to_random(self):
         'converts any template to randomized template'
         db = self.ui_vault.main.db
-        templates = self.ui.treeWidget_all_templates
-        template = templaste.currentItem()
-        dbObj = db.Templates[template.dbObj.id]
-        if dbObj.is_folder:
+        all_templates = self.ui.treeWidget_all_templates
+        template = all_templates.currentItem()
+        oldTemplate = db.Templates[template.dbObj.id]
+        if oldTemplate.is_folder:
             return
         forms = self.ui.verticalStackedWidget_forms
 
         # create a new template with this templates name
-        template = db.Templates(name=dbObj.name, detail_type='template')
+        new_template = db.Templates(name=oldTemplate.name, detail_type='template')
         commit()
+
         # set this templates is_folder property
-        dbObj.is_folder = True
+        oldTemplate.is_folder = True
         commit()
-        self.update_template_name()
+        # Update oldTemplate name in ui.
+        self.update_template_name(oldTemplate.name)
+
         # create rollTable
-        new_roll_table = template.under_me.create(detail_type='rtable',
-                                                      name=dbObj.name)
+        new_roll_table = new_template.under_me.create(detail_type='rtable',
+                                                      name=oldTemplate.name)
         commit()
         # import each high level item into a roll table. Count them.
         count = 0
-        for thing in dbObj.under_me:
+        for thing in oldTemplate.under_me:
             count += 1
             rt_item = new_roll_table.roll_table_items.create(match=str(count),
                                                              table_item=thing)
             commit()
             rt_item.rtable = new_roll_table
 
-        # lastly set the number of sites for the dice
+        # set the number of sites for the dice
         roll = '1d' + str(count)
         new_roll_table.dice_roll = roll
-        # finally change page to new template.
-        self.new_template(x=False, template=template)
+        # create a new list item for a template
+        new_template_view = QTreeWidgetItem(all_templates)
+        new_template_view.dbObj = new_template
+        new_template_view.setText(0, new_template.name)
+        # create a child under this template.
+        child_view = QTreeWidgetItem(new_template_view)
+        child_view.dbObj = new_roll_table
+        child_view.setText(0, self.construct_detail_name(new_roll_table))
+        # select the child for editing and viewing
+        all_templates.setCurrentItem(child_view)
+        all_templates.sortItems(0, Qt.AscendingOrder)
+        # change side panel to display child
+        self.select_template(child_view, 0)
+
 
 
     def next_buttons(self):
@@ -229,25 +245,88 @@ class AcadamyDialog(QDialog):
         db = self.ui_vault.main.db
         template_selecter = self.ui.comboBox_stack_template
         all_templates = self.ui.treeWidget_all_templates
-        template = all_templates.currentItem()
-        dbObj = db.Templates[template.dbObj.id]
-        child = template_selecter.currentData()
-        child = db.Templates[child.id]
-        childItem = QTreeWidgetItem(template)
-        # this is fine, child.name can't be a folder. It would not be
-        # an option in the ui.
-        childItem.setText(0, child.name)
-        childItem.dbObj = dbObj
-        dbObj.under_me.add(child)
+        template_view = all_templates.currentItem()
+
+        template = db.Templates[template_view.dbObj.id]
+
+        # pull child data
+        copy_target = template_selecter.currentData()
+        copy_target = db.Templates[copy_target.id]
+
+        # TODO: prevent duplicates of any template appearing as a
+        # ancester or parent of the base template I am staking ontop of.
+        blocklist=list()
+        # deeply copy template to stack
+        if not copy_target.id in blocklist:
+            copied_obj = self.deep_template_copy(copy_target, blocklist)
+        else:
+            return None
+        template.under_me.add(copied_obj)
         commit()
+
+        # create child list item (it's a template so no special naming)
+        child_view = QTreeWidgetItem(template_view)
+        child_view.setText(0, copied_obj.name)
+        child_view.dbObj = copied_obj
+
+        # copy objexts to treewidget
         def add_level(parent):
             for dbObj in parent.dbObj.under_me.select():
                 item = QTreeWidgetItem(parent)
                 item.dbObj = dbObj
-                item.setText(0, dbObj.name)
+                item.setText(0, self.construct_detail_name(dbObj))
                 if len(dbObj.under_me) > 0:
                     add_level(item)
-        add_level(child)
+        add_level(child_view)
+
+
+    @db_session
+    def deep_template_copy(self, target, blocklist):
+        db = self.ui_vault.main.db
+
+        def copy_layer(target, destination, blocklist):
+            for template in target.under_me:
+                if not template.id in blocklist:
+                    blocklist.append(template.id)
+                    tcopy = template.to_dict(exclude=[
+                                        'id',
+                                        'vault',
+                                        'over_me',
+                                        'under_me',
+                                        'rtable_over_me',
+                                        'roll_table_items'])
+                    child_copy = destination.under_me.create(**tcopy)
+                    commit()
+                    copy_layer(template, child_copy, blocklist)
+            for rtItem in target.roll_table_items:
+                if not rtItem.table_item.id in blocklist:
+                    blocklist.append(rtItem.table_item.id)
+                    rtiCopy = destination.roll_table_items.create(
+                                                match=rtItem.match)
+                    rtTmplDict = rtItem.table_item.to_dict(exclude=[
+                                                        'id',
+                                                        'vault',
+                                                        'over_me',
+                                                        'under_me',
+                                                        'rtable_over_me',
+                                                        'roll_table_items'])
+                    rtTmplCopy = db.Templates(**rtTmplDict)
+                    commit()
+                    rtiCopy.table_item = rtTmplCopy
+                    commit()
+                    copy_layer(rtItem.table_item, rtTmplCopy, blocklist)
+
+        target = db.Templates[target.id]
+        copy_tgt_dict = target.to_dict(exclude=['id',
+                                                'vault',
+                                                'over_me',
+                                                'under_me',
+                                                'rtable_over_me',
+                                                'roll_table_items'])
+        top = db.Templates(**copy_tgt_dict)
+        commit()
+        copy_layer(target, top, blocklist)
+        return top
 
 
     @db_session
@@ -384,20 +463,31 @@ class AcadamyDialog(QDialog):
         db = self.ui_vault.main.db
         forms = self.ui.verticalStackedWidget_forms
         all_templates = self.ui.treeWidget_all_templates
-        template = all_templates.currentItem()
-        parent = template.parent()
-        dbObj = db.Templates[template.dbObj.id]
+        template_view = all_templates.currentItem()
+        parent_view = template_view.parent()
+        dbObj = db.Templates[template_view.dbObj.id]
         # delete child stuff that's not templates contained here.
-        [ t.delete() for t in dbObj.under_me if not t.detail_type == 'template' ]
-        commit()
-        dbObj.delete()
-        commit()
-        if parent:
-            parent.removeChild(template)
+        def remove_level(target):
+            if len(target.under_me) > 0:
+                for item in target.under_me:
+                    remove_level(item)
+            if len(target.roll_table_items) > 0:
+                for rtable_item in target.roll_table_items:
+                    rtable_item.delete()
+                commit()
+            target.delete()
+        remove_level(dbObj)
+
+        if parent_view:
+            parent_view.removeChild(template_view)
         else:
-            index = all_templates.indexOfTopLevelItem(template)
+            index = all_templates.indexOfTopLevelItem(template_view)
             all_templates.takeTopLevelItem(index)
-        forms.setCurrentIndex(self.pageIndex['splash'])
+        current = all_templates.currentItem()
+        if current:
+            self.select_template(current, 0)
+        else:
+            forms.setCurrentIndex(self.pageIndex['splash'])
 
 
     @db_session
@@ -428,14 +518,14 @@ class AcadamyDialog(QDialog):
 
 
     @db_session
-    def select_template(self, current, previous):
+    def select_template(self, itemClicked, column):
         'sets self.detail_target and changes the form page'
         db = self.ui_vault.main.db
         templates = self.ui.treeWidget_all_templates
         forms = self.ui.verticalStackedWidget_forms
 
-        item = db.Templates[current.dbObj.id]
-        self.init_page(current.dbObj.id)
+        item = db.Templates[itemClicked.dbObj.id]
+        self.init_page(itemClicked.dbObj.id)
         match item.detail_type:
             case 'lore':
                 forms.setCurrentIndex(self.pageIndex['Lore'])
@@ -466,19 +556,20 @@ class AcadamyDialog(QDialog):
                 if dbObj.is_folder:
                     item.setText(0, f"Folder: {dbObj.name}")
                 else:
-                    item.setText(0, dbObj.name)
+                    item.setText(0, self.construct_detail_name(dbObj))
                 if len(dbObj.under_me) > 0:
                     add_level(item)
         # Build the tree
         for dbObj in db.Templates.select(detail_type='template'):
-            item = QTreeWidgetItem(templates_view)
-            item.dbObj = dbObj
-            if dbObj.is_folder:
-                item.setText(0, f"Folder: {dbObj.name}")
-            else:
-                item.setText(0, dbObj.name)
-            if len(dbObj.under_me) > 0:
-                add_level(item)
+            if len(dbObj.over_me) == 0:
+                item = QTreeWidgetItem(templates_view)
+                item.dbObj = dbObj
+                if dbObj.is_folder:
+                    item.setText(0, f"Folder: {dbObj.name}")
+                else:
+                    item.setText(0, dbObj.name)
+                if len(dbObj.under_me) > 0:
+                    add_level(item)
         templates_view.sortItems(0, Qt.AscendingOrder)
 
 
@@ -511,16 +602,17 @@ class AcadamyDialog(QDialog):
         print(f"function input: {selection}")
         if not selection:
             selection = self.ui.comboBox_type_templates_page.currentText()
+        print(f"selection {selection}")
         db = self.ui_vault.main.db
         forms = self.ui.verticalStackedWidget_forms
         templates = self.ui.treeWidget_all_templates
         template = templates.currentItem()
-        parent = template.parent()
         selected_item = db.Templates[template.dbObj.id]
+        if selected_item.detail_type == 'template':
+            parent = template
+        else:
+            parent = template.parent()
         parent_item = db.Templates[parent.dbObj.id]
-        print(f"selection {selection}")
-        print(f"template {template.dbObj.name}")
-        print(f"selected_item {selected_item.name}")
         match selection:
             case 'Lore':
                 dbObj = parent_item.under_me.create(detail_type='lore')
@@ -535,18 +627,13 @@ class AcadamyDialog(QDialog):
             case 'Roll Table':
                 dbObj = parent_item.under_me.create(detail_type='rtable')
         commit()
-        # This prevents details from being added under other details.
-        if selected_item.detail_type == 'template':
-            item = QTreeWidgetItem(template)
-        else:
-            item = QTreeWidgetItem(parent)
 
+        item = QTreeWidgetItem(parent)
         item.dbObj = dbObj
-        # well understood initialization area.
+        # ititialize stuff
         templates.setCurrentItem(item)
         templates.sortItems(0, Qt.AscendingOrder)
-        # self.init_page(item.dbObj.id)
-        # forms.setCurrentIndex(self.pageIndex[selection])
+        self.select_template(item, 0)
 
 
     @db_session
@@ -601,11 +688,11 @@ class AcadamyDialog(QDialog):
         if template is None:
             item.setText(0, "*new template*")
         else:
-            item.setText(0, template.name)
+            item.setText(0,template.name)
 
         all_templates.setCurrentItem(item)
         all_templates.sortItems(0, Qt.AscendingOrder)
-        # signal fired by setCurrentItem initializes page.
+        self.select_template(item, 0)
 
 
     @db_session

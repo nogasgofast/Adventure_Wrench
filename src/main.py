@@ -101,8 +101,10 @@ class MainWindow(QMainWindow):
         self.ui.label_current_game.setText(f'Current Game: {game_name}')
 
     def switch_game(self):
-        file_name, filtered_by = QFileDialog.getOpenFileName(self, "Switch Game",
-                                               'save/', 'sqlite databases (*.sqlite)')
+        file_name, filtered_by = QFileDialog.getOpenFileName(self,
+                                                 "Switch Game",
+                                                 './save',
+                                                 "sqlite databases (*.sqlite)")
         if file_name:
             # use relative path.
             file_name = os.path.basename(file_name)
