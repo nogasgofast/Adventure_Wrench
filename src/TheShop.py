@@ -15,7 +15,9 @@ class TheShopDialog(QDialog):
         self.ui = Ui_TheShop()
         self.ui.setupUi(self)
         self.target = None
+        self.display_target = None
         self.spinboxLock = False
+        self.debug_count = 0
 
         self.ui.pushButton_roll_stats.clicked.connect(self.roll_stats)
         self.ui.pushButton_back.clicked.connect(self.close)
@@ -32,9 +34,8 @@ class TheShopDialog(QDialog):
         self.ui.spinBox_INT.valueChanged.connect(lambda x: self.update_stat('INT', x))
         self.ui.spinBox_WIS.valueChanged.connect(lambda x: self.update_stat('WIS', x))
         self.ui.spinBox_CHA.valueChanged.connect(lambda x: self.update_stat('CHA', x))
-
         self.ui.lineEdit_name.textEdited.connect(self.update_name)
-
+        # This is fine but I have to block signals anywhere I use this textEdit
         self.ui.textEdit_stat_block.textChanged.connect(self.save_stat_block_Changes)
 
 
@@ -89,22 +90,15 @@ class TheShopDialog(QDialog):
         db = self.vault.main.db
         dbObj = db.Vault[self.target.id]
         dbObj.stat_block = self.ui.textEdit_stat_block.toPlainText()
+        self.display_target.setToolTip(dbObj.stat_block)
 
-        for row in range(0, self.vault.ui.listWidget_vault.count()):
-            item = self.vault.ui.listWidget_vault.item(row)
-            if item.isSelected():
-                    item.setToolTip(dbObj.stat_block)
-                    break
 
     @db_session
-    def load_vault_item(self):
+    def load_vault_item(self, display_target_index):
         db = self.vault.main.db
         vault = self.vault.ui.listWidget_vault
-        for row in range(0, vault.count()):
-            item = vault.item(row)
-            if item.isSelected():
-                self.target = item.dbObj
-                break
+        self.display_target = vault.itemFromIndex(display_target_index)
+        self.target = self.display_target.dbObj
         self.target = db.Vault[self.target.id]
 
         self.ui.lineEdit_name.blockSignals(True)
@@ -148,21 +142,9 @@ class TheShopDialog(QDialog):
         item = QListWidgetItem('* * *')
         self.ui.lineEdit_name.setText('* * *')
         item.dbObj = self.target
-
         # Add Items
         self.vault.ui.listWidget_vault.addItem(item)
-        # clear selections
-        selectedItems = self.vault.ui.listWidget_vault.selectedItems()
-        for i in selectedItems:
-            i.isSelected = False
-        # set selection to currently added item.
-        # TODO: this is how we ensure this item is updated when changes are made.
-        # Although this is a poor way to do it since the user might
-        # change selections in other ways in the ui. So a better method
-        # would be to target this item for updates using something like 
-        # it's object identity
-        self.vault.ui.listWidget_vault.setCurrentItem(item)
-
+        self.display_target = item
         self.update_selector_templates()
         self.update_stat_block()
         self.ui.listWidget_templates.clear()
@@ -359,7 +341,9 @@ class TheShopDialog(QDialog):
                     stat_block_text += f'\n{text}\n'
                 stat_block_text += '\n'
 
+        self.ui.textEdit_stat_block.blockSignals(True)
         self.ui.textEdit_stat_block.setPlainText(stat_block_text)
+        self.ui.textEdit_stat_block.blockSignals(False)
         # updates the vault item in the database and other pages.
         self.save_stat_block_Changes()
 
