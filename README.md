@@ -112,7 +112,7 @@ long as that template or roll table has not been applied already.
 4. Follow the instructions above for "I have the game all written up, what now?"
 5. If you want to switch back to your old game at any time use the "switch game" button.
 
-### 1337 hack3rs only
+### Tips
 The awconfig.ini file should have the name of the currently used database file in it.
 The change game button just edits this file and forces the user to restart the application.
 that is all.
