@@ -1,18 +1,44 @@
-# Adventure Wrench
-5E compatible
-1. Initiative Tracker
-2. A super useful Template builder
-3. Template Randomizer, with automatic value adjustments.
-4. A content vault that stores past creations.
 
-Lets us build fast, reduces writing, and enhances what you get
-out of what you create.
+
+# Adventure Wrench
+A no internet necessary, 5e compatible, intiative tracker and encounter builder. Built for my perticular GM stye it focuses on fast reactions to current events. And allows Encounters to be built very quickly from modular pieces.
+
+## Game Tracker
+The Main window for this program is the game tracker. It keeps tabs on important information, notes and marks about the current encounter. It's clean and easy to see what is going on at a glance.
+Full stat blocks are hidden by default but can be seen on mouse roll-over. You can pull them up in seperate window by double-clicking them.
+
+<img fetchpriority="high" decoding="async" width="804" height="630" src="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-4.png" alt="" class="wp-image-73" srcset="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-4.png 804w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-4-300x235.png 300w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-4-768x602.png 768w" sizes="(max-width: 804px) 100vw, 804px">
+
+
+## The Vault
+The vault is a repository of all unique things that can be copied into the current game when needed. Think varients of a monster, trap, npc, or boss. Or even pre-generated lists of information like lore, background, or geography.
+
+<img decoding="async" width="805" height="632" src="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-2.png" alt="" class="wp-image-71" srcset="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-2.png 805w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-2-300x236.png 300w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-2-768x603.png 768w" sizes="(max-width: 805px) 100vw, 805px">
+
+## The Shop
+When building things to store in the vault (vault items), You can simply add a new vault item, give it a name and paste in your stat block if you have one already then save. If your the type that likes to do a little more customization you can make use of templates which can add things to the generated state block. Fiddling around with the target CR and group of numbers will allow you to adjust difficulty without individually changing damage numbers. Just keep in mind it uses the DM handbooks suggestions for damage and that's it. No other considerations like abilities or reistances.
+
+<img loading="lazy" decoding="async" width="907" height="632" src="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-1.png" alt="" class="wp-image-70" srcset="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-1.png 907w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-1-300x209.png 300w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-1-768x535.png 768w" sizes="auto, (max-width: 907px) 100vw, 907px">
+
+## Templates
+If your not sold on this application yet I've got one last feature that might do it. Templates are a more flexible way to build encounter things then the usual encounter builder. Ones that just want you to make lists of stuff that you can re-use.
+1. Templates can change just about anythihng in a vault item.
+2. They can be stacked togeather or nested.
+3. You can build tables here you can print into vault items, or have the system roll dice for you to make unique vault items.
+4. We can build Weapons that scale with CR and group size.
+5. Templates can represent the character of regions of the world, swamp, desert, sky islands, or different worlds entirely.
+6. Lore reminders can be applied to creatures, items, or npc's through them.
+
+<img decoding="async" width="1024" height="598" src="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-3-1024x598.png" alt="" class="wp-image-72" srcset="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-3-1024x598.png 1024w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-3-300x175.png 300w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-3-768x448.png 768w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-3.png 1062w" sizes="(max-width: 1024px) 100vw, 1024px">
+
+
+Here is a link to a web-page with a little more explination:
+http://www.nogasgofast.net/2025/09/10/yet-another-5e-encounter-builder/
 
 
 ## Automaticly Adjusted Values
 These special words will be replaced at the time you are building something in "The Shop".
-And generally allow you to write more flexible items and actions which adjust to
-the difficulty you are going for.
+And generally allow you to write more flexible items and actions.
 
 
 | Stand-in Values | What they are |
@@ -93,7 +119,7 @@ roll: 1d6
 
 In this case we are not selecting items but other templates. In fact we can choose
 to have roll tables which select other roll tables, templates that use other templates
-and so on. When applied to something this roll table will apply another template so
+and so on. When applied to something this roll table will apply another template **so
 long as that template or roll table has not been applied already.
 
 
