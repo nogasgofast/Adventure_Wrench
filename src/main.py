@@ -68,8 +68,10 @@ class MainWindow(QMainWindow):
 
 
     def config_setup(self):
-        self.config_name = 'awconfig.ini'
-        self.db_default_name = 'save/default.sqlite'
+        self.default_config_dir = os.environ.get('$HOST_XDG_CONFIG_HOME') or ''
+        self.config_name = self.default_config_dir + 'awconfig.ini'
+        self.default_save_dir = os.environ.get('$HOST_XDG_DATA_HOME') or 'save'
+        self.db_default_name = self.default_save_dir + '/default.sqlite'
         self.config_file = configparser.ConfigParser()
         self.config_file.read(self.config_name)
 
@@ -103,7 +105,7 @@ class MainWindow(QMainWindow):
     def switch_game(self):
         file_name, filtered_by = QFileDialog.getOpenFileName(self,
                                                  "Switch Game",
-                                                 './save',
+                                                 self.default_save_dir,
                                                  "sqlite databases (*.sqlite)")
         if file_name:
             # use relative path.

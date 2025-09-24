@@ -1,0 +1,21 @@
+id: net.nogasgofast.rpg.adventure_wrench
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+command: adventure_wrench
+finish-args:
+  - --socket=wayland
+  - --filesystem=home
+modules:
+  - name: adventure_wrench
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 src/build/exe.linux-x86_64*/adventure_wrench /app/adventure_wrench
+      - install -Dm755 src/build/exe.linux-x86_64*/frozen_application_license.txt /app/frozen_application_license.txt
+      - cp -r src/build/exe.linux-x86_64*/lib /app/
+      - cp -r src/build/exe.linux-x86_64*/share /app/
+      - mkdir -m755 /app/bin
+      - ln -s /app/adventure_wrench /app/bin/adventure_wrench
+    sources:
+      - type: dir
+        path: .

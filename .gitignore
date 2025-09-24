@@ -2,6 +2,8 @@
 TODO.txt
 *.pickle
 env/*
+.flatpak-builder/*
+repo/*
 src/awdb.sqlite
 src/build*
 .project
