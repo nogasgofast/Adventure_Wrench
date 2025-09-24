@@ -3,14 +3,14 @@
   <id>net.nogasgofast.rpg.adventure_wrench</id>
   
   <name>Adventure Wrench</name>
-  <summary>A offline rpg encounter tracker and builder. </summary>
+  <summary>Offline PnP RPG encounters</summary>
   <icon type="stock" width="256" height="256">net.nogasgofast.rpg.adventure_wrench.png</icon>  
   <metadata_license>MIT</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   
   <description>
     <p>
-      A no internet necessary, 5e compatible, initiative tracker and encounter builder. Built for my particular GM stye. It focuses on fast reactions to current events. And allows Encounters to be built very quickly from modular pieces.
+      Portable 5e game tracker and campaign helper.
     </p>
   </description>
   

@@ -5,7 +5,6 @@ sdk: org.freedesktop.Sdk
 command: adventure_wrench
 finish-args:
   - --socket=wayland
-  - --filesystem=home
 modules:
   - name: adventure_wrench
     buildsystem: simple

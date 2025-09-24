@@ -2,23 +2,32 @@ id: net.nogasgofast.rpg.adventure_wrench
 runtime: org.freedesktop.Platform
 runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
-command: adventure_wrench
+command: python adventure_wrench
+base: io.qt.PySide.BaseApp
+base-version: '6.8'
+build-options:
+  env:
+    - BASEAPP_REMOVE_WEBENGINE=1
+    - BASEAPP_DISABLE_NUMPY=1
+cleanup-commands:
+  - /app/cleanup-BaseApp.sh
 finish-args:
   - --socket=wayland
-  - --filesystem=home
 modules:
   - name: adventure_wrench
     buildsystem: simple
     build-commands:
-      - install -Dm755 adventure_wrench /app/adventure_wrench
-      - install -Dm755 frozen_application_license.txt /app/frozen_application_license.txt
-      - cp -r lib /app/
-      - cp -r share /app/
-      - mkdir -m755 /app/bin
-      - ln -s /app/adventure_wrench /app/bin/adventure_wrench
+      - ls -l
+      - pip install -r src/requirements.txt
+      - cd src/
+      - install -Dm644 net.nogasgofast.rpg.adventure_wrench.desktop /app/share/applications/net.nogasgofast.rpg.adventure_wrench.desktop
+      - instlal -Dm644 net.nogasgofast.rpg.adventure_wrench.metainfo.xml /app/share/metainfo/net.nogasgofast.rpg.adventure_wrench.metainfo.xml
+      - intall -Dm644 net.nogasgofast.rpg.adventure_wrench.png /app/share/icons/hicolor/256x256/apps/net.nogasgofast.rpg.adventure_wrench.png
+      - ln -s main.py /app/bin/adventure_wrench
+      - ls -l . app/bin/
     sources:
-      - type: archive
-        url: https://github.com/nogasgofast/Adventure_Wrench/releases/download/v1.2-flatpak/Adventure_Wrench.linux-x86_64-3.13.zip
-        sha256: 0a2cdc073f20081236634f6d5e2fb1ebe6a789e17415d1ed8ffcc3762bede8d0
+      - type: git
+        url: https://github.com/nogasgofast/Adventure_Wrench
+        tag: v1.2-flatpak
         only-arches:
           - x86_64

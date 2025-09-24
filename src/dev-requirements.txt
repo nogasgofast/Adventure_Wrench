@@ -1,3 +1,5 @@
+pyside6
+cx_Freeze
 pony
 pyparsing
 requests
