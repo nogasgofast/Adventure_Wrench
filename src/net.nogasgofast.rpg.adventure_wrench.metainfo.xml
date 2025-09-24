@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>net.nogasgofast.rpg.adventure_wrench</id>
+  
+  <name>Adventure Wrench</name>
+  <summary>A offline rpg encounter tracker and builder. </summary>
+  <icon type="stock" width="256" height="256">net.nogasgofast.rpg.adventure_wrench.png</icon>  
+  <metadata_license>MIT</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  
+  <description>
+    <p>
+      A no internet necessary, 5e compatible, initiative tracker and encounter builder. Built for my particular GM stye. It focuses on fast reactions to current events. And allows Encounters to be built very quickly from modular pieces.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">net.nogasgofast.rpg.adventure_wrench.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>http://www.nogasgofast.net/wp-content/uploads/2025/09/image-4.png</image>
+    </screenshot>
+    <screenshot>
+      <image>http://www.nogasgofast.net/wp-content/uploads/2025/09/image-2.png</image>
+    </screenshot>
+    <screenshot>
+      <image>http://www.nogasgofast.net/wp-content/uploads/2025/09/image-3-1024x598.png</image>
+    </screenshot>
+  </screenshots>
+</component>

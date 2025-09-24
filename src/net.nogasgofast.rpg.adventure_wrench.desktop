@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+
+Name=Adventure Wrench
+Comment=A offline rpg encounter tracker and builder.
+Categories=Game;RolePlaying;
+
+Icon=net.nogasgofast.rpg.adventure_wrench.png
+Exec=adventure_wrench
+Terminal=false
