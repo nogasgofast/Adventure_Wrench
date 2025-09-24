@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow,
                               QWidget, QListWidgetItem,
                               QMessageBox, QFileDialog)
 from PySide6.QtGui import QBrush, QColor, QFont
+from PySide6.QtCore import QStandardPaths
 from pony.orm import db_session, commit
 from lib.aw_db import database_factory
 from Player import PlayerDialog
@@ -68,10 +69,17 @@ class MainWindow(QMainWindow):
 
 
     def config_setup(self):
-        self.default_config_dir = os.environ.get('$HOST_XDG_CONFIG_HOME') or ''
-        self.config_name = self.default_config_dir + 'awconfig.ini'
-        self.default_save_dir = os.environ.get('$HOST_XDG_DATA_HOME') or 'save'
+        # ~/.config/<app id>.ini 
+        app_config_location = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation)
+        # ~/.local/share/ or /usr/local/share/ or /usr/share/
+        data_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.GenericDataLocation)
+        self.default_config_dir = os.path.dirname(app_config_location)
+        self.config_name = app_config_location
+        self.default_save_dir = data_dir + '/adventure_wrench/'
         self.db_default_name = self.default_save_dir + '/default.sqlite'
+
+        os.makedirs(self.default_save_dir, exist_ok=True)
+
         self.config_file = configparser.ConfigParser()
         self.config_file.read(self.config_name)
 
@@ -103,17 +111,14 @@ class MainWindow(QMainWindow):
         self.ui.label_current_game.setText(f'Current Game: {game_name}')
 
     def switch_game(self):
-        file_name, filtered_by = QFileDialog.getOpenFileName(self,
+        file_path, filtered_by = QFileDialog.getOpenFileName(self,
                                                  "Switch Game",
                                                  self.default_save_dir,
                                                  "sqlite databases (*.sqlite)")
-        if file_name:
-            # use relative path.
-            file_name = os.path.basename(file_name)
-            relative_path = f'save/{file_name}'
+        if file_path:
             try:
-                # print(file_name)
-                self.config_file['Game'] = { 'db': relative_path }
+                # print(file_path)
+                self.config_file['Game'] = { 'db': file_path }
                 with open(self.config_name, 'w') as fh:
                     self.config_file.write(fh)
                 try:
@@ -122,7 +127,7 @@ class MainWindow(QMainWindow):
                     del(self.db)
                     self.db = database_factory()
                     self.db.bind(provider="sqlite",
-                               filename=relative_path,
+                               filename=file_path,
                                create_db=False)
                     self.db.generate_mapping(create_tables=False)
                 except Exception as e:
@@ -132,7 +137,7 @@ class MainWindow(QMainWindow):
                 self.ui_vault.ui_acadamy.load_acadamy()
                 self.load_session()
                 # just use the name not the extention here
-                game_name = os.path.splitext(file_name)[0]
+                game_name = os.path.splitext(os.path.basename(file_path))[0]
                 self.ui.label_current_game.setText(f'Current Game: {game_name}')
             except Exception as e:
                 print(f"Failed to load: {e}")
