@@ -10,12 +10,15 @@ modules:
   - name: adventure_wrench
     buildsystem: simple
     build-commands:
-      - install -Dm755 src/build/exe.linux-x86_64*/adventure_wrench /app/adventure_wrench
-      - install -Dm755 src/build/exe.linux-x86_64*/frozen_application_license.txt /app/frozen_application_license.txt
-      - cp -r src/build/exe.linux-x86_64*/lib /app/
-      - cp -r src/build/exe.linux-x86_64*/share /app/
+      - install -Dm755 adventure_wrench /app/adventure_wrench
+      - install -Dm755 frozen_application_license.txt /app/frozen_application_license.txt
+      - cp -r lib /app/
+      - cp -r share /app/
       - mkdir -m755 /app/bin
       - ln -s /app/adventure_wrench /app/bin/adventure_wrench
     sources:
       - type: archive
-        url: <make application deployable from git again. For upload to flathub> 
+        url: https://github.com/nogasgofast/Adventure_Wrench/releases/download/v1.2-flatpak/Adventure_Wrench.linux-x86_64-3.13.zip
+        sha256: 0a2cdc073f20081236634f6d5e2fb1ebe6a789e17415d1ed8ffcc3762bede8d0
+        only-arches:
+          - x86_64
