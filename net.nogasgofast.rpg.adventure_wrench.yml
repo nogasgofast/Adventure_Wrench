@@ -14,11 +14,11 @@ cleanup-commands:
 finish-args:
   - --socket=wayland
 modules:
+  - python3-requirements.yml
   - name: adventure_wrench
     buildsystem: simple
     build-commands:
       - ls -l
-      - pip install -r src/requirements.txt
       - cd src/
       - install -Dm644 net.nogasgofast.rpg.adventure_wrench.desktop /app/share/applications/net.nogasgofast.rpg.adventure_wrench.desktop
       - instlal -Dm644 net.nogasgofast.rpg.adventure_wrench.metainfo.xml /app/share/metainfo/net.nogasgofast.rpg.adventure_wrench.metainfo.xml
@@ -28,6 +28,6 @@ modules:
     sources:
       - type: git
         url: https://github.com/nogasgofast/Adventure_Wrench
-        tag: v1.2-flatpak
+        tag: v1.2.flatpak.3
         only-arches:
           - x86_64
