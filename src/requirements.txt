@@ -1,3 +1,4 @@
+pyside6
 pony
 pyparsing
 requests
