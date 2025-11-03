@@ -785,10 +785,9 @@ class AcadamyDialog(QDialog):
                 stack = QSignalBlocker(self.ui.comboBox_stack_template)
                 self.ui.comboBox_stack_template.clear()
                 # just templates please
-                all_templates = db.Templates.select(detail_type='template')
-                # NOT this template please.
-                all_templates = [ t for t in all_templates if not t.name == dbObj.name ]
-                for template in all_templates:
+                templates = db.Templates.select(lambda t: t.name != dbObj.name 
+                                                   and t.detail_type == 'template')
+                for template in templates:
                     if not template.is_folder:
                         self.ui.comboBox_stack_template.addItem(template.name,
                                                                 userData=template)

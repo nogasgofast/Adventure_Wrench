@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'TheShop_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.9.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -25,7 +25,44 @@ class Ui_TheShop(object):
         if not TheShop.objectName():
             TheShop.setObjectName(u"TheShop")
         TheShop.resize(898, 586)
-        TheShop.setStyleSheet(u"QpushButton { margin: 0,0,0,25 px; }")
+        TheShop.setStyleSheet(u"QWidget {\n"
+"  color: black;\n"
+"  background-color: rgb(89, 92, 123);\n"
+"}\n"
+"\n"
+"QListWidget QTreeWidget{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"QListWidget::item:selected:!active{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"QTreeWidget::item:selected:!active{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"\n"
+"QToolTip {\n"
+"	border: 5px solid orange;\n"
+"	background-color: #39537d;\n"
+"    color: #FFF;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"color: rgb(222, 221, 218);\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"background-color: rgb(75, 82, 143);\n"
+"color: white;\n"
+"}")
         TheShop.setModal(False)
         self.horizontalLayout_2 = QHBoxLayout(TheShop)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
@@ -81,7 +118,7 @@ class Ui_TheShop(object):
 
         self.horizontalLayout_group_of.addWidget(self.spinBox_group_of)
 
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_group_of.addItem(self.horizontalSpacer_5)
 
@@ -243,7 +280,7 @@ class Ui_TheShop(object):
 
         self.horizontalLayout_back.addWidget(self.pushButton_back)
 
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_back.addItem(self.horizontalSpacer_2)
 

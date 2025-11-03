@@ -14,7 +14,44 @@
    <string>The Shop</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QpushButton { margin: 0,0,0,25 px; }</string>
+   <string notr="true">QWidget {
+  color: black;
+  background-color: rgb(89, 92, 123);
+}
+
+QListWidget QTreeWidget{
+   color: #000;
+   selection-color: #FFF;
+   selection-background-color: #55A;
+}
+
+QListWidget::item:selected:!active{
+   color: #000;
+   selection-color: #FFF;
+   selection-background-color: #55A;
+}
+
+QTreeWidget::item:selected:!active{
+   color: #000;
+   selection-color: #FFF;
+   selection-background-color: #55A;
+}
+
+
+QToolTip {
+	border: 5px solid orange;
+	background-color: #39537d;
+    color: #FFF;
+}
+
+QLabel {
+color: rgb(222, 221, 218);
+}
+
+QPushButton {
+background-color: rgb(75, 82, 143);
+color: white;
+}</string>
   </property>
   <property name="modal">
    <bool>false</bool>

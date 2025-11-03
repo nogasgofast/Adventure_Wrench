@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Acadamy_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.9.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -28,6 +28,44 @@ class Ui_acadamy_dialog(object):
         if not acadamy_dialog.objectName():
             acadamy_dialog.setObjectName(u"acadamy_dialog")
         acadamy_dialog.resize(1056, 587)
+        acadamy_dialog.setStyleSheet(u"QWidget {\n"
+"  color: black;\n"
+"  background-color: rgb(89, 92, 123);\n"
+"}\n"
+"\n"
+"QListWidget QTreeWidget{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"QListWidget::item:selected:!active{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"QTreeWidget::item:selected:!active{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"\n"
+"QToolTip {\n"
+"	border: 5px solid orange;\n"
+"	background-color: #39537d;\n"
+"    color: #FFF;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"color: rgb(222, 221, 218);\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"background-color: rgb(75, 82, 143);\n"
+"color: white;\n"
+"}")
         self.horizontalLayout = QHBoxLayout(acadamy_dialog)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(9, -1, -1, -1)
@@ -65,8 +103,8 @@ class Ui_acadamy_dialog(object):
 
         self.line = QFrame(acadamy_dialog)
         self.line.setObjectName(u"line")
-        self.line.setFrameShape(QFrame.VLine)
-        self.line.setFrameShadow(QFrame.Sunken)
+        self.line.setFrameShape(QFrame.Shape.VLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
 
         self.horizontalLayout.addWidget(self.line)
 
@@ -78,7 +116,7 @@ class Ui_acadamy_dialog(object):
         self.formLayout.setObjectName(u"formLayout")
         self.label_splash = QLabel(self.page_splash)
         self.label_splash.setObjectName(u"label_splash")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_splash.sizePolicy().hasHeightForWidth())
@@ -89,7 +127,7 @@ class Ui_acadamy_dialog(object):
         self.label_splash.setMargin(50)
         self.label_splash.setIndent(0)
 
-        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label_splash)
+        self.formLayout.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label_splash)
 
         self.verticalStackedWidget_forms.addWidget(self.page_splash)
         self.page_new_template = QWidget()
@@ -109,8 +147,8 @@ class Ui_acadamy_dialog(object):
 
         self.line_3 = QFrame(self.page_new_template)
         self.line_3.setObjectName(u"line_3")
-        self.line_3.setFrameShape(QFrame.HLine)
-        self.line_3.setFrameShadow(QFrame.Sunken)
+        self.line_3.setFrameShape(QFrame.Shape.HLine)
+        self.line_3.setFrameShadow(QFrame.Shadow.Sunken)
 
         self.verticalLayout_9.addWidget(self.line_3)
 
@@ -139,8 +177,8 @@ class Ui_acadamy_dialog(object):
 
         self.line_2 = QFrame(self.page_new_template)
         self.line_2.setObjectName(u"line_2")
-        self.line_2.setFrameShape(QFrame.HLine)
-        self.line_2.setFrameShadow(QFrame.Sunken)
+        self.line_2.setFrameShape(QFrame.Shape.HLine)
+        self.line_2.setFrameShadow(QFrame.Shadow.Sunken)
 
         self.verticalLayout_9.addWidget(self.line_2)
 
@@ -163,8 +201,8 @@ class Ui_acadamy_dialog(object):
 
         self.line_4 = QFrame(self.page_new_template)
         self.line_4.setObjectName(u"line_4")
-        self.line_4.setFrameShape(QFrame.HLine)
-        self.line_4.setFrameShadow(QFrame.Sunken)
+        self.line_4.setFrameShape(QFrame.Shape.HLine)
+        self.line_4.setFrameShadow(QFrame.Shadow.Sunken)
 
         self.verticalLayout_9.addWidget(self.line_4)
 
@@ -185,7 +223,7 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_9.addWidget(self.checkBox_is_folder_template)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_9.addItem(self.verticalSpacer)
 
@@ -297,7 +335,7 @@ class Ui_acadamy_dialog(object):
 
         self.lineEdit_content_stats = QLineEdit(self.page_stats)
         self.lineEdit_content_stats.setObjectName(u"lineEdit_content_stats")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.lineEdit_content_stats.sizePolicy().hasHeightForWidth())
@@ -306,7 +344,7 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_5.addWidget(self.lineEdit_content_stats)
 
-        self.verticalSpacer_stats = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer_stats = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_5.addItem(self.verticalSpacer_stats)
 
@@ -358,7 +396,7 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_4.addWidget(self.lineEdit_content_attribute)
 
-        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_4.addItem(self.verticalSpacer_3)
 
@@ -581,7 +619,7 @@ class Ui_acadamy_dialog(object):
         self.lineEdit_dice_roll_table = QLineEdit(self.page_roll_table)
         self.lineEdit_dice_roll_table.setObjectName(u"lineEdit_dice_roll_table")
         self.lineEdit_dice_roll_table.setEnabled(True)
-        sizePolicy2 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.lineEdit_dice_roll_table.sizePolicy().hasHeightForWidth())

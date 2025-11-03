@@ -3,27 +3,41 @@
   <id>net.nogasgofast.rpg.adventure_wrench</id>
   
   <name>Adventure Wrench</name>
-  <summary>Offline PnP RPG encounters</summary>
-  <icon type="stock" width="256" height="256">net.nogasgofast.rpg.adventure_wrench.png</icon>  
+  <summary>Portable 5e tracker/builder</summary>
   <metadata_license>MIT</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
-  
+  <url type="homepage">https://github.com/nogasgofast/Adventure_Wrench</url>
+  <content_rating type="oars-1.1" />
   <description>
     <p>
-      Portable 5e game tracker and campaign helper.
+      Portable 5e(ish) game tracker and campaign helper. Use a laptop without wifi. Build encounters and campaigns without needing internet access. Build templates, roll-tables and encounters.
     </p>
   </description>
   
-  <launchable type="desktop-id">net.nogasgofast.rpg.adventure_wrench.desktop</launchable>
+  <launchable type="desktop-id">/src/net.nogasgofast.rpg.adventure_wrench.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>http://www.nogasgofast.net/wp-content/uploads/2025/09/image-4.png</image>
+      <image>https://www.nogasgofast.net/wp-content/uploads/2025/09/image-4.png</image>
     </screenshot>
     <screenshot>
-      <image>http://www.nogasgofast.net/wp-content/uploads/2025/09/image-2.png</image>
+      <image>https://www.nogasgofast.net/wp-content/uploads/2025/09/image-2.png</image>
     </screenshot>
     <screenshot>
-      <image>http://www.nogasgofast.net/wp-content/uploads/2025/09/image-3-1024x598.png</image>
+      <image>https://www.nogasgofast.net/wp-content/uploads/2025/09/image-3-1024x598.png</image>
     </screenshot>
   </screenshots>
+    <releases>
+    <release version="1.3.0" date="2023-12-03">
+    <description>
+      <p>Latest</p>
+      <ul>
+        <li>Notes in github release</li>
+      </ul>
+    </description>
+    <url>https://github.com/nogasgofast/Adventure_Wrench/releases/tag/v1.3</url>
+    </release>
+  </releases>
+  <developer id="net.nogasgofast">
+    <name>Gene A. Guido III</name>
+  </developer>
 </component>
