@@ -19,9 +19,8 @@
   <property name="styleSheet">
    <string notr="true">QWidget {
   color: black;
-  background-color: rgb(222, 221, 218);
+  background-color: rgb(89, 92, 123);
 }
-
 
 QListWidget QTreeWidget{
    color: #000;
@@ -49,11 +48,11 @@ QToolTip {
 }
 
 QLabel {
-color: #594624;
+color: rgb(222, 221, 218);
 }
 
 QPushButton {
-background-color: #39537d;
+background-color: rgb(75, 82, 143);
 color: white;
 }</string>
   </property>

@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Player_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.9.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -25,7 +25,7 @@ class Ui_Player(object):
             Player.setObjectName(u"Player")
         Player.setWindowModality(Qt.WindowModal)
         Player.resize(629, 356)
-        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Player.sizePolicy().hasHeightForWidth())
@@ -33,6 +33,44 @@ class Ui_Player(object):
         Player.setMinimumSize(QSize(629, 0))
         Player.setMaximumSize(QSize(629, 16777215))
         Player.setContextMenuPolicy(Qt.DefaultContextMenu)
+        Player.setStyleSheet(u"QWidget {\n"
+"  color: black;\n"
+"  background-color: rgb(89, 92, 123);\n"
+"}\n"
+"\n"
+"QListWidget QTreeWidget{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"QListWidget::item:selected:!active{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"QTreeWidget::item:selected:!active{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"\n"
+"QToolTip {\n"
+"	border: 5px solid orange;\n"
+"	background-color: #39537d;\n"
+"    color: #FFF;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"color: rgb(222, 221, 218);\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"background-color: rgb(75, 82, 143);\n"
+"color: white;\n"
+"}")
         Player.setModal(False)
         self.verticalLayout = QVBoxLayout(Player)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -57,7 +95,7 @@ class Ui_Player(object):
         self.verticalLayout_inititive.setObjectName(u"verticalLayout_inititive")
         self.label_inititive = QLabel(Player)
         self.label_inititive.setObjectName(u"label_inititive")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.label_inititive.sizePolicy().hasHeightForWidth())
@@ -117,7 +155,7 @@ class Ui_Player(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.pushButton_delete = QPushButton(Player)
         self.pushButton_delete.setObjectName(u"pushButton_delete")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.pushButton_delete.sizePolicy().hasHeightForWidth())

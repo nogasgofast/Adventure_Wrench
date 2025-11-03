@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Vault_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.9.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -24,7 +24,44 @@ class Ui_Vault(object):
         if not Vault.objectName():
             Vault.setObjectName(u"Vault")
         Vault.resize(673, 583)
-        Vault.setStyleSheet(u"")
+        Vault.setStyleSheet(u"QWidget {\n"
+"  color: black;\n"
+"  background-color: rgb(89, 92, 123);\n"
+"}\n"
+"\n"
+"QListWidget QTreeWidget{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"QListWidget::item:selected:!active{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"QTreeWidget::item:selected:!active{\n"
+"   color: #000;\n"
+"   selection-color: #FFF;\n"
+"   selection-background-color: #55A;\n"
+"}\n"
+"\n"
+"\n"
+"QToolTip {\n"
+"	border: 5px solid orange;\n"
+"	background-color: #39537d;\n"
+"    color: #FFF;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"color: rgb(222, 221, 218);\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"background-color: rgb(75, 82, 143);\n"
+"color: white;\n"
+"}")
         self.verticalLayout_3 = QVBoxLayout(Vault)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout_content = QHBoxLayout()
@@ -77,7 +114,7 @@ class Ui_Vault(object):
 
         self.verticalLayout_menu.addWidget(self.pushButton_delete_selected_items)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_menu.addItem(self.verticalSpacer)
 

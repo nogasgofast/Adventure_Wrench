@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Main_Window.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.9.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -29,9 +29,8 @@ class Ui_MainWindow(object):
         MainWindow.setAutoFillBackground(False)
         MainWindow.setStyleSheet(u"QWidget {\n"
 "  color: black;\n"
-"  background-color: rgb(222, 221, 218);\n"
+"  background-color: rgb(89, 92, 123);\n"
 "}\n"
-"\n"
 "\n"
 "QListWidget QTreeWidget{\n"
 "   color: #000;\n"
@@ -59,11 +58,11 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QLabel {\n"
-"color: #594624;\n"
+"color: rgb(222, 221, 218);\n"
 "}\n"
 "\n"
 "QPushButton {\n"
-"background-color: #39537d;\n"
+"background-color: rgb(75, 82, 143);\n"
 "color: white;\n"
 "}")
         self.actionSave = QAction(MainWindow)
@@ -84,7 +83,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_head.addWidget(self.label_current_game)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_head.addItem(self.horizontalSpacer)
 
@@ -110,7 +109,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setSizeConstraint(QLayout.SetNoConstraint)
         self.verticalLayout.setContentsMargins(-1, -1, 9, 0)
-        self.verticalSpacer = QSpacerItem(20, 30, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 30, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout.addItem(self.verticalSpacer)
 
@@ -156,7 +155,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.label_3 = QLabel(self.centralwidget)
         self.label_3.setObjectName(u"label_3")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
@@ -283,7 +282,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.pushButton_cross = QPushButton(self.centralwidget)
         self.pushButton_cross.setObjectName(u"pushButton_cross")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.pushButton_cross.sizePolicy().hasHeightForWidth())
@@ -313,7 +312,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_6)
 
-        self.verticalSpacer_2 = QSpacerItem(20, 175, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer_2 = QSpacerItem(20, 175, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout.addItem(self.verticalSpacer_2)
 
