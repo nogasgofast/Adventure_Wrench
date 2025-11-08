@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Acadamy_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.2
+## Created by: Qt User Interface Compiler version 6.9.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -53,7 +53,7 @@ class Ui_acadamy_dialog(object):
 "\n"
 "\n"
 "QToolTip {\n"
-"	border: 5px solid orange;\n"
+"	border: 3px solid gray;\n"
 "	background-color: #39537d;\n"
 "    color: #FFF;\n"
 "}\n"
@@ -122,7 +122,7 @@ class Ui_acadamy_dialog(object):
         sizePolicy.setHeightForWidth(self.label_splash.sizePolicy().hasHeightForWidth())
         self.label_splash.setSizePolicy(sizePolicy)
         self.label_splash.setMaximumSize(QSize(500, 500))
-        self.label_splash.setPixmap(QPixmap(u":/images/mascot.png"))
+        self.label_splash.setPixmap(QPixmap(u":/images/wrench_hat_btn_512x512.png"))
         self.label_splash.setScaledContents(True)
         self.label_splash.setMargin(50)
         self.label_splash.setIndent(0)
@@ -716,7 +716,7 @@ class Ui_acadamy_dialog(object):
 
         self.retranslateUi(acadamy_dialog)
 
-        self.verticalStackedWidget_forms.setCurrentIndex(6)
+        self.verticalStackedWidget_forms.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(acadamy_dialog)

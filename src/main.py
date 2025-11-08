@@ -70,15 +70,9 @@ class MainWindow(QMainWindow):
 
     def config_setup(self):
         # ~/.config/<app id>.ini 
-        app_config_location = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation)
-        # ~/.local/share/ or /usr/local/share/ or /usr/share/
-        data_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.GenericDataLocation)
-        self.default_config_dir = os.path.dirname(app_config_location)
-        self.config_name = app_config_location
-        self.default_save_dir = data_dir + '/adventure_wrench/'
+        self.config_name = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation)
+        self.default_save_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
         self.db_default_name = self.default_save_dir + '/default.sqlite'
-
-        os.makedirs(self.default_save_dir, exist_ok=True)
 
         self.config_file = configparser.ConfigParser()
         self.config_file.read(self.config_name)
@@ -86,11 +80,6 @@ class MainWindow(QMainWindow):
         if 'Game' in self.config_file:
             db_file = self.config_file['Game']['db']
         else:
-            # make default configs/database name
-            try:
-                os.mkdir('save')
-            except FileExistsError:
-                pass
             self.config_file['Game'] = { 'db': self.db_default_name }
             with open(self.config_name, 'w') as fh:
                 self.config_file.write(fh)
@@ -100,7 +89,7 @@ class MainWindow(QMainWindow):
             self.db.bind(provider="sqlite", filename=db_file, create_db=True)
             self.db.generate_mapping(create_tables=True)
         except Exception as e:
-            print("aw_db.sqlite Failed to load: {e}")
+            print(f"Save file failed to load: {db_file}")
             raise e
 
         # Setting the game name based on the save file name.

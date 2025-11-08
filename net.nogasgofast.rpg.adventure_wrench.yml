@@ -18,12 +18,12 @@ modules:
   - name: adventure_wrench
     buildsystem: simple
     build-commands:
-      - install -Dm644 src/net.nogasgofast.rpg.adventure_wrench.desktop /app/share/applications/net.nogasgofast.rpg.adventure_wrench.desktop
-      - install -Dm644 src/net.nogasgofast.rpg.adventure_wrench.metainfo.xml /app/share/metainfo/net.nogasgofast.rpg.adventure_wrench.metainfo.xml
-      - install -Dm644 ui_files/images/512x512/net.nogasgofast.rpg.adventure_wrench.png /app/share/icons/hicolor/512x512/apps/net.nogasgofast.rpg.adventure_wrench.png
+      - install -Dm644 src/net.nogasgofast.rpg.adventure_wrench.desktop -t /app/share/applications
+      - install -Dm644 src/net.nogasgofast.rpg.adventure_wrench.metainfo.xml -t /app/share/metainfo
+      - install -Dm644 ui_files/images/scalable/net.nogasgofast.rpg.adventure_wrench.svg -t /app/share/icons/hicolor/scalable/apps
       - cp -a src/* /app/
       - ln -s /app/main.py /app/bin/adventure_wrench
     sources:
       - type: git
         url: https://github.com/nogasgofast/Adventure_Wrench
-        tag: v1.2.flatpak
+        tag: v1.3.flatpak

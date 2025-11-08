@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>585</height>
+    <height>777</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,7 +42,7 @@ QTreeWidget::item:selected:!active{
 
 
 QToolTip {
-	border: 5px solid orange;
+	border: 3px solid gray;
 	background-color: #39537d;
     color: #FFF;
 }
@@ -54,6 +54,10 @@ color: rgb(222, 221, 218);
 QPushButton {
 background-color: rgb(75, 82, 143);
 color: white;
+padding: 5px;
+boarder-color: rgb(75, 82, 143);
+border-width: 2px;
+border-radius: 5px;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -108,7 +112,7 @@ color: white;
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
         <property name="spacing">
          <number>6</number>
         </property>
@@ -122,25 +126,18 @@ color: white;
          <number>0</number>
         </property>
         <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
+         <widget class="QPushButton" name="pushButton_Inititave">
+          <property name="toolTip">
+           <string>sort and advannce selected item by initiative</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>30</height>
-           </size>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{
+background-color: rgb(38, 60, 134);
+height: 40px;
+}</string>
           </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="label">
           <property name="text">
-           <string>### Add Stuff</string>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::MarkdownText</enum>
+           <string>Advance Inititave</string>
           </property>
          </widget>
         </item>
@@ -150,7 +147,7 @@ color: white;
            <string>Add players and simple things to the current game.</string>
           </property>
           <property name="text">
-           <string>Add</string>
+           <string>New</string>
           </property>
          </widget>
         </item>
@@ -160,35 +157,25 @@ color: white;
            <string>A list of things you've created and more tools.</string>
           </property>
           <property name="text">
-           <string>The Vault</string>
+           <string>Load (vault)</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_quick_change">
-          <property name="text">
-           <string>### Game Tracker:</string>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
           </property>
-          <property name="textFormat">
-           <enum>Qt::MarkdownText</enum>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
           </property>
-          <property name="scaledContents">
-           <bool>false</bool>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_Inititave">
-          <property name="toolTip">
-           <string>sorts current game and advances selection in a cycle</string>
-          </property>
-          <property name="text">
-           <string>Advance Inititave</string>
-          </property>
-         </widget>
+         </spacer>
         </item>
         <item>
          <widget class="QLabel" name="label_damage">
@@ -524,6 +511,9 @@ color: white;
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
+          </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
@@ -533,11 +523,29 @@ color: white;
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_switch_game">
-          <property name="text">
-           <string>Switch Game</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QPushButton" name="pushButton_switch_game">
+            <property name="text">
+             <string>Switch Game</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButton_settings">
+            <property name="toolTip">
+             <string>Settings</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset theme="accessories-text-editor">
+              <normaloff>.</normaloff>.</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <widget class="QLabel" name="label_version">

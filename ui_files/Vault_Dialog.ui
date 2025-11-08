@@ -39,7 +39,7 @@ QTreeWidget::item:selected:!active{
 
 
 QToolTip {
-	border: 5px solid orange;
+	border: 3px solid gray;
 	background-color: #39537d;
     color: #FFF;
 }

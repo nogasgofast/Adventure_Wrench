@@ -1,20 +1,28 @@
 id: net.nogasgofast.rpg.adventure_wrench
-runtime: org.freedesktop.Platform
-runtime-version: '25.08'
-sdk: org.freedesktop.Sdk
+runtime: org.kde.Platform
+runtime-version: '6.8'
+sdk: org.kde.Sdk
 command: adventure_wrench
+base: io.qt.PySide.BaseApp
+base-version: '6.8'
+build-options:
+  env:
+    - BASEAPP_REMOVE_WEBENGINE=1
+    - BASEAPP_DISABLE_NUMPY=1
+cleanup-commands:
+  - /app/cleanup-BaseApp.sh
 finish-args:
   - --socket=wayland
 modules:
+  - python3-requirements.yml
   - name: adventure_wrench
     buildsystem: simple
     build-commands:
-      - install -Dm755 src/build/exe.linux-x86_64*/adventure_wrench /app/adventure_wrench
-      - install -Dm755 src/build/exe.linux-x86_64*/frozen_application_license.txt /app/frozen_application_license.txt
-      - cp -r src/build/exe.linux-x86_64*/lib /app/
-      - cp -r src/build/exe.linux-x86_64*/share /app/
-      - mkdir -m755 /app/bin
-      - ln -s /app/adventure_wrench /app/bin/adventure_wrench
+      - install -Dm644 src/net.nogasgofast.rpg.adventure_wrench.desktop -t /app/share/applications
+      - install -Dm644 src/net.nogasgofast.rpg.adventure_wrench.metainfo.xml -t /app/share/metainfo
+      - install -Dm644 ui_files/images/scalable/net.nogasgofast.rpg.adventure_wrench.svg -t /app/share/icons/hicolor/scalable/apps
+      - cp -a src/* /app/
+      - ln -s /app/main.py /app/bin/adventure_wrench
     sources:
       - type: dir
         path: .

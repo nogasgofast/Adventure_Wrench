@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Vault_Dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.2
+## Created by: Qt User Interface Compiler version 6.9.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -49,7 +49,7 @@ class Ui_Vault(object):
 "\n"
 "\n"
 "QToolTip {\n"
-"	border: 5px solid orange;\n"
+"	border: 3px solid gray;\n"
 "	background-color: #39537d;\n"
 "    color: #FFF;\n"
 "}\n"

@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Main_Window.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.2
+## Created by: Qt User Interface Compiler version 6.9.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -19,13 +19,13 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QLabel,
     QLayout, QListWidget, QListWidgetItem, QMainWindow,
     QPushButton, QSizePolicy, QSpacerItem, QSpinBox,
-    QVBoxLayout, QWidget)
+    QToolButton, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(800, 585)
+        MainWindow.resize(800, 777)
         MainWindow.setAutoFillBackground(False)
         MainWindow.setStyleSheet(u"QWidget {\n"
 "  color: black;\n"
@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
 "\n"
 "\n"
 "QToolTip {\n"
-"	border: 5px solid orange;\n"
+"	border: 3px solid gray;\n"
 "	background-color: #39537d;\n"
 "    color: #FFF;\n"
 "}\n"
@@ -64,6 +64,10 @@ class Ui_MainWindow(object):
 "QPushButton {\n"
 "background-color: rgb(75, 82, 143);\n"
 "color: white;\n"
+"padding: 5px;\n"
+"boarder-color: rgb(75, 82, 143);\n"
+"border-width: 2px;\n"
+"border-radius: 5px;\n"
 "}")
         self.actionSave = QAction(MainWindow)
         self.actionSave.setObjectName(u"actionSave")
@@ -109,15 +113,14 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setSizeConstraint(QLayout.SetNoConstraint)
         self.verticalLayout.setContentsMargins(-1, -1, 9, 0)
-        self.verticalSpacer = QSpacerItem(20, 30, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.pushButton_Inititave = QPushButton(self.centralwidget)
+        self.pushButton_Inititave.setObjectName(u"pushButton_Inititave")
+        self.pushButton_Inititave.setStyleSheet(u"QPushButton{\n"
+"background-color: rgb(38, 60, 134);\n"
+"height: 40px;\n"
+"}")
 
-        self.verticalLayout.addItem(self.verticalSpacer)
-
-        self.label = QLabel(self.centralwidget)
-        self.label.setObjectName(u"label")
-        self.label.setTextFormat(Qt.MarkdownText)
-
-        self.verticalLayout.addWidget(self.label)
+        self.verticalLayout.addWidget(self.pushButton_Inititave)
 
         self.pushButton_players = QPushButton(self.centralwidget)
         self.pushButton_players.setObjectName(u"pushButton_players")
@@ -129,18 +132,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.pushButton_vault)
 
-        self.label_quick_change = QLabel(self.centralwidget)
-        self.label_quick_change.setObjectName(u"label_quick_change")
-        self.label_quick_change.setTextFormat(Qt.MarkdownText)
-        self.label_quick_change.setScaledContents(False)
-        self.label_quick_change.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.MinimumExpanding)
 
-        self.verticalLayout.addWidget(self.label_quick_change)
-
-        self.pushButton_Inititave = QPushButton(self.centralwidget)
-        self.pushButton_Inititave.setObjectName(u"pushButton_Inititave")
-
-        self.verticalLayout.addWidget(self.pushButton_Inititave)
+        self.verticalLayout.addItem(self.verticalSpacer)
 
         self.label_damage = QLabel(self.centralwidget)
         self.label_damage.setObjectName(u"label_damage")
@@ -312,14 +306,32 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_6)
 
-        self.verticalSpacer_2 = QSpacerItem(20, 175, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.verticalSpacer_2 = QSpacerItem(20, 175, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.MinimumExpanding)
 
         self.verticalLayout.addItem(self.verticalSpacer_2)
 
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.pushButton_switch_game = QPushButton(self.centralwidget)
         self.pushButton_switch_game.setObjectName(u"pushButton_switch_game")
 
-        self.verticalLayout.addWidget(self.pushButton_switch_game)
+        self.horizontalLayout_5.addWidget(self.pushButton_switch_game)
+
+        self.toolButton_settings = QToolButton(self.centralwidget)
+        self.toolButton_settings.setObjectName(u"toolButton_settings")
+        icon = QIcon()
+        iconThemeName = u"accessories-text-editor"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon = QIcon.fromTheme(iconThemeName)
+        else:
+            icon.addFile(u".", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+
+        self.toolButton_settings.setIcon(icon)
+
+        self.horizontalLayout_5.addWidget(self.toolButton_settings)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_5)
 
         self.label_version = QLabel(self.centralwidget)
         self.label_version.setObjectName(u"label_version")
@@ -346,20 +358,18 @@ class Ui_MainWindow(object):
         self.actionSave.setText(QCoreApplication.translate("MainWindow", u"Save", None))
         self.actionOpen.setText(QCoreApplication.translate("MainWindow", u"Open", None))
         self.label_current_game.setText(QCoreApplication.translate("MainWindow", u"## Current Game", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"### Add Stuff", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_Inititave.setToolTip(QCoreApplication.translate("MainWindow", u"sort and advannce selected item by initiative", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_Inititave.setText(QCoreApplication.translate("MainWindow", u"Advance Inititave", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_players.setToolTip(QCoreApplication.translate("MainWindow", u"Add players and simple things to the current game.", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_players.setText(QCoreApplication.translate("MainWindow", u"Add", None))
+        self.pushButton_players.setText(QCoreApplication.translate("MainWindow", u"New", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_vault.setToolTip(QCoreApplication.translate("MainWindow", u"A list of things you've created and more tools.", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_vault.setText(QCoreApplication.translate("MainWindow", u"The Vault", None))
-        self.label_quick_change.setText(QCoreApplication.translate("MainWindow", u"### Game Tracker:", None))
-#if QT_CONFIG(tooltip)
-        self.pushButton_Inititave.setToolTip(QCoreApplication.translate("MainWindow", u"sorts current game and advances selection in a cycle", None))
-#endif // QT_CONFIG(tooltip)
-        self.pushButton_Inititave.setText(QCoreApplication.translate("MainWindow", u"Advance Inititave", None))
+        self.pushButton_vault.setText(QCoreApplication.translate("MainWindow", u"Load (vault)", None))
         self.label_damage.setText(QCoreApplication.translate("MainWindow", u"### Selected Item:", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Initiative", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"HP", None))
@@ -398,6 +408,10 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.pushButton_w_star.setText(QCoreApplication.translate("MainWindow", u"\u2606", None))
         self.pushButton_switch_game.setText(QCoreApplication.translate("MainWindow", u"Switch Game", None))
+#if QT_CONFIG(tooltip)
+        self.toolButton_settings.setToolTip(QCoreApplication.translate("MainWindow", u"Settings", None))
+#endif // QT_CONFIG(tooltip)
+        self.toolButton_settings.setText("")
         self.label_version.setText(QCoreApplication.translate("MainWindow", u"Checking Version...", None))
     # retranslateUi
 
