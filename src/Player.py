@@ -41,7 +41,7 @@ class PlayerDialog(QDialog):
     @db_session
     def update_name(self):
         name = self.ui.lineEdit_name.text()
-        # reaquire state from db. Pony implementation requires this.
+        # require state from db. Pony implementation requires this.
         self.target = self.main.db.Active[self.target.id]
         self.target.name = name
         commit()
@@ -115,6 +115,7 @@ class PlayerDialog(QDialog):
     @db_session
     def add_player(self):
         'adds a new entery to the initiative tracker'
+        settings = self.main.db.Settings
         self.target = self.main.db.Active(player=True)
         commit()
         self.display_target = QListWidgetItem("{player.initiative} | {player.name} | hp:{player.hp}")
@@ -126,17 +127,12 @@ class PlayerDialog(QDialog):
         self.ui.lineEdit_name.setFocus()
         self.ui.spinBox_hp.setValue(1)
         self.ui.spinBox_initiative.setValue(1)
-        self.ui.textEdit_description.setText('''AC: <>
-STR: 10    DEX: 10    CON: 10    WIS: 10    INT: 10    CHA: 10
 
-====[ Status Effects ]====
-====[ Attributes ]====
-====[ Actions ]====
-=[Action 1]=:
-    cost: 1 action
-    limitations: targets 1, melee
-    <> to hit
-    On hit: <>''')
+        pc_npc_templ = settings.get(name='pc_npc_template')
+        if pc_npc_templ:
+            self.ui.textEdit_description.setText(pc_npc_templ.value)
+        else:    
+            self.ui.textEdit_description.setText(self.main.ui_s.default_templ)
         self.show()
 
     @db_session

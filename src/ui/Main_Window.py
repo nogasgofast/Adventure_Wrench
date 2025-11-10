@@ -19,7 +19,7 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QLabel,
     QLayout, QListWidget, QListWidgetItem, QMainWindow,
     QPushButton, QSizePolicy, QSpacerItem, QSpinBox,
-    QToolButton, QVBoxLayout, QWidget)
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -65,9 +65,13 @@ class Ui_MainWindow(object):
 "background-color: rgb(75, 82, 143);\n"
 "color: white;\n"
 "padding: 5px;\n"
-"boarder-color: rgb(75, 82, 143);\n"
+"border-color: rgb(75, 82, 143);\n"
 "border-width: 2px;\n"
 "border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: rgb(55, 62, 123);\n"
 "}")
         self.actionSave = QAction(MainWindow)
         self.actionSave.setObjectName(u"actionSave")
@@ -117,6 +121,11 @@ class Ui_MainWindow(object):
         self.pushButton_Inititave.setObjectName(u"pushButton_Inititave")
         self.pushButton_Inititave.setStyleSheet(u"QPushButton{\n"
 "background-color: rgb(38, 60, 134);\n"
+"height: 40px;\n"
+"}\n"
+"\n"
+"QPushButton:pressed{\n"
+"background-color: rgb(18, 40, 114);\n"
 "height: 40px;\n"
 "}")
 
@@ -317,8 +326,8 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_5.addWidget(self.pushButton_switch_game)
 
-        self.toolButton_settings = QToolButton(self.centralwidget)
-        self.toolButton_settings.setObjectName(u"toolButton_settings")
+        self.pushButton_settings = QPushButton(self.centralwidget)
+        self.pushButton_settings.setObjectName(u"pushButton_settings")
         icon = QIcon()
         iconThemeName = u"accessories-text-editor"
         if QIcon.hasThemeIcon(iconThemeName):
@@ -326,9 +335,9 @@ class Ui_MainWindow(object):
         else:
             icon.addFile(u".", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
 
-        self.toolButton_settings.setIcon(icon)
+        self.pushButton_settings.setIcon(icon)
 
-        self.horizontalLayout_5.addWidget(self.toolButton_settings)
+        self.horizontalLayout_5.addWidget(self.pushButton_settings)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_5)
@@ -409,9 +418,9 @@ class Ui_MainWindow(object):
         self.pushButton_w_star.setText(QCoreApplication.translate("MainWindow", u"\u2606", None))
         self.pushButton_switch_game.setText(QCoreApplication.translate("MainWindow", u"Switch Game", None))
 #if QT_CONFIG(tooltip)
-        self.toolButton_settings.setToolTip(QCoreApplication.translate("MainWindow", u"Settings", None))
+        self.pushButton_settings.setToolTip(QCoreApplication.translate("MainWindow", u"Settings", None))
 #endif // QT_CONFIG(tooltip)
-        self.toolButton_settings.setText("")
+        self.pushButton_settings.setText("")
         self.label_version.setText(QCoreApplication.translate("MainWindow", u"Checking Version...", None))
     # retranslateUi
 

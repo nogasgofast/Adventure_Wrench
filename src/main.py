@@ -13,22 +13,28 @@ from pony.orm import db_session, commit
 from lib.aw_db import database_factory
 from Player import PlayerDialog
 from Vault import VaultDialog
+from Settings import SettingsDialog
 
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         # read config
+        self.debug = True
         self.db = database_factory()
         self.config_setup()
 
         # initialize views.
         self.ui_vault = VaultDialog(self)
         self.ui_p = PlayerDialog(self)
+        self.ui_s = SettingsDialog(self)
+        self.ui_s.update()
         self.suppress_spinbox_update = False
-        self.ui_p.setModal(True)
+        # Window Modal is set in the designer. Or should be
+        # self.ui_p.setModal(True)
 
         # connect views to button logic
+        self.ui.pushButton_settings.clicked.connect(self.ui_s.show)
         self.ui.pushButton_switch_game.clicked.connect(self.switch_game)
         self.ui.pushButton_vault.clicked.connect(self.ui_vault.show)
         self.ui.pushButton_players.clicked.connect(self.ui_p.add_player)
@@ -69,11 +75,17 @@ class MainWindow(QMainWindow):
 
 
     def config_setup(self):
-        # ~/.config/<app id>.ini 
-        self.config_name = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation)
-        self.default_save_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
-        self.db_default_name = self.default_save_dir + '/default.sqlite'
+        # ~/.config/<app id>.ini
+        if self.debug == True:
+            self.config_name = './awconfig.ini'
+            print(self.config_name)
+            self.default_save_dir = './save'
+            print(self.default_save_dir)
+        else:
+            self.config_name = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation)
+            self.default_save_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
 
+        self.db_default_name = self.default_save_dir + '/default.sqlite'
         self.config_file = configparser.ConfigParser()
         self.config_file.read(self.config_name)
 
@@ -88,6 +100,7 @@ class MainWindow(QMainWindow):
             # connect to database and try to create missing items if needed.
             self.db.bind(provider="sqlite", filename=db_file, create_db=True)
             self.db.generate_mapping(create_tables=True)
+            # print(db_file)
         except Exception as e:
             print(f"Save file failed to load: {db_file}")
             raise e

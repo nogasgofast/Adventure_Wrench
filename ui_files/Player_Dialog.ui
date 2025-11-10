@@ -63,7 +63,7 @@ QTreeWidget::item:selected:!active{
 
 
 QToolTip {
-	border: 5px solid orange;
+	border: 3px solid gray;
 	background-color: #39537d;
     color: #FFF;
 }
@@ -75,6 +75,14 @@ color: rgb(222, 221, 218);
 QPushButton {
 background-color: rgb(75, 82, 143);
 color: white;
+padding: 5px;
+border-color: rgb(75, 82, 143);
+border-width: 2px;
+border-radius: 5px;
+}
+
+QPushButton:pressed {
+    background-color: rgb(55, 62, 123);
 }</string>
   </property>
   <property name="modal">

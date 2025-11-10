@@ -55,9 +55,13 @@ QPushButton {
 background-color: rgb(75, 82, 143);
 color: white;
 padding: 5px;
-boarder-color: rgb(75, 82, 143);
+border-color: rgb(75, 82, 143);
 border-width: 2px;
 border-radius: 5px;
+}
+
+QPushButton:pressed {
+    background-color: rgb(55, 62, 123);
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -133,6 +137,11 @@ border-radius: 5px;
           <property name="styleSheet">
            <string notr="true">QPushButton{
 background-color: rgb(38, 60, 134);
+height: 40px;
+}
+
+QPushButton:pressed{
+background-color: rgb(18, 40, 114);
 height: 40px;
 }</string>
           </property>
@@ -532,7 +541,7 @@ height: 40px;
            </widget>
           </item>
           <item>
-           <widget class="QToolButton" name="toolButton_settings">
+           <widget class="QPushButton" name="pushButton_settings">
             <property name="toolTip">
              <string>Settings</string>
             </property>

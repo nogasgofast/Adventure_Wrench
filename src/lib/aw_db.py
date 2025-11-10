@@ -3,6 +3,10 @@ from pony.orm import *
 
 def database_factory():
     aw_db = Database()
+    class Settings(aw_db.Entity):
+        name = Required(str)
+        value = Required(str)
+
     class Active(aw_db.Entity):
         name = Optional(str, default='* * *')
         stat_block = Optional(str, default='')

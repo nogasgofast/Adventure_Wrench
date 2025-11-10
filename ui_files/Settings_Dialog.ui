@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Settings</class>
+ <widget class="QDialog" name="Settings">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>624</width>
+    <height>443</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Settings</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+  color: black;
+  background-color: rgb(89, 92, 123);
+}
+
+QListWidget QTreeWidget{
+   color: #000;
+   selection-color: #FFF;
+   selection-background-color: #55A;
+}
+
+QListWidget::item:selected:!active{
+   color: #000;
+   selection-color: #FFF;
+   selection-background-color: #55A;
+}
+
+QTreeWidget::item:selected:!active{
+   color: #000;
+   selection-color: #FFF;
+   selection-background-color: #55A;
+}
+
+
+QToolTip {
+	border: 5px solid orange;
+	background-color: #39537d;
+    color: #FFF;
+}
+
+QLabel {
+color: rgb(222, 221, 218);
+}
+
+QPushButton {
+background-color: rgb(75, 82, 143);
+color: white;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label_TemplateEdit">
+     <property name="text">
+      <string>New Player/NPC Template</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="plainTextEdit_template">
+     <property name="styleSheet">
+      <string notr="true">QWidget {
+  color: black;
+  background-color: rgb(89, 92, 123);
+}
+
+QListWidget QTreeWidget{
+   color: #000;
+   selection-color: #FFF;
+   selection-background-color: #55A;
+}
+
+QListWidget::item:selected:!active{
+   color: #000;
+   selection-color: #FFF;
+   selection-background-color: #55A;
+}
+
+QTreeWidget::item:selected:!active{
+   color: #000;
+   selection-color: #FFF;
+   selection-background-color: #55A;
+}
+
+
+QToolTip {
+	border: 3px solid gray;
+	background-color: #39537d;
+    color: #FFF;
+}
+
+QLabel {
+color: rgb(222, 221, 218);
+}
+
+QPushButton {
+background-color: rgb(75, 82, 143);
+color: white;
+padding: 5px;
+border-color: rgb(75, 82, 143);
+border-width: 2px;
+border-radius: 5px;
+}
+
+QPushButton:pressed {
+    background-color: rgb(55, 62, 123);
+}</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_systemSelect">
+     <property name="text">
+      <string>PnP System Select</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="comboBox_system"/>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButton_back">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>&lt;- Save (Esc)</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
