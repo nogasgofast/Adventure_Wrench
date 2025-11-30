@@ -18,71 +18,74 @@ class TheShopDialog(QDialog):
         self.display_target = None
         self.spinboxLock = False
         self.debug_count = 0
+        self.dice_tower = Dice_factory()
 
-        self.ui.pushButton_roll_stats.clicked.connect(self.roll_stats)
+        # self.ui.pushButton_roll_stats.clicked.connect(self.roll_stats)
         self.ui.pushButton_back.clicked.connect(self.close)
         self.ui.pushButton_add_templates.clicked.connect(self.add_template)
         self.ui.pushButton_delete_shop.clicked.connect(self.delete_vault_item)
         self.ui.pushButton_remove_templates.clicked.connect(self.remove_template)
+        #TODO needs update
         self.ui.pushButton_reset_stat_block.clicked.connect(self.update_stat_block)
 
-        self.ui.spinBox_cr.valueChanged.connect(self.update_cr)
-        self.ui.spinBox_group_of.valueChanged.connect(self.update_group_of)
-        self.ui.spinBox_STR.valueChanged.connect(lambda x: self.update_stat('STR', x))
-        self.ui.spinBox_DEX.valueChanged.connect(lambda x: self.update_stat('DEX', x))
-        self.ui.spinBox_CON.valueChanged.connect(lambda x: self.update_stat('CON', x))
-        self.ui.spinBox_INT.valueChanged.connect(lambda x: self.update_stat('INT', x))
-        self.ui.spinBox_WIS.valueChanged.connect(lambda x: self.update_stat('WIS', x))
-        self.ui.spinBox_CHA.valueChanged.connect(lambda x: self.update_stat('CHA', x))
+        # self.ui.spinBox_cr.valueChanged.connect(self.update_cr)
+        # self.ui.spinBox_group_of.valueChanged.connect(self.update_group_of)
+        # self.ui.spinBox_STR.valueChanged.connect(lambda x: self.update_stat('STR', x))
+        # self.ui.spinBox_DEX.valueChanged.connect(lambda x: self.update_stat('DEX', x))
+        # self.ui.spinBox_CON.valueChanged.connect(lambda x: self.update_stat('CON', x))
+        # self.ui.spinBox_INT.valueChanged.connect(lambda x: self.update_stat('INT', x))
+        # self.ui.spinBox_WIS.valueChanged.connect(lambda x: self.update_stat('WIS', x))
+        # self.ui.spinBox_CHA.valueChanged.connect(lambda x: self.update_stat('CHA', x))
         self.ui.lineEdit_name.textEdited.connect(self.update_name)
         # This is fine but I have to block signals anywhere I use this textEdit
         self.ui.textEdit_stat_block.textChanged.connect(self.save_stat_block_Changes)
 
 
-    @db_session
-    def update_cr(self):
-        if self.spinboxLock:
-            return
-        db = self.vault.main.db
-        dbObj = db.Vault[self.target.id]
-        dbObj.cr = self.ui.spinBox_cr.value()
-        self.update_stat_block()
+
+#     @db_session
+#     def update_cr(self):
+#         if self.spinboxLock:
+#             return
+#         db = self.vault.main.db
+#         dbObj = db.Vault[self.target.id]
+#         dbObj.cr = self.ui.spinBox_cr.value()
+#         self.update_stat_block()
 
 
-    @db_session
-    def update_group_of(self):
-        if self.spinboxLock:
-            return
-        db = self.vault.main.db
-        dbObj = db.Vault[self.target.id]
-        dbObj.group_of = self.ui.spinBox_group_of.value()
-        self.update_stat_block()
+#     @db_session
+#     def update_group_of(self):
+#         if self.spinboxLock:
+#             return
+#         db = self.vault.main.db
+#         dbObj = db.Vault[self.target.id]
+#         dbObj.group_of = self.ui.spinBox_group_of.value()
+#         self.update_stat_block()
 
 
-    @db_session
-    def update_stat(self, stat, value):
-        # Locks updates from happening on loads or just whenever i like.
-        # easier then using the spinbox's blocksignal function since i handle
-        # many spinboxes here.
-        if self.spinboxLock:
-            return
-        db = self.vault.main.db
-        dbObj = db.Vault[self.target.id]
-        match stat:
-            case 'STR':
-                dbObj.ability_str = int(value)
-            case 'DEX':
-                dbObj.ability_dex = int(value)
-            case 'CON':
-                dbObj.ability_con = int(value)
-            case 'WIS':
-                dbObj.ability_wis = int(value)
-            case 'INT':
-                dbObj.ability_int = int(value)
-            case 'CHA':
-                dbObj.ability_cha = int(value)
-        commit()
-        self.update_stat_block()
+#     @db_session
+#     def update_stat(self, stat, value):
+#         # Locks updates from happening on loads or just whenever i like.
+#         # easier then using the spinbox's blocksignal function since i handle
+#         # many spinboxes here.
+#         if self.spinboxLock:
+#             return
+#         db = self.vault.main.db
+#         dbObj = db.Vault[self.target.id]
+#         match stat:
+#             case 'STR':
+#                 dbObj.ability_str = int(value)
+#             case 'DEX':
+#                 dbObj.ability_dex = int(value)
+#             case 'CON':
+#                 dbObj.ability_con = int(value)
+#             case 'WIS':
+#                 dbObj.ability_wis = int(value)
+#             case 'INT':
+#                 dbObj.ability_int = int(value)
+#             case 'CHA':
+#                 dbObj.ability_cha = int(value)
+#         commit()
+#         self.update_stat_block()
 
 
     @db_session
@@ -95,26 +98,28 @@ class TheShopDialog(QDialog):
 
     @db_session
     def load_vault_item(self, display_target_index):
+        # init values
         db = self.vault.main.db
         vault = self.vault.ui.listWidget_vault
         self.display_target = vault.itemFromIndex(display_target_index)
         self.target = self.display_target.dbObj
         self.target = db.Vault[self.target.id]
 
+        # Load Name
         self.ui.lineEdit_name.blockSignals(True)
         self.ui.lineEdit_name.setText(self.target.name)
         self.ui.lineEdit_name.blockSignals(False)
 
-        self.spinboxLock = True
-        self.ui.spinBox_cr.setValue(self.target.cr)
-        self.ui.spinBox_group_of.setValue(self.target.count)
-        self.ui.spinBox_STR.setValue(self.target.ability_str)
-        self.ui.spinBox_DEX.setValue(self.target.ability_dex)
-        self.ui.spinBox_CON.setValue(self.target.ability_con)
-        self.ui.spinBox_WIS.setValue(self.target.ability_wis)
-        self.ui.spinBox_INT.setValue(self.target.ability_int)
-        self.ui.spinBox_CHA.setValue(self.target.ability_cha)
-        self.spinboxLock = False
+        # self.spinboxLock = True
+        # self.ui.spinBox_cr.setValue(self.target.cr)
+        # self.ui.spinBox_group_of.setValue(self.target.count)
+        # self.ui.spinBox_STR.setValue(self.target.ability_str)
+        # self.ui.spinBox_DEX.setValue(self.target.ability_dex)
+        # self.ui.spinBox_CON.setValue(self.target.ability_con)
+        # self.ui.spinBox_WIS.setValue(self.target.ability_wis)
+        # self.ui.spinBox_INT.setValue(self.target.ability_int)
+        # self.ui.spinBox_CHA.setValue(self.target.ability_cha)
+        # self.spinboxLock = False
 
         self.ui.textEdit_stat_block.blockSignals(True)
         self.ui.textEdit_stat_block.setPlainText(self.target.stat_block)
@@ -151,104 +156,88 @@ class TheShopDialog(QDialog):
         self.show()
 
 
-    def get_auto_values(self, text, group_of, cr_info, scores, dice_tower):
+    def get_auto_values(self, text, scores):
         'computes and replaces template variables'
+        score_keys = list(scores.keys())
+        score_keys.sort(key=lambda x: len(x), reverse=True)
         while True:
-            m = re.search(r'%(str|dex|con|wis|int|cha)', text)
+            # search template for stats and replace.
+            # stat = r'%(str|dex|con|wis|int|cha)'
+            stat = '%('
+            for name in score_keys:
+                search += f'{name}|'
+            search += ')'
+            m = re.search(stat, text)
+
             if m:
-                match m.group(1).lower():
-                    case 'str':
-                        text = re.sub(r'%str', str((scores[0] - 10) // 2),
-                                      text, count=1)
-                        continue
-                    case 'dex':
-                        text = re.sub(r'%dex', str((scores[1] - 10) // 2),
-                                      text, count=1)
-                        continue
-                    case 'con':
-                        text = re.sub(r'%con', str((scores[2] - 10) // 2),
-                                      text, count=1)
-                        continue
-                    case 'wis':
-                        text = re.sub(r'%wis', str((scores[3] - 10) // 2),
-                                      text, count=1)
-                        continue
-                    case 'int':
-                        text = re.sub(r'%int', str((scores[4] - 10) // 2),
-                                      text, count=1)
-                        continue
-                    case 'cha':
-                        text = re.sub(r'%cha', str((scores[5] - 10) // 2),
-                                      text, count=1)
-                        continue
+                which_stat = m.group(1).lower()
+                search = f'%{which_stat}'
+                # print(r'stuff: ', search, scores, stat, text)
+                text = re.sub(search, str(scores[which_stat]),
+                              text, count=1)
+                # print(r'Replacement: ', text)
+                continue
 
             # Calculate Dice expressions inside %{ } brackets
             m = re.search(r'%{(.*)}', text)
             if m:
-                result = dice_tower.roll(m.group(1))
+                result = self.dice_tower.roll(m.group(1))
                 text = re.sub('%{.*}', str(result), text, count=1)
                 continue
 
-            # Detect health and health division stuff
-            m = re.search(r'%h([2-9])?', text)
-            if m:
-                if m.group(1):
-                    HP = (cr_info["hp"] // group_of) // int(m.group(1))
-                    HP_view = (f'{HP} '
-                               f'({dice_tower.to_dice(HP)})')
-                    text = re.sub('%h[2-9]', str(HP_view), text, count=1)
-                    continue
-                else:
-                    HP = cr_info["hp"] // group_of
-                    HP_view = (f'{HP} '
-                               f'({dice_tower.to_dice(HP)})')
-                    text = re.sub('%h', str(HP_view), text, count=1)
-                    continue
+            #TODO Detect division 2-9?
+#             m = re.search(r'%/([2-9])?', text)
+#             if m:
+#                 if m.group(1):
+#                     HP = (cr_info["hp"] // group_of) // int(m.group(1))
+#                     HP_view = (f'{HP} '
+#                                f'({self.dice_tower.to_dice(HP)})')
+#                     text = re.sub('%h[2-9]', str(HP_view), text, count=1)
+#                     continue
+#                 else:
+#                     HP = cr_info["hp"] // group_of
+#                     HP_view = (f'{HP} '
+#                                f'({self.dice_tower.to_dice(HP)})')
+#                     text = re.sub('%h', str(HP_view), text, count=1)
+#                     continue
 
-            # Detect Attack Bonus
-            m = re.search(r'%a', text)
-            if m:
-                attack_bonus = cr_info["atkBonus"]
-                text = re.sub('%a', str(attack_bonus), text, count=1)
-                continue
+#             #TODO Detect multiplication 2-9?
+#             m = re.search(r'%a', text)
+#             if m:
+#                 attack_bonus = cr_info["atkBonus"]
+#                 text = re.sub('%a', str(attack_bonus), text, count=1)
+#                 continue
+# 
+#             # Detect Damage per round division.
+#             m = re.search(r'%d([2-9])?', text)
+#             if m:
+#                 dam_per_round = cr_info["damPerRound"] // group_of
+#                 if m.group(1):
+#                     # print('found group ', m.group(1) )
+#                     adjusted_damage = dam_per_round // int(m.group(1))
+#                     damage_view = (f'{adjusted_damage} '
+#                                  f'({self.dice_tower.to_dice(adjusted_damage)})')
+#                     text = re.sub(r'%d[2-9]', damage_view, text, count=1)
+#                     continue
+#                 else:
+#                     # print('no group found ')
+#                     damage_view = (f'{dam_per_round} '
+#                                  f'({self.dice_tower.to_dice(dam_per_round)})')
+#                     text = re.sub(r'%d', damage_view, text, count=1)
+#                     continue
 
-            # Detect damanage and Damage per round division.
-            m = re.search(r'%d([2-9])?', text)
-            if m:
-                dam_per_round = cr_info["damPerRound"] // group_of
-                if m.group(1):
-                    # print('found group ', m.group(1) )
-                    adjusted_damage = dam_per_round // int(m.group(1))
-                    damage_view = (f'{adjusted_damage} '
-                                 f'({dice_tower.to_dice(adjusted_damage)})')
-                    text = re.sub(r'%d[2-9]', damage_view, text, count=1)
-                    continue
-                else:
-                    # print('no group found ')
-                    damage_view = (f'{dam_per_round} '
-                                 f'({dice_tower.to_dice(dam_per_round)})')
-                    text = re.sub(r'%d', damage_view, text, count=1)
-                    continue
-
-            # Detect Spell Save DC
-            m = re.search(r'%s', text)
-            if m:
-                spellSaveDC = cr_info['saveDC']
-                text = re.sub('%s', str(spellSaveDC), text, count=1)
-                continue
+#             # Detect Spell Save DC
+#             m = re.search(r'%s', text)
+#             if m:
+#                 spellSaveDC = cr_info['saveDC']
+#                 text = re.sub('%s', str(spellSaveDC), text, count=1)
+#                 continue
             break
-
-        # # lastly repeat this process if you find more things to replace.
-        # m = re.search(r'%[{hads]', text)
-        # if m:
-        #     text = self.get_auto_values(text, group_of,
-        #                                 cr_info, stat_block,
-        #                                 dice_tower)
         return text
 
 
     def compile_attr(self, native_attr, stat_mod):
-        'combines ui ability scores with templates'
+        'combine a defined template score with a stat'
         # print(stat_mod)
         if stat_mod is None:
             # print('none')
@@ -261,22 +250,28 @@ class TheShopDialog(QDialog):
             return int(native_attr) + int(stat_mod)
 
 
-    def load_scores(self, dbObj, stat_block):
-        scores = (
-            self.compile_attr(dbObj.ability_str,
-                              stat_block['stat'].get('Strength')),
-            self.compile_attr(dbObj.ability_dex,
-                              stat_block['stat'].get('Dexterity')),
-            self.compile_attr(dbObj.ability_con,
-                              stat_block['stat'].get('Constitution')),
-            self.compile_attr(dbObj.ability_wis,
-                              stat_block['stat'].get('Wisdom')),
-            self.compile_attr(dbObj.ability_int,
-                              stat_block['stat'].get('Intelligence')),
-            self.compile_attr(dbObj.ability_cha,
-                              stat_block['stat'].get('Charisma')))
+    def load_scores(self, stat_block):
+        system_stats = self.vault.main.system_stats
+        system_macros = self.vault.main.system_macros
+        scores = dict() 
+        macros = dict()
+        for stat in system_stats:
+            full_name = system_stats[stat]["name"]
+            scores[stat] = self.compile_attr(
+                                    system_stats[stat]['value'],
+                                    stat_block['stat'].get(full_name))
+        
+        for macro in system_macros:
+            # print(f"macro: {macro} = {system_macros[macro]}")
+            macros[macro] = self.dice_tower.roll(self.get_auto_values(system_macros[macro], scores))
+
+        scores = scores | macros
         # print(f"load scores: {scores}")
         return scores
+
+    def resolve_template_values(self, template):
+        pass
+        # load all 
 
 
     @db_session
@@ -284,68 +279,110 @@ class TheShopDialog(QDialog):
         'responsible for creating stat blocks'
         # print("updating stat block")
         db = self.vault.main.db
+        env = self.vault.main.templEnv
+        template = env.get_template("5e.jinja")
         dbObj = db.Vault[self.target.id]
-        cr = self.ui.spinBox_cr.value()
-        group_of = self.ui.spinBox_group_of.value()
-        cr_info = Preset_data().get(cr)
-        dice_tower = Dice_factory()
-
-        stat_block = self.compile_templates()
-        scores = self.load_scores(dbObj, stat_block)
-        stat_bar_heading = ('STR', 'DEX',
-                            'CON', 'WIS',
-                            'INT', 'CHA')
-
-        final_scores = ''
-        for row in range(0, 6):
-            final_scores += f'{stat_bar_heading[row]}: {scores[row]:02}    '
-
-        # calculate hp
-        HP = self.compile_attr(cr_info["hp"] // group_of,
-                          stat_block['stat'].get('Hit Points'))
-        dbObj.hp = HP
-        HP_view = f'{HP} ({dice_tower.to_dice(HP)})'
-
-        # calculate AC
-        AC = self.compile_attr(cr_info["ac"],
-                          stat_block['stat'].get('Armor Class'))
-
-        # get the name
-        name = self.ui.lineEdit_name.text()
-
-        mods = ''
-        for key, value in stat_block['stat'].items():
-            mods += f'{key}: {value}\n'
-
-        # get stat_block template filled
-        stat_block_text = (f'{name}\n'
-                           f'CR: {cr}\n'
-                           f'AC: {AC}\n'
-                           f'HP: {HP_view}\n'
-                           f'{final_scores}\n'
-                           f'{mods}')
 
         sections = ('lore', 'attribute',
                     'item', 'action',
                     'rtable' )
 
+
+        # stack all templates
+        stat_block = self.stack_template_data()
+
+        # add the name in
+        stat_block['name'] = self.ui.lineEdit_name.text()
+
+        # Load default stat values
+        scores = self.load_scores(stat_block)
+
+        # calculate hp
+        dbObj.hp = stat_block['hp'] = scores['hp']
+
+
+        # read templates and replace stats and marcos
+        # then compute them as well.
+        stat_block["sections"] = dict()
         for section in sections:
-            if stat_block[section]:
-                # print(f"stat_block: {sections[section]}")
-                stat_block_text += f'\n====[ {section} ]====\n'
-                for key, text in stat_block[section].items():
-                    # print(f'{key}:{text}:{group_of}:{cr_info}:{scores}:{dice_tower}')
-                    text = self.get_auto_values(text, group_of,
-                                                cr_info, scores,
-                                                dice_tower)
-                    stat_block_text += f'\n{text}\n'
-                stat_block_text += '\n'
+            for key, text in stat_block[section].items():
+                if text:
+                    stat_block["sections"][section] = dict()
+                    stat_block["sections"][section]["text"] = self.get_auto_values(text, scores)
+                    # print(stat_block["sections"][section]["text"])
+        
+        # draw all the data into this over all template
+        stat_block_text = template.render(data=stat_block, sc=scores)
 
         self.ui.textEdit_stat_block.blockSignals(True)
         self.ui.textEdit_stat_block.setPlainText(stat_block_text)
         self.ui.textEdit_stat_block.blockSignals(False)
         # updates the vault item in the database and other pages.
         self.save_stat_block_Changes()
+
+
+
+#     @db_session
+#     def update_stat_block(self):
+#         'responsible for creating stat blocks'
+#         print("updating stat block")
+#         db = self.vault.main.db
+#         head_templ = self.vault.main.system_config['header']['template']
+#         sect_templ = self.vault.main.system_config['sections']['template']
+#         tail_templ = self.vault.main.system_config['footer']['template']
+#         dbObj = db.Vault[self.target.id]
+#         dice_tower = Dice_factory()
+# 
+#         stat_block = self.compile_templates()
+#         scores = self.load_scores(stat_block)
+# 
+#         # calculate hp
+#         HP = self.compile_attr(cr_info["hp"] // group_of,
+#         #                 stat_block['stat'].get('Hit Points'))
+# 
+#         dbObj.hp = HP
+#         HP_view = f'{HP} ({dice_tower.to_dice(HP)})'
+# 
+#         # calculate AC
+#         AC = self.compile_attr(cr_info["ac"],
+#                         stat_block['stat'].get('Armor Class'))
+# 
+#         # get the name
+#         name = self.ui.lineEdit_name.text()
+# 
+#         mods = ''
+#         for key, value in stat_block['stat'].items():
+#            mods += f'{key}: {value}\n'
+# 
+#         # get stat_block template filled
+#         stat_block_text = (f'{name}\n'
+#                            f'CR: {cr}\n'
+#                            f'AC: {AC}\n'
+#                            f'HP: {HP_view}\n'
+#                            f'{final_scores}\n'
+#                            f'{mods}')
+# 
+#         sections = ('lore', 'attribute',
+#                     'item', 'action',
+#                     'rtable' )
+# 
+#         for section in sections:
+#             if stat_block[section]:
+#                 # print(f"stat_block: {sections[section]}")
+#                 stat_block_text += f'\n====[ {section} ]====\n'
+#                 for key, text in stat_block[section].items():
+#                     # print(f'{key}:{text}:{group_of}:{cr_info}:{scores}:{dice_tower}')
+#                     text = self.get_auto_values(text, group_of,
+#                                                 cr_info, scores,
+#                                                 dice_tower)
+#                     stat_block_text += f'\n{text}\n'
+#                 stat_block_text += '\n'
+# 
+#         self.ui.textEdit_stat_block.blockSignals(True)
+#         self.ui.textEdit_stat_block.setPlainText(stat_block_text)
+#         self.ui.textEdit_stat_block.blockSignals(False)
+#         # updates the vault item in the database and other pages.
+#         self.save_stat_block_Changes()
 
 
     def read_match(self, matchList):
@@ -365,7 +402,7 @@ class TheShopDialog(QDialog):
         return sorted(matchList)
 
     @db_session
-    def compile_templates(self):
+    def stack_template_data(self):
         # print("entering compile_templates")
         db = self.vault.main.db
         details = {'lore':{},
@@ -377,7 +414,6 @@ class TheShopDialog(QDialog):
 
         def stack_rtable(details, rtable, deny_list):
             'only works on detail_type="rtable"'
-            dice_tower = Dice_factory()
             if rtable.onlyPrint:
                 # do nothing but print the table.
                 # Does not count items as duplicates.
@@ -396,10 +432,10 @@ class TheShopDialog(QDialog):
                 # get a list of the items ignore matching.
                 items = [ x for x in rtable.roll_table_items.table_item]
                 # Roll the table dice
-                times_to_roll = dice_tower.roll(rtable.dice_roll)
+                times_to_roll = self.dice_tower.roll(rtable.dice_roll)
                 # pick from the table this many times.
                 for i in range(0, times_to_roll):
-                    rolled_dice = dice_tower.roll('1d' + \
+                    rolled_dice = self.dice_tower.roll('1d' + \
                                              str(len(items)))
                     item_index = rolled_dice - 1
                     # pick this item from the list without matching.
@@ -411,9 +447,9 @@ class TheShopDialog(QDialog):
                                                        deny_list)
             else:
                 # roll the table dice
-                result = dice_tower.roll(rtable.dice_roll)
+                result = self.dice_tower.roll(rtable.dice_roll)
                 # check all matches
-                rolled_dice = dice_tower.roll(rtable.dice_roll)
+                rolled_dice = self.dice_tower.roll(rtable.dice_roll)
                 for rtable_xfer in rtable.roll_table_items:
                     item = rtable_xfer.table_item
                     if rolled_dice in self.read_match(rtable_xfer.match) and item.id not in deny_list:
@@ -464,27 +500,27 @@ class TheShopDialog(QDialog):
         return details
 
 
-    @db_session
-    def roll_stats(self):
-        db = self.vault.main.db
-        dbObj = db.Vault[self.target.id]
-        dice_tower = Dice_factory()
-        # roll 4d6 but keep the top 3
-        stats = tuple([ dice_tower.roll('4d6t3') for r in range(6)])
-        self.ui.spinBox_STR.setValue(stats[0])
-        dbObj.ability_str = stats[0]
-        self.ui.spinBox_DEX.setValue(stats[1])
-        dbObj.ability_dex = stats[1]
-        self.ui.spinBox_CON.setValue(stats[2])
-        dbObj.ability_con = stats[2]
-        self.ui.spinBox_WIS.setValue(stats[3])
-        dbObj.ability_wis = stats[3]
-        self.ui.spinBox_INT.setValue(stats[4])
-        dbObj.ability_int = stats[4]
-        self.ui.spinBox_CHA.setValue(stats[5])
-        dbObj.ability_cha = stats[5]
-        commit()
-        self.update_stat_block()
+#     @db_session
+#     def roll_stats(self):
+#         db = self.vault.main.db
+#         dbObj = db.Vault[self.target.id]
+#         dice_tower = Dice_factory()
+#         # roll 4d6 but keep the top 3
+#         stats = tuple([ dice_tower.roll('4d6t3') for r in range(6)])
+#         self.ui.spinBox_STR.setValue(stats[0])
+#         dbObj.ability_str = stats[0]
+#         self.ui.spinBox_DEX.setValue(stats[1])
+#         dbObj.ability_dex = stats[1]
+#         self.ui.spinBox_CON.setValue(stats[2])
+#         dbObj.ability_con = stats[2]
+#         self.ui.spinBox_WIS.setValue(stats[3])
+#         dbObj.ability_wis = stats[3]
+#         self.ui.spinBox_INT.setValue(stats[4])
+#         dbObj.ability_int = stats[4]
+#         self.ui.spinBox_CHA.setValue(stats[5])
+#         dbObj.ability_cha = stats[5]
+#         commit()
+#         self.update_stat_block()
 
     @db_session
     def update_selector_templates(self):
@@ -549,19 +585,19 @@ class TheShopDialog(QDialog):
         self.update_stat_block()
 
 
-    @db_session
-    def update_target_cr(self):
-        db = self.vault.main.db
-        self.target = vault_item = db.Vault[self.target.id]
-        vault_item.cr = self.ui.spinBox_cr.value()
-        self.update_stat_block()
+#     @db_session
+#     def update_target_cr(self):
+#         db = self.vault.main.db
+#         self.target = vault_item = db.Vault[self.target.id]
+#         vault_item.cr = self.ui.spinBox_cr.value()
+#         self.update_stat_block()
 
-    @db_session
-    def update_group_of(self):
-        db = self.vault.main.db
-        self.target = vault_item = db.Vault[self.target.id]
-        vault_item.count = self.ui.spinBox_group_of.value()
-        self.update_stat_block()
+#     @db_session
+#     def update_group_of(self):
+#         db = self.vault.main.db
+#         self.target = vault_item = db.Vault[self.target.id]
+#         vault_item.count = self.ui.spinBox_group_of.value()
+#         self.update_stat_block()
 
     @db_session
     def update_type(self):

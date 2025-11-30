@@ -1,127 +1,18 @@
 
 
 # Adventure Wrench
-A no internet necessary, 5e compatible, intiative tracker and encounter builder. Built for my perticular GM stye it focuses on fast reactions to current events. And allows Encounters to be built very quickly from modular pieces.
+A no internet necessary, 5e compatible, intiative tracker and encounter builder. It focuses on fast reactions to current events. And allows Encounters to be built quickly from modular pieces. Or to help my ADHD friends keep consistant when making stat blocks.
 
 ## Game Tracker
 The Main window for this program is the game tracker. It keeps tabs on important information, notes and marks about the current encounter. It's clean and easy to see what is going on at a glance.
 Full stat blocks are hidden by default but can be seen on mouse roll-over. You can pull them up in seperate window by double-clicking them.
 
-<img fetchpriority="high" decoding="async" width="804" height="630" src="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-4.png" alt="" class="wp-image-73" srcset="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-4.png 804w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-4-300x235.png 300w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-4-768x602.png 768w" sizes="(max-width: 804px) 100vw, 804px">
-
 
 ## The Vault
 The vault is a repository of all unique things that can be copied into the current game when needed. Think varients of a monster, trap, npc, or boss. Or even pre-generated lists of information like lore, background, or geography.
 
-<img decoding="async" width="805" height="632" src="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-2.png" alt="" class="wp-image-71" srcset="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-2.png 805w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-2-300x236.png 300w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-2-768x603.png 768w" sizes="(max-width: 805px) 100vw, 805px">
 
-## The Shop
-When building things to store in the vault (vault items), You can simply add a new vault item, give it a name and paste in your stat block if you have one already then save. If your the type that likes to do a little more customization you can make use of templates which can add things to the generated state block. Fiddling around with the target CR and group of numbers will allow you to adjust difficulty without individually changing damage numbers. Just keep in mind it uses the DM handbooks suggestions for damage and that's it. No other considerations like abilities or reistances.
-
-<img loading="lazy" decoding="async" width="907" height="632" src="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-1.png" alt="" class="wp-image-70" srcset="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-1.png 907w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-1-300x209.png 300w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-1-768x535.png 768w" sizes="auto, (max-width: 907px) 100vw, 907px">
-
-## Templates
-If your not sold on this application yet I've got one last feature that might do it. Templates are a more flexible way to build encounter things then the usual encounter builder. Ones that just want you to make lists of stuff that you can re-use.
-1. Templates can change just about anythihng in a vault item.
-2. They can be stacked togeather or nested.
-3. You can build tables here you can print into vault items, or have the system roll dice for you to make unique vault items.
-4. We can build Weapons that scale with CR and group size.
-5. Templates can represent the character of regions of the world, swamp, desert, sky islands, or different worlds entirely.
-6. Lore reminders can be applied to creatures, items, or npc's through them.
-
-<img decoding="async" width="1024" height="598" src="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-3-1024x598.png" alt="" class="wp-image-72" srcset="http://www.nogasgofast.net/wp-content/uploads/2025/09/image-3-1024x598.png 1024w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-3-300x175.png 300w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-3-768x448.png 768w, http://www.nogasgofast.net/wp-content/uploads/2025/09/image-3.png 1062w" sizes="(max-width: 1024px) 100vw, 1024px">
-
-
-Here is a link to a web-page with a little more explination:
-http://www.nogasgofast.net/2025/09/10/yet-another-5e-encounter-builder/
-
-
-## Automaticly Adjusted Values
-These special words will be replaced at the time you are building something in "The Shop".
-And generally allow you to write more flexible items and actions.
-
-
-| Stand-in Values | What they are |
-| --------------- | ------------- |
-| %str            | Strength mod after templates are compiled |
-| %dex            | Dexterity mod after templates are compiled |
-| %con            | Constitution mod after templates are compiled |
-| %wis            | Wisdom mod after templates are compiled |
-| %int            | Intelligence mod after templates are compiled |
-| %cha            | Charisma mod after templates are compiled |
-| %h              | This is current health value directly related to challenge rating, but should not be used often.  |
-| %h9             | Same as %h but divides it by 9. Works with numbers 2-9 Great for making healing or poison effects. |
-| %a              | Attack bonus calculated from challenge rating directly   |
-| %d              | Damage per round, calculated from "Challenge rating" divided by "Group of" on the shop page of the app. You will need to adjust this number down for things included in a multi-attack. I am still working on a way to enforce damage per round by  |
-| %d9             | Same as %d only divides damage per round number specified. can use numbers 2-9 |
-| %s              | Spell save DC for spell actions calculated directly from challange rating     |
-| %{ }            | Takes any dice notation in the {} and caluculates it. ie: ${ 1d1 + 1} would be replaced with 2. supports simple dice notation 1d20 or 4d6. supports simple addition and subtraction 5 - 3. supports top function 2d20T1 or 4d6t3. support bottom function 6d10B2 6d10b2 |
-
-
-## Examples
-0. Fractional Challenge Ratings
-
-| cr  | "challenge rating" | "group of" |
-| --- | ------------------ | ---------- |
-|1/2  | 1                  | 2          |
-|1/4  | 1                  | 4          |
-|1/8  | 1                  | 8          |
-|1/16 | 1                  |16          |
-
-I guess the point here is double the "group of" field is aproximatly like lowering
-the challenge rating by 1 level until you get to cr 1. Then it's more or less filling out
-the space between CR 1 and CR 0. Remember if the HP seems high for a cr of 1,
-that's because it's built to be a challenging 4 on 1 fight. That goes for the damage
-as well. The Challenge Rating data is sampled from the SRD but may not be exact.
-
-1. damage, elemental damange, and health auto-values
-Building a weapon with auto-values. You can create a "Action" for this:
-Name: flame sprite mace
-Cost: 1 Attack action
-Limitations: range 5ft, 1 target
-Result:
-  Attack: +%a to hit
-  on hit: %d bludgeoning damage, and %e fire damage. Small sparks and flames
-  splash the target, ignighting flamable meterials.
-
-
-2. Roll tables and selecting from lists randomly.
-Roll tables are extreamly powerful in this application. Not only allowing for a
-random selection, or a classic roll table from dnd. But also allowing roll tables
-to select multiple items from one roll. By over-lapping the match values:
-
-roll: 1d6
-1: a stick
-2-3: a pudding
-3-5: a spoon
-6: a golden ticket
-
-Here we can see this is like a regular roll table except 3 is on here twice. When
-the roll table is applied to something if Adventure Wrench rolls a 3 that thing will now have
-a pudding and a spoon. A better outcome then even a golden ticket some might say.
-
-Random roll? yes.
-roll: 1d6
-a stick
-a pudding
-a spoon
-a golden ticket
-
-In this case we are rolling 1d6 and picking randomly from the list that many times.
-
-roll: 1d6
-1: template: water bender
-2: template: earth bender
-3: template: air bender
-4: template: fire bender
-5: template: multi-dicepline bender
-6: template: cabage vender
-
-In this case we are not selecting items but other templates. In fact we can choose
-to have roll tables which select other roll tables, templates that use other templates
-and so on. When applied to something this roll table will apply another template **so
-long as that template or roll table has not been applied already.
-
+# Under Construction for v2
 
 ## Making A Game to distribute
 ### I have the game all written up, what now?

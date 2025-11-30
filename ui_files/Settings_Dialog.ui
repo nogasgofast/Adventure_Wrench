@@ -17,44 +17,7 @@
    <string>Settings</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget {
-  color: black;
-  background-color: rgb(89, 92, 123);
-}
-
-QListWidget QTreeWidget{
-   color: #000;
-   selection-color: #FFF;
-   selection-background-color: #55A;
-}
-
-QListWidget::item:selected:!active{
-   color: #000;
-   selection-color: #FFF;
-   selection-background-color: #55A;
-}
-
-QTreeWidget::item:selected:!active{
-   color: #000;
-   selection-color: #FFF;
-   selection-background-color: #55A;
-}
-
-
-QToolTip {
-	border: 5px solid orange;
-	background-color: #39537d;
-    color: #FFF;
-}
-
-QLabel {
-color: rgb(222, 221, 218);
-}
-
-QPushButton {
-background-color: rgb(75, 82, 143);
-color: white;
-}</string>
+   <string notr="true"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -67,52 +30,7 @@ color: white;
    <item>
     <widget class="QPlainTextEdit" name="plainTextEdit_template">
      <property name="styleSheet">
-      <string notr="true">QWidget {
-  color: black;
-  background-color: rgb(89, 92, 123);
-}
-
-QListWidget QTreeWidget{
-   color: #000;
-   selection-color: #FFF;
-   selection-background-color: #55A;
-}
-
-QListWidget::item:selected:!active{
-   color: #000;
-   selection-color: #FFF;
-   selection-background-color: #55A;
-}
-
-QTreeWidget::item:selected:!active{
-   color: #000;
-   selection-color: #FFF;
-   selection-background-color: #55A;
-}
-
-
-QToolTip {
-	border: 3px solid gray;
-	background-color: #39537d;
-    color: #FFF;
-}
-
-QLabel {
-color: rgb(222, 221, 218);
-}
-
-QPushButton {
-background-color: rgb(75, 82, 143);
-color: white;
-padding: 5px;
-border-color: rgb(75, 82, 143);
-border-width: 2px;
-border-radius: 5px;
-}
-
-QPushButton:pressed {
-    background-color: rgb(55, 62, 123);
-}</string>
+      <string notr="true"/>
      </property>
     </widget>
    </item>

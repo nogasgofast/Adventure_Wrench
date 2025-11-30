@@ -3,6 +3,7 @@ from ui.Vault_Dialog import Ui_Vault
 from PySide6.QtWidgets import QDialog, QListWidgetItem
 from PySide6.QtGui import QBrush, QColor, QFont
 from Acadamy import AcadamyDialog
+from Legend import LegendDialog
 from TheShop import TheShopDialog
 from lib.dice import Dice_factory
 
@@ -12,6 +13,7 @@ class VaultDialog(QDialog):
         self.main = parent
         self.ui = Ui_Vault()
         self.ui.setupUi(self)
+        self.ui_legend = LegendDialog(self)
         self.ui_acadamy = AcadamyDialog(self)
         self.ui_ts = TheShopDialog(self)
 

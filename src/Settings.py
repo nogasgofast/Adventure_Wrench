@@ -32,8 +32,9 @@ STR: 10    DEX: 10    CON: 10    WIS: 10    INT: 10    CHA: 10
         templ_setting = settings.get(name='pc_npc_template')
         pnp_system_name = settings.get(name='pnp_system_name')
 
-        for fname in os.listdir('pnp_systems'):
-            cbox_sys.addItem(fname)
+        for fname in os.listdir('supported_systems'):
+            if '.ini' in fname[-4:]:
+                cbox_sys.addItem(fname[:-4])
 
         if templ_setting:
             self.ui.plainTextEdit_template.setPlainText(templ_setting.value)

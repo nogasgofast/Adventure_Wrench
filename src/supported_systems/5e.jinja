@@ -1,0 +1,10 @@
+{{data.name}}
+CR: {{data.cr}}
+AC: {{data.ac}}
+HP: {{data.hp}}
+STR: {{sc.str}} ({{sc['str-mod']}}) DEX: {{sc.dex}} ({{sc['dex-mod']}}) CON: {{sc.con}} ({{sc['con-mod']}}) 
+INT: {{sc.int}} ({{sc['int-mod']}}) WIS: {{sc.wis}} ({{sc['wis-mod']}}) CHA: {{sc.cha}} ({{sc['cha-mod']}})
+{%- for section in data.sections %}
+====[ {{section}} ]====
+{{data["sections"][section]["text"]}}
+{% endfor %}

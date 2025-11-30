@@ -29,13 +29,6 @@ def database_factory():
         max_hp = Optional(int, default=1)
         group_hp = Optional(IntArray)
         stat_block = Optional(str, default='')
-        ability_str = Optional(int, default=10)
-        ability_dex = Optional(int, default=10)
-        ability_con = Optional(int, default=10)
-        ability_int = Optional(int, default=10)
-        ability_wis = Optional(int, default=10)
-        ability_cha = Optional(int, default=10)
-        cr = Optional(int, default=1)
         count = Optional(int, default=1)
         templates = Set('Templates', reverse='vault')
         in_active = Set('Active', reverse='from_vault')
@@ -82,6 +75,7 @@ def database_factory():
         match = Optional(str)
         # and as you might guess going down the tree
         table_item = Optional('Templates', reverse='rtable_over_me')
+    
     return aw_db
 
 

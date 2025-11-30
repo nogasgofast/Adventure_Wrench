@@ -24,44 +24,7 @@ class Ui_Vault(object):
         if not Vault.objectName():
             Vault.setObjectName(u"Vault")
         Vault.resize(673, 583)
-        Vault.setStyleSheet(u"QWidget {\n"
-"  color: black;\n"
-"  background-color: rgb(89, 92, 123);\n"
-"}\n"
-"\n"
-"QListWidget QTreeWidget{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
-"}\n"
-"\n"
-"QListWidget::item:selected:!active{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
-"}\n"
-"\n"
-"QTreeWidget::item:selected:!active{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
-"}\n"
-"\n"
-"\n"
-"QToolTip {\n"
-"	border: 3px solid gray;\n"
-"	background-color: #39537d;\n"
-"    color: #FFF;\n"
-"}\n"
-"\n"
-"QLabel {\n"
-"color: rgb(222, 221, 218);\n"
-"}\n"
-"\n"
-"QPushButton {\n"
-"background-color: rgb(75, 82, 143);\n"
-"color: white;\n"
-"}")
+        Vault.setStyleSheet(u"")
         self.verticalLayout_3 = QVBoxLayout(Vault)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout_content = QHBoxLayout()
@@ -89,6 +52,12 @@ class Ui_Vault(object):
 
         self.verticalLayout_menu.addWidget(self.pushButton_the_shop)
 
+        self.pushButton_delete_selected_items = QPushButton(Vault)
+        self.pushButton_delete_selected_items.setObjectName(u"pushButton_delete_selected_items")
+        self.pushButton_delete_selected_items.setAutoDefault(False)
+
+        self.verticalLayout_menu.addWidget(self.pushButton_delete_selected_items)
+
         self.label = QLabel(Vault)
         self.label.setObjectName(u"label")
         self.label.setTextFormat(Qt.MarkdownText)
@@ -107,12 +76,6 @@ class Ui_Vault(object):
         self.pushButton_remove_from_encounter.setAutoDefault(False)
 
         self.verticalLayout_menu.addWidget(self.pushButton_remove_from_encounter)
-
-        self.pushButton_delete_selected_items = QPushButton(Vault)
-        self.pushButton_delete_selected_items.setObjectName(u"pushButton_delete_selected_items")
-        self.pushButton_delete_selected_items.setAutoDefault(False)
-
-        self.verticalLayout_menu.addWidget(self.pushButton_delete_selected_items)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -158,20 +121,20 @@ class Ui_Vault(object):
 #if QT_CONFIG(tooltip)
         self.pushButton_the_shop.setToolTip(QCoreApplication.translate("Vault", u"Add something new to the vault using templates.", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_the_shop.setText(QCoreApplication.translate("Vault", u"Add ->", None))
+        self.pushButton_the_shop.setText(QCoreApplication.translate("Vault", u"New Item", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_delete_selected_items.setToolTip(QCoreApplication.translate("Vault", u"Remove selected from current Encounter as well as DM Vault.", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_delete_selected_items.setText(QCoreApplication.translate("Vault", u"Delete Item", None))
         self.label.setText(QCoreApplication.translate("Vault", u"### Current Encounter", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_add_to_encounter.setToolTip(QCoreApplication.translate("Vault", u"Add Selected Items to Current Encounter", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_add_to_encounter.setText(QCoreApplication.translate("Vault", u"<- Copy", None))
+        self.pushButton_add_to_encounter.setText(QCoreApplication.translate("Vault", u"Copy to Combat", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_remove_from_encounter.setToolTip(QCoreApplication.translate("Vault", u"Remove Selected items from Current Encounter", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_remove_from_encounter.setText(QCoreApplication.translate("Vault", u"<- Delete", None))
-#if QT_CONFIG(tooltip)
-        self.pushButton_delete_selected_items.setToolTip(QCoreApplication.translate("Vault", u"Remove selected from current Encounter as well as DM Vault.", None))
-#endif // QT_CONFIG(tooltip)
-        self.pushButton_delete_selected_items.setText(QCoreApplication.translate("Vault", u"Delete ->", None))
+        self.pushButton_remove_from_encounter.setText(QCoreApplication.translate("Vault", u"Erase from Combat", None))
         self.pushButton_back.setText(QCoreApplication.translate("Vault", u"<- Save (Esc)", None))
 #if QT_CONFIG(tooltip)
         self.listWidget_vault.setToolTip("")

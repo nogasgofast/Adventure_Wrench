@@ -28,44 +28,7 @@ class Ui_acadamy_dialog(object):
         if not acadamy_dialog.objectName():
             acadamy_dialog.setObjectName(u"acadamy_dialog")
         acadamy_dialog.resize(1056, 587)
-        acadamy_dialog.setStyleSheet(u"QWidget {\n"
-"  color: black;\n"
-"  background-color: rgb(89, 92, 123);\n"
-"}\n"
-"\n"
-"QListWidget QTreeWidget{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
-"}\n"
-"\n"
-"QListWidget::item:selected:!active{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
-"}\n"
-"\n"
-"QTreeWidget::item:selected:!active{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
-"}\n"
-"\n"
-"\n"
-"QToolTip {\n"
-"	border: 3px solid gray;\n"
-"	background-color: #39537d;\n"
-"    color: #FFF;\n"
-"}\n"
-"\n"
-"QLabel {\n"
-"color: rgb(222, 221, 218);\n"
-"}\n"
-"\n"
-"QPushButton {\n"
-"background-color: rgb(75, 82, 143);\n"
-"color: white;\n"
-"}")
+        acadamy_dialog.setStyleSheet(u"")
         self.horizontalLayout = QHBoxLayout(acadamy_dialog)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(9, -1, -1, -1)
@@ -311,22 +274,14 @@ class Ui_acadamy_dialog(object):
         self.verticalLayout_5.addWidget(self.label_name_stats)
 
         self.comboBox_name_stats = QComboBox(self.page_stats)
-        self.comboBox_name_stats.addItem("")
-        self.comboBox_name_stats.addItem("")
-        self.comboBox_name_stats.addItem("")
-        self.comboBox_name_stats.addItem("")
-        self.comboBox_name_stats.addItem("")
-        self.comboBox_name_stats.addItem("")
-        self.comboBox_name_stats.addItem("")
-        self.comboBox_name_stats.addItem("")
         self.comboBox_name_stats.setObjectName(u"comboBox_name_stats")
 
         self.verticalLayout_5.addWidget(self.comboBox_name_stats)
 
-        self.label_des1_stats = QLabel(self.page_stats)
-        self.label_des1_stats.setObjectName(u"label_des1_stats")
+        self.label_stats_default = QLabel(self.page_stats)
+        self.label_stats_default.setObjectName(u"label_stats_default")
 
-        self.verticalLayout_5.addWidget(self.label_des1_stats)
+        self.verticalLayout_5.addWidget(self.label_stats_default)
 
         self.label_des3_stats = QLabel(self.page_stats)
         self.label_des3_stats.setObjectName(u"label_des3_stats")
@@ -458,10 +413,20 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_6.addWidget(self.spinBox_quantity_item)
 
+        self.HorizontalLayout_items = QHBoxLayout()
+        self.HorizontalLayout_items.setObjectName(u"HorizontalLayout_items")
         self.label_description_item = QLabel(self.page_item)
         self.label_description_item.setObjectName(u"label_description_item")
 
-        self.verticalLayout_6.addWidget(self.label_description_item)
+        self.HorizontalLayout_items.addWidget(self.label_description_item)
+
+        self.pushButton_item_show_legend = QPushButton(self.page_item)
+        self.pushButton_item_show_legend.setObjectName(u"pushButton_item_show_legend")
+
+        self.HorizontalLayout_items.addWidget(self.pushButton_item_show_legend)
+
+
+        self.verticalLayout_6.addLayout(self.HorizontalLayout_items)
 
         self.textEdit_description_item = QTextEdit(self.page_item)
         self.textEdit_description_item.setObjectName(u"textEdit_description_item")
@@ -527,10 +492,20 @@ class Ui_acadamy_dialog(object):
 
         self.verticalLayout_7.addWidget(self.lineEdit_limitations_action)
 
+        self.horizontalLayout_action = QHBoxLayout()
+        self.horizontalLayout_action.setObjectName(u"horizontalLayout_action")
         self.label_description_action = QLabel(self.page_action)
         self.label_description_action.setObjectName(u"label_description_action")
 
-        self.verticalLayout_7.addWidget(self.label_description_action)
+        self.horizontalLayout_action.addWidget(self.label_description_action)
+
+        self.pushButton_action_show_legend = QPushButton(self.page_action)
+        self.pushButton_action_show_legend.setObjectName(u"pushButton_action_show_legend")
+
+        self.horizontalLayout_action.addWidget(self.pushButton_action_show_legend)
+
+
+        self.verticalLayout_7.addLayout(self.horizontalLayout_action)
 
         self.textEdit_result_action = QTextEdit(self.page_action)
         self.textEdit_result_action.setObjectName(u"textEdit_result_action")
@@ -716,7 +691,7 @@ class Ui_acadamy_dialog(object):
 
         self.retranslateUi(acadamy_dialog)
 
-        self.verticalStackedWidget_forms.setCurrentIndex(0)
+        self.verticalStackedWidget_forms.setCurrentIndex(5)
 
 
         QMetaObject.connectSlotsByName(acadamy_dialog)
@@ -758,16 +733,7 @@ class Ui_acadamy_dialog(object):
         self.pushButton_delete_lore.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
         self.pushButton_next_lore.setText(QCoreApplication.translate("acadamy_dialog", u"Next", None))
         self.label_name_stats.setText(QCoreApplication.translate("acadamy_dialog", u"Stat Modification:", None))
-        self.comboBox_name_stats.setItemText(0, QCoreApplication.translate("acadamy_dialog", u"Strength", None))
-        self.comboBox_name_stats.setItemText(1, QCoreApplication.translate("acadamy_dialog", u"Dexterity", None))
-        self.comboBox_name_stats.setItemText(2, QCoreApplication.translate("acadamy_dialog", u"Constitution", None))
-        self.comboBox_name_stats.setItemText(3, QCoreApplication.translate("acadamy_dialog", u"Wisdom", None))
-        self.comboBox_name_stats.setItemText(4, QCoreApplication.translate("acadamy_dialog", u"Intelligence", None))
-        self.comboBox_name_stats.setItemText(5, QCoreApplication.translate("acadamy_dialog", u"Charisma", None))
-        self.comboBox_name_stats.setItemText(6, QCoreApplication.translate("acadamy_dialog", u"Hit Points", None))
-        self.comboBox_name_stats.setItemText(7, QCoreApplication.translate("acadamy_dialog", u"Armor Class", None))
-
-        self.label_des1_stats.setText("")
+        self.label_stats_default.setText(QCoreApplication.translate("acadamy_dialog", u"Default is: ", None))
         self.label_des3_stats.setText(QCoreApplication.translate("acadamy_dialog", u"If it starts with a \"+\" or \"-\" symbol it adds or subtracts instead of replacing.", None))
 #if QT_CONFIG(tooltip)
         self.lineEdit_content_stats.setToolTip(QCoreApplication.translate("acadamy_dialog", u"can have + or - to add or remove points from the base score. Or without them the value is replaced", None))
@@ -786,7 +752,8 @@ class Ui_acadamy_dialog(object):
         self.label_name_item.setText(QCoreApplication.translate("acadamy_dialog", u"Item Name", None))
         self.label_weight_item.setText(QCoreApplication.translate("acadamy_dialog", u"Weight (optional)", None))
         self.label_quantity_item.setText(QCoreApplication.translate("acadamy_dialog", u"Quantity", None))
-        self.label_description_item.setText(QCoreApplication.translate("acadamy_dialog", u"<html><head/><body><p>Item description: (allows %d,%e) </p></body></html>", None))
+        self.label_description_item.setText(QCoreApplication.translate("acadamy_dialog", u"<html><head/><body><p>Item description:</p></body></html>", None))
+        self.pushButton_item_show_legend.setText(QCoreApplication.translate("acadamy_dialog", u"Show Legend", None))
         self.pushButton_add_another_item.setText(QCoreApplication.translate("acadamy_dialog", u"Add Another", None))
         self.pushButton_delete_item.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
         self.pushButton_next_item.setText(QCoreApplication.translate("acadamy_dialog", u"Next", None))
@@ -799,7 +766,8 @@ class Ui_acadamy_dialog(object):
 #if QT_CONFIG(whatsthis)
         self.label_description_action.setWhatsThis("")
 #endif // QT_CONFIG(whatsthis)
-        self.label_description_action.setText(QCoreApplication.translate("acadamy_dialog", u"Result: allows %a, %d, and %e. Hover over this for help.", None))
+        self.label_description_action.setText(QCoreApplication.translate("acadamy_dialog", u"Description: ", None))
+        self.pushButton_action_show_legend.setText(QCoreApplication.translate("acadamy_dialog", u"Show Legend", None))
         self.pushButton_add_another_action.setText(QCoreApplication.translate("acadamy_dialog", u"Add Another", None))
         self.pushButton_delete_action.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
         self.pushButton_next_action.setText(QCoreApplication.translate("acadamy_dialog", u"Next", None))

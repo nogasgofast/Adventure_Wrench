@@ -14,52 +14,7 @@
    <string>Acadamy</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget {
-  color: black;
-  background-color: rgb(89, 92, 123);
-}
-
-QListWidget QTreeWidget{
-   color: #000;
-   selection-color: #FFF;
-   selection-background-color: #55A;
-}
-
-QListWidget::item:selected:!active{
-   color: #000;
-   selection-color: #FFF;
-   selection-background-color: #55A;
-}
-
-QTreeWidget::item:selected:!active{
-   color: #000;
-   selection-color: #FFF;
-   selection-background-color: #55A;
-}
-
-
-QToolTip {
-	border: 3px solid gray;
-	background-color: #39537d;
-    color: #FFF;
-}
-
-QLabel {
-color: rgb(222, 221, 218);
-}
-
-QPushButton {
-background-color: rgb(75, 82, 143);
-color: white;
-padding: 5px;
-border-color: rgb(75, 82, 143);
-border-width: 2px;
-border-radius: 5px;
-}
-
-QPushButton:pressed {
-    background-color: rgb(55, 62, 123);
-}</string>
+   <string notr="true"/>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="leftMargin">
@@ -121,7 +76,7 @@ QPushButton:pressed {
    <item>
     <widget class="QStackedWidget" name="verticalStackedWidget_forms">
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="page_splash">
       <layout class="QFormLayout" name="formLayout">
@@ -428,53 +383,12 @@ QPushButton:pressed {
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_name_stats">
-         <item>
-          <property name="text">
-           <string>Strength</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Dexterity</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Constitution</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Wisdom</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Intelligence</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Charisma</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Hit Points</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Armor Class</string>
-          </property>
-         </item>
-        </widget>
+        <widget class="QComboBox" name="comboBox_name_stats"/>
        </item>
        <item>
-        <widget class="QLabel" name="label_des1_stats">
+        <widget class="QLabel" name="label_stats_default">
          <property name="text">
-          <string/>
+          <string>Default is: </string>
          </property>
         </widget>
        </item>
@@ -657,11 +571,22 @@ QPushButton:pressed {
         <widget class="QSpinBox" name="spinBox_quantity_item"/>
        </item>
        <item>
-        <widget class="QLabel" name="label_description_item">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Item description: (allows %d,%e) &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="HorizontalLayout_items">
+         <item>
+          <widget class="QLabel" name="label_description_item">
+           <property name="text">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Item description:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_item_show_legend">
+           <property name="text">
+            <string>Show Legend</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QTextEdit" name="textEdit_description_item">
@@ -739,17 +664,28 @@ QPushButton:pressed {
         <widget class="QLineEdit" name="lineEdit_limitations_action"/>
        </item>
        <item>
-        <widget class="QLabel" name="label_description_action">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;%a gets replaced automaticly with level appropriate attack&lt;/p&gt;&lt;p&gt;%d and %e get replaced with level appropriate damage&lt;/p&gt;&lt;p&gt;You can divide the damage into smaller portions by adding a number to the end. i.e. %d2 is half damage %d9 is 1/9th damage. the only valid numbers are [2-9]. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="whatsThis">
-          <string/>
-         </property>
-         <property name="text">
-          <string>Result: allows %a, %d, and %e. Hover over this for help.</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_action">
+         <item>
+          <widget class="QLabel" name="label_description_action">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;%a gets replaced automaticly with level appropriate attack&lt;/p&gt;&lt;p&gt;%d and %e get replaced with level appropriate damage&lt;/p&gt;&lt;p&gt;You can divide the damage into smaller portions by adding a number to the end. i.e. %d2 is half damage %d9 is 1/9th damage. the only valid numbers are [2-9]. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="whatsThis">
+            <string/>
+           </property>
+           <property name="text">
+            <string>Description: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_action_show_legend">
+           <property name="text">
+            <string>Show Legend</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QTextEdit" name="textEdit_result_action">

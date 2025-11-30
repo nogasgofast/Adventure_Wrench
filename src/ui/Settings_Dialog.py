@@ -25,44 +25,7 @@ class Ui_Settings(object):
             Settings.setObjectName(u"Settings")
         Settings.setWindowModality(Qt.WindowModal)
         Settings.resize(624, 443)
-        Settings.setStyleSheet(u"QWidget {\n"
-"  color: black;\n"
-"  background-color: rgb(89, 92, 123);\n"
-"}\n"
-"\n"
-"QListWidget QTreeWidget{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
-"}\n"
-"\n"
-"QListWidget::item:selected:!active{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
-"}\n"
-"\n"
-"QTreeWidget::item:selected:!active{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
-"}\n"
-"\n"
-"\n"
-"QToolTip {\n"
-"	border: 5px solid orange;\n"
-"	background-color: #39537d;\n"
-"    color: #FFF;\n"
-"}\n"
-"\n"
-"QLabel {\n"
-"color: rgb(222, 221, 218);\n"
-"}\n"
-"\n"
-"QPushButton {\n"
-"background-color: rgb(75, 82, 143);\n"
-"color: white;\n"
-"}")
+        Settings.setStyleSheet(u"")
         self.verticalLayout = QVBoxLayout(Settings)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.label_TemplateEdit = QLabel(Settings)
@@ -72,6 +35,7 @@ class Ui_Settings(object):
 
         self.plainTextEdit_template = QPlainTextEdit(Settings)
         self.plainTextEdit_template.setObjectName(u"plainTextEdit_template")
+        self.plainTextEdit_template.setStyleSheet(u"")
 
         self.verticalLayout.addWidget(self.plainTextEdit_template)
 

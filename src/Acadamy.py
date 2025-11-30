@@ -39,6 +39,8 @@ class AcadamyDialog(QDialog):
         self.ui.pushButton_add_another_item.clicked.connect(lambda: self.add_detail('Items'))
         self.ui.pushButton_add_another_action.clicked.connect(lambda: self.add_detail('Actions'))
         self.ui.pushButton_add_another_roll_table.clicked.connect(lambda: self.add_detail('Roll Table'))
+        self.ui.pushButton_item_show_legend.clicked.connect(self.ui_vault.ui_legend.show)
+        self.ui.pushButton_action_show_legend.clicked.connect(self.ui_vault.ui_legend.show)
         # Next buttons
         self.ui.pushButton_next_lore.clicked.connect(self.next_buttons)
         self.ui.pushButton_next_stats.clicked.connect(self.next_buttons)
@@ -74,7 +76,7 @@ class AcadamyDialog(QDialog):
         self.ui.textEdit_description_item.textChanged.connect(self.update_description_item)
         self.ui.textEdit_result_action.textChanged.connect(self.update_result_action)
 
-        self.ui.comboBox_name_stats.currentIndexChanged.connect(self.update_name_stats)
+        self.ui.comboBox_name_stats.currentIndexChanged.connect(self.cascade_stat_changes)
 
         self.ui.checkBox_israndom_roll_table.stateChanged.connect(self.update_israndom_roll_table)
         self.ui.checkBox_interpret_roll_table.stateChanged.connect(self.update_immutable_roll_table)
@@ -91,6 +93,7 @@ class AcadamyDialog(QDialog):
                           'Actions': 6,
                           'Roll Table': 7}
         self.load_acadamy()
+        
 
 
     @db_session
@@ -521,7 +524,6 @@ class AcadamyDialog(QDialog):
     def select_template(self, itemClicked, column):
         'sets self.detail_target and changes the form page'
         db = self.ui_vault.main.db
-        templates = self.ui.treeWidget_all_templates
         forms = self.ui.verticalStackedWidget_forms
 
         item = db.Templates[itemClicked.dbObj.id]
@@ -571,6 +573,14 @@ class AcadamyDialog(QDialog):
                 if len(dbObj.under_me) > 0:
                     add_level(item)
         templates_view.sortItems(0, Qt.AscendingOrder)
+        templates_view.setCurrentItem(templates_view.topLevelItem(0))
+        # initialize this combobox when the load function is called.
+        self.ui.comboBox_name_stats.clear()
+        for stat in self.ui_vault.main.system_stats:
+            name = self.ui_vault.main.system_stats[stat]['name']
+            with QSignalBlocker(self.ui.comboBox_name_stats) as blocker:
+                self.ui.comboBox_name_stats.addItem(name)
+
 
 
     @db_session
@@ -581,28 +591,35 @@ class AcadamyDialog(QDialog):
         # Get Name
         name = newText
         # update database
-        dbObj = db.Templates[currentItem.dbObj.id]
-        dbObj.name = name
-        commit()
-        # update current item
-        if dbObj.is_folder:
-            currentItem.setText(0, f"Folder: {dbObj.name}")
-        else:
-            currentItem.setText(0, dbObj.name)
+        if not currentItem is None:
+            dbObj = db.Templates[currentItem.dbObj.id]
+            dbObj.name = name
+            commit()
+            # update current item
+            if dbObj.is_folder:
+                currentItem.setText(0, f"Folder: {dbObj.name}")
+            else:
+                    currentItem.setText(0, self.construct_detail_name(dbObj))
 
     @db_session
-    def update_name_stats(self, newComboIndex):
+    def cascade_stat_changes(self, newComboIndex):
+        stat_defaults = self.ui_vault.main.system_stats
         newName = self.ui.comboBox_name_stats.currentText()
+        # read selected stat's name and default value.
+        for stat in stat_defaults:
+            name = stat_defaults[stat]['name']
+            default = stat_defaults[stat]['value'] 
+            if newName == name:
+                break
         self.update_template_name(newName)
+        self.ui.label_stats_default.setText(f"Default is: {default}")
 
 
     @db_session
     def add_detail(self, selection=None):
         'add a template component to the selected template'
-        print(f"function input: {selection}")
         if not selection:
             selection = self.ui.comboBox_type_templates_page.currentText()
-        print(f"selection {selection}")
         db = self.ui_vault.main.db
         forms = self.ui.verticalStackedWidget_forms
         templates = self.ui.treeWidget_all_templates
@@ -638,7 +655,6 @@ class AcadamyDialog(QDialog):
 
     @db_session
     def construct_detail_name(self, dbObj):
-        # print(f"contruct_detail_name {dbObj.name}")
         db = self.ui_vault.main.db
         name = ''
         match dbObj.detail_type:
@@ -717,6 +733,8 @@ class AcadamyDialog(QDialog):
                 content = QSignalBlocker(self.ui.textEdit_content_lore)
                 self.ui.textEdit_content_lore.setPlainText(dbObj.description)
             case 'stat':
+                system_stats = self.ui_vault.main.system_stats
+                # self.ui.comboBox_name_stats.clear()
                 index = self.ui.comboBox_name_stats.findText(dbObj.name)
                 name = QSignalBlocker(self.ui.comboBox_name_stats)
                 self.ui.comboBox_name_stats.setCurrentIndex(index)

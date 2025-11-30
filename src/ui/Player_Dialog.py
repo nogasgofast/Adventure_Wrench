@@ -24,7 +24,7 @@ class Ui_Player(object):
         if not Player.objectName():
             Player.setObjectName(u"Player")
         Player.setWindowModality(Qt.WindowModal)
-        Player.resize(629, 356)
+        Player.resize(629, 359)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -33,44 +33,7 @@ class Ui_Player(object):
         Player.setMinimumSize(QSize(629, 0))
         Player.setMaximumSize(QSize(629, 16777215))
         Player.setContextMenuPolicy(Qt.DefaultContextMenu)
-        Player.setStyleSheet(u"QWidget {\n"
-"  color: black;\n"
-"  background-color: rgb(89, 92, 123);\n"
-"}\n"
-"\n"
-"QListWidget QTreeWidget{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
-"}\n"
-"\n"
-"QListWidget::item:selected:!active{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
-"}\n"
-"\n"
-"QTreeWidget::item:selected:!active{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
-"}\n"
-"\n"
-"\n"
-"QToolTip {\n"
-"	border: 5px solid orange;\n"
-"	background-color: #39537d;\n"
-"    color: #FFF;\n"
-"}\n"
-"\n"
-"QLabel {\n"
-"color: rgb(222, 221, 218);\n"
-"}\n"
-"\n"
-"QPushButton {\n"
-"background-color: rgb(75, 82, 143);\n"
-"color: white;\n"
-"}")
+        Player.setStyleSheet(u"")
         Player.setModal(False)
         self.verticalLayout = QVBoxLayout(Player)
         self.verticalLayout.setObjectName(u"verticalLayout")

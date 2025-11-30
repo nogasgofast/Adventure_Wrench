@@ -14,6 +14,7 @@ from lib.aw_db import database_factory
 from Player import PlayerDialog
 from Vault import VaultDialog
 from Settings import SettingsDialog
+from jinja2 import Environment, FileSystemLoader
 
 
 class MainWindow(QMainWindow):
@@ -78,9 +79,9 @@ class MainWindow(QMainWindow):
         # ~/.config/<app id>.ini
         if self.debug == True:
             self.config_name = './awconfig.ini'
-            print(self.config_name)
+            # print(self.config_name)
             self.default_save_dir = './save'
-            print(self.default_save_dir)
+            # print(self.default_save_dir)
         else:
             self.config_name = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation)
             self.default_save_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
@@ -111,6 +112,30 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.label_current_game.setText(f'Current Game: {game_name}')
+
+        # Initialize the PnP system type
+        with db_session:
+            system_name = self.db.Settings.get(name='pnp_system_name')
+            if not system_name:
+                system_name = self.db.Settings(name='pnp_system_name', value='5e')
+            self.system_config = configparser.ConfigParser(interpolation=None)
+            self.system_config.read(f"./supported_systems/{system_name.value}.ini")
+            raw_stats = self.system_config['stats']
+            self.system_stats = dict()
+            for stat in raw_stats:
+                if ':' in raw_stats[stat]:
+                    name, value = raw_stats[stat].split(":")
+                    self.system_stats[stat] = {"name": name, "value": value }
+                else:
+                    name = raw_stats[stat]
+                    self.system_stats[stat] = {"name": name, "value": 0 }
+            self.system_macros = dict(self.system_config['macros'])
+                    
+        # Initialize template for vault items
+        self.templEnv = Environment(
+                loader=FileSystemLoader("./supported_systems"))
+
+
 
     def switch_game(self):
         file_path, filtered_by = QFileDialog.getOpenFileName(self,

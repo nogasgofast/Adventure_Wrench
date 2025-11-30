@@ -138,7 +138,7 @@ class NumericStringParser(object):
     def __init__(self):
         """
         expop   :: '^'
-        multop  :: '*' | '/'
+        multop  :: '*' | '/' | '//'
         addop   :: '+' | '-'
         integer :: ['+' | '-'] '0'..'9'+
         atom    :: PI | E | real | fn '(' expr ')' | '(' expr ')'
@@ -156,10 +156,11 @@ class NumericStringParser(object):
         minus = Literal("-")
         mult = Literal("*")
         div = Literal("/")
+        fdiv = Literal("//")
         lpar = Literal("(").suppress()
         rpar = Literal(")").suppress()
         addop = plus | minus
-        multop = mult | div
+        multop = mult | fdiv | div
         expop = Literal("^")
         pi = CaselessLiteral("PI")
         expr = Forward()
@@ -190,6 +191,7 @@ class NumericStringParser(object):
                     "-": operator.sub,
                     "*": operator.mul,
                     "/": operator.truediv,
+                   "//": operator.floordiv,
                     "^": operator.pow}
         self.fn = {"sin": math.sin,
                    "cos": math.cos,
@@ -204,7 +206,7 @@ class NumericStringParser(object):
         op = s.pop()
         if op == 'unary -':
             return -self.evaluateStack(s)
-        if op in "+-*/^":
+        if op in "+-*//^":
             op2 = self.evaluateStack(s)
             op1 = self.evaluateStack(s)
             return self.opn[op](op1, op2)
@@ -221,7 +223,9 @@ class NumericStringParser(object):
 
     def eval(self, num_string, parseAll=True):
         self.exprStack = []
-        # print(num_string, parseAll)
+        # print(num_string)
         results = self.bnf.parseString(num_string, parseAll)
+        # print(results)
         val = self.evaluateStack(self.exprStack[:])
+        # print(val)
         return val
