@@ -453,16 +453,17 @@ class MainWindow(QMainWindow):
         # sort items in the list
         self.sort_initiative()
         # remove all initiatives above the selection
-        initiative_groups = [x for x in initiative_groups if x <= selection_initiative]
+        initiative_groups = [x for x in initiative_groups if x < selection_initiative]
         initiative_groups.sort(reverse=True)
         target_group = None
 
         # advance to next group
-        if len(initiative_groups) > 1:
+        if len(initiative_groups):
             target_group = initiative_groups.pop(0)
 
+
         # If item is selected
-        print("targeting :", target_group)
+        print("targeting :", target_group, initiative_groups)
         if target_group:
            isTop = True
            # find the next item in target group.

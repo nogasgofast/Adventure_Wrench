@@ -270,7 +270,9 @@ class TheShopDialog(QDialog):
         # then compute them as well.
         stat_block["sections"] = dict()
         for section in sections:
-            stat_block["sections"][section] = dict()
+            # we don't have to create this section for the report if it's empty
+            if stat_block[section]:
+                stat_block["sections"][section] = dict()
             for part in stat_block[section]:
                 # print("just before entry: ", stat_block[section][part])
                 stat_block["sections"][section][part] = self.get_auto_values(stat_block[section][part], scores)
