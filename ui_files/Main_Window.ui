@@ -62,7 +62,23 @@ border-radius: 5px;
 
 QPushButton:pressed {
     background-color: rgb(55, 62, 123);
-}</string>
+}
+
+QCheckBox::indicator {
+    width: 30px;
+    height: 20px;
+}
+
+QCheckBox::indicator:checked {
+     image: url(:/images/toggle_on.png); 
+}
+
+QCheckBox::indicator:unchecked {
+     image: url(:/images/toggle_off.png); /* Path to your unchecked image */
+}
+
+
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -146,7 +162,7 @@ height: 40px;
 }</string>
           </property>
           <property name="text">
-           <string>Advance Inititave</string>
+           <string>Advance Initiative</string>
           </property>
          </widget>
         </item>
@@ -166,7 +182,7 @@ height: 40px;
            <string>A list of things you've created and more tools.</string>
           </property>
           <property name="text">
-           <string>Load (vault)</string>
+           <string>Load</string>
           </property>
          </widget>
         </item>

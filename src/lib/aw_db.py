@@ -21,6 +21,7 @@ def database_factory():
         white_star = Optional(int, default=0)
         player = Required(bool, default=False)
         from_vault = Optional('Vault', reverse='in_active')
+        isAlarm = Optional(bool, default=False)
 
     class Vault(aw_db.Entity):
         name = Optional(str, default='* * *')

@@ -429,31 +429,57 @@ class MainWindow(QMainWindow):
 
     @db_session
     def advance_initiative(self):
-        # print("advance_initiative")
-        flag = False
-        initiative = 0
+        def sendMessage(text):
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setText(text)
+            msg.setWindowTitle("Information MesasageBox")
+            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+            msg.exec()
+        selection_initiative = 1000 
+
+        # Find the selection
+        initiative_groups = list()
         E = self.ui.listWidget_Encounter
         for row in range(0, E.count()):
+            item = E.item(row)
+            item.dbObj = self.db.Active[item.dbObj.id]
+            if not item.dbObj.initiative in initiative_groups:
+                initiative_groups.append(item.dbObj.initiative)
             if E.item(row).isSelected():
-                item = E.item(row)
-                item.dbObj = self.db.Active[item.dbObj.id]
-                initiative = item.dbObj.initiative
                 E.item(row).setSelected(False)
-                flag = True
-                break
+                selection_initiative = item.dbObj.initiative
+
+        # sort items in the list
         self.sort_initiative()
-        if flag:
-            flag2 = False
-            for row in range(0, E.count()):
-                item = E.item(row)
-                item.dbObj = self.db.Active[item.dbObj.id]
-                if item.dbObj.initiative < initiative:
-                    E.item(row).setSelected(True)
-                    flag2 = True
-                    break
-            if not flag2:
-                E.item(0).setSelected(True)
-        else:
+        # remove all initiatives above the selection
+        initiative_groups = [x for x in initiative_groups if x <= selection_initiative]
+        initiative_groups.sort(reverse=True)
+        target_group = None
+
+        # advance to next group
+        if len(initiative_groups) > 1:
+            target_group = initiative_groups.pop(0)
+
+        # If item is selected
+        print("targeting :", target_group)
+        if target_group:
+           isTop = True
+           # find the next item in target group.
+           for row in range(0, E.count()):
+               item = E.item(row)
+               item.dbObj = self.db.Active[item.dbObj.id]
+               # if this is the top of the group set that item selected.
+               if item.dbObj.initiative == target_group and isTop:
+                   E.item(row).setSelected(True)
+                   isTop = False
+               # check every item in the target group for alarms to run.
+               if item.dbObj.initiative == target_group and item.dbObj.isAlarm:
+                   sendMessage(f"Alarm {item.dbObj.name}")
+               # Even if there are more to check we don't need to check them.
+               if item.dbObj.initiative < target_group:
+                   break
+        elif E.item(0):
             E.item(0).setSelected(True)
 
 

@@ -223,9 +223,9 @@ class NumericStringParser(object):
 
     def eval(self, num_string, parseAll=True):
         self.exprStack = []
-        # print(num_string)
+        # print("num_string: ", num_string)
         results = self.bnf.parseString(num_string, parseAll)
-        # print(results)
+        # print("result: ", results)
         val = self.evaluateStack(self.exprStack[:])
         # print(val)
         return val

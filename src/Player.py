@@ -16,6 +16,8 @@ class PlayerDialog(QDialog):
         self.ui.pushButton_delete.clicked.connect(self.remove_player)
         self.ui.pushButton_back.clicked.connect(self.close)
 
+        self.ui.checkBox_initiative_alarm.stateChanged.connect(self.update_isAlarm)
+
         self.ui.spinBox_hp.valueChanged.connect(self.update_hp)
         self.ui.spinBox_initiative.valueChanged.connect(self.update_initiative)
 
@@ -35,8 +37,15 @@ class PlayerDialog(QDialog):
         self.ui.spinBox_hp.setValue(self.target.hp)
         self.ui.spinBox_initiative.setValue(self.target.initiative)
         self.ui.textEdit_description.setText(self.target.stat_block)
+        self.ui.checkBox_initiative_alarm.setChecked(self.target.isAlarm)
         self.show()
 
+    @db_session
+    def update_isAlarm(self):
+        dbObj = self.main.db.Active[self.target.id]
+        ui_isAlarm = self.ui.checkBox_initiative_alarm
+        dbObj.isAlarm = ui_isAlarm.isChecked()
+        
 
     @db_session
     def update_name(self):

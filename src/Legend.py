@@ -27,9 +27,9 @@ class LegendDialog(QDialog):
             key = QListWidgetItem(f"%{macro} : {name}")
             self.ui.listWidget_legend.addItem(key)
         custom_notes = {
-                "{}":"any dice notation bewteen { }",
-                "%<>N": "any stat/macro can have a multiple",
-                "%<>/N": "any stat/macro can have a divisor"}
+                "%{}":"any dice notation bewteen { }",
+                "%<>N": "any stat/macro can have a multiple between 2-9",
+                "%<>/N": "any stat/macro can have a divisor between 2-9"}
         for note in custom_notes:
             key = QListWidgetItem(f"{note} : {custom_notes[note]}")
             self.ui.listWidget_legend.addItem(key)

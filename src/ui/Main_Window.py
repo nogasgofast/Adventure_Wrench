@@ -72,7 +72,24 @@ class Ui_MainWindow(object):
 "\n"
 "QPushButton:pressed {\n"
 "    background-color: rgb(55, 62, 123);\n"
-"}")
+"}\n"
+"\n"
+"QCheckBox::indicator {\n"
+"    width: 30px;\n"
+"    height: 20px;\n"
+"}\n"
+"\n"
+"QChec"
+                        "kBox::indicator:checked {\n"
+"     image: url(:/images/toggle_on.png); \n"
+"}\n"
+"\n"
+"QCheckBox::indicator:unchecked {\n"
+"     image: url(:/images/toggle_off.png); /* Path to your unchecked image */\n"
+"}\n"
+"\n"
+"\n"
+"")
         self.actionSave = QAction(MainWindow)
         self.actionSave.setObjectName(u"actionSave")
         self.actionOpen = QAction(MainWindow)
@@ -370,7 +387,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.pushButton_Inititave.setToolTip(QCoreApplication.translate("MainWindow", u"sort and advannce selected item by initiative", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_Inititave.setText(QCoreApplication.translate("MainWindow", u"Advance Inititave", None))
+        self.pushButton_Inititave.setText(QCoreApplication.translate("MainWindow", u"Advance Initiative", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_players.setToolTip(QCoreApplication.translate("MainWindow", u"Add players and simple things to the current game.", None))
 #endif // QT_CONFIG(tooltip)
@@ -378,7 +395,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.pushButton_vault.setToolTip(QCoreApplication.translate("MainWindow", u"A list of things you've created and more tools.", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_vault.setText(QCoreApplication.translate("MainWindow", u"Load (vault)", None))
+        self.pushButton_vault.setText(QCoreApplication.translate("MainWindow", u"Load", None))
         self.label_damage.setText(QCoreApplication.translate("MainWindow", u"### Selected Item:", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Initiative", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"HP", None))

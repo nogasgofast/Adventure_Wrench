@@ -110,17 +110,6 @@ class TheShopDialog(QDialog):
         self.ui.lineEdit_name.setText(self.target.name)
         self.ui.lineEdit_name.blockSignals(False)
 
-        # self.spinboxLock = True
-        # self.ui.spinBox_cr.setValue(self.target.cr)
-        # self.ui.spinBox_group_of.setValue(self.target.count)
-        # self.ui.spinBox_STR.setValue(self.target.ability_str)
-        # self.ui.spinBox_DEX.setValue(self.target.ability_dex)
-        # self.ui.spinBox_CON.setValue(self.target.ability_con)
-        # self.ui.spinBox_WIS.setValue(self.target.ability_wis)
-        # self.ui.spinBox_INT.setValue(self.target.ability_int)
-        # self.ui.spinBox_CHA.setValue(self.target.ability_cha)
-        # self.spinboxLock = False
-
         self.ui.textEdit_stat_block.blockSignals(True)
         self.ui.textEdit_stat_block.setPlainText(self.target.stat_block)
         self.ui.textEdit_stat_block.blockSignals(False)
@@ -162,76 +151,51 @@ class TheShopDialog(QDialog):
         score_keys.sort(key=lambda x: len(x), reverse=True)
         while True:
             # search template for stats and replace.
-            # stat = r'%(str|dex|con|wis|int|cha)'
+            stat = r'%(str|dex|con|wis|int|cha)'
             stat = '%('
             for name in score_keys:
-                search += f'{name}|'
-            search += ')'
+                stat += f'{name}|'
+            stat += ')'
+            # print("search for: ", stat)
             m = re.search(stat, text)
-
             if m:
                 which_stat = m.group(1).lower()
-                search = f'%{which_stat}'
-                # print(r'stuff: ', search, scores, stat, text)
-                text = re.sub(search, str(scores[which_stat]),
-                              text, count=1)
-                # print(r'Replacement: ', text)
-                continue
+                if which_stat != '':
+                    search = f'%{which_stat}'
+                    # print(r'Target for Replacement: ', which_stat)
+                    text = re.sub(search, str(scores[which_stat]),
+                                  text)
+                    # print(r'After Replacement: ', text)
+                    continue
 
             # Calculate Dice expressions inside %{ } brackets
             m = re.search(r'%{(.*)}', text)
             if m:
-                result = self.dice_tower.roll(m.group(1))
+                # print("recusrsion detected")
+                result = self.dice_tower.roll(self.get_auto_values(m.group(1), scores))
                 text = re.sub('%{.*}', str(result), text, count=1)
                 continue
 
-            #TODO Detect division 2-9?
-#             m = re.search(r'%/([2-9])?', text)
-#             if m:
-#                 if m.group(1):
-#                     HP = (cr_info["hp"] // group_of) // int(m.group(1))
-#                     HP_view = (f'{HP} '
-#                                f'({self.dice_tower.to_dice(HP)})')
-#                     text = re.sub('%h[2-9]', str(HP_view), text, count=1)
-#                     continue
-#                 else:
-#                     HP = cr_info["hp"] // group_of
-#                     HP_view = (f'{HP} '
-#                                f'({self.dice_tower.to_dice(HP)})')
-#                     text = re.sub('%h', str(HP_view), text, count=1)
-#                     continue
-
-#             #TODO Detect multiplication 2-9?
-#             m = re.search(r'%a', text)
-#             if m:
-#                 attack_bonus = cr_info["atkBonus"]
-#                 text = re.sub('%a', str(attack_bonus), text, count=1)
-#                 continue
-# 
-#             # Detect Damage per round division.
-#             m = re.search(r'%d([2-9])?', text)
-#             if m:
-#                 dam_per_round = cr_info["damPerRound"] // group_of
-#                 if m.group(1):
-#                     # print('found group ', m.group(1) )
-#                     adjusted_damage = dam_per_round // int(m.group(1))
-#                     damage_view = (f'{adjusted_damage} '
-#                                  f'({self.dice_tower.to_dice(adjusted_damage)})')
-#                     text = re.sub(r'%d[2-9]', damage_view, text, count=1)
-#                     continue
-#                 else:
-#                     # print('no group found ')
-#                     damage_view = (f'{dam_per_round} '
-#                                  f'({self.dice_tower.to_dice(dam_per_round)})')
-#                     text = re.sub(r'%d', damage_view, text, count=1)
-#                     continue
-
-#             # Detect Spell Save DC
-#             m = re.search(r'%s', text)
-#             if m:
-#                 spellSaveDC = cr_info['saveDC']
-#                 text = re.sub('%s', str(spellSaveDC), text, count=1)
-#                 continue
+            # Detect division 2-9?
+            divmask = r'%([a-za-z-]+)/([2-9])?'
+            m = re.search(divmask, text)
+            if m:
+                if m.group(2):
+                    HP = (score_keys[m.group(1)] // int(m.group(2)))
+                    HP_view = (f'{m.group(1)} '
+                               f'({self.dice_tower.to_dice(HP)})')
+                    text = re.sub(divmask, str(HP_view), text, count=1)
+                    continue
+            # Detect Multiplication 2-9
+            multmask = r'%([a-za-z-]+)([2-9])?'
+            m = re.search(multmask, text)
+            if m:
+                if m.group(2):
+                    HP = (score_keys[m.group(1)] * int(m.group(2)))
+                    HP_view = (f'{m.group(1)} '
+                               f'({self.dice_tower.to_dice(HP)})')
+                    text = re.sub(divmask, str(HP_view), text, count=1)
+                    continue
             break
         return text
 
@@ -262,8 +226,11 @@ class TheShopDialog(QDialog):
                                     stat_block['stat'].get(full_name))
         
         for macro in system_macros:
-            # print(f"macro: {macro} = {system_macros[macro]}")
-            macros[macro] = self.dice_tower.roll(self.get_auto_values(system_macros[macro], scores))
+            # print("load macro: ", macro)
+            macros[macro] = self.dice_tower.roll(
+                                self.get_auto_values(
+                                    system_macros[macro],
+                                    scores | macros ))
 
         scores = scores | macros
         # print(f"load scores: {scores}")
@@ -287,7 +254,6 @@ class TheShopDialog(QDialog):
                     'item', 'action',
                     'rtable' )
 
-
         # stack all templates
         stat_block = self.stack_template_data()
 
@@ -297,21 +263,20 @@ class TheShopDialog(QDialog):
         # Load default stat values
         scores = self.load_scores(stat_block)
 
-        # calculate hp
-        dbObj.hp = stat_block['hp'] = scores['hp']
-
+        #TODO, not sure if i need to calculate hp
+        dbObj.hp = scores['hp']
 
         # read templates and replace stats and marcos
         # then compute them as well.
         stat_block["sections"] = dict()
         for section in sections:
-            for key, text in stat_block[section].items():
-                if text:
-                    stat_block["sections"][section] = dict()
-                    stat_block["sections"][section]["text"] = self.get_auto_values(text, scores)
-                    # print(stat_block["sections"][section]["text"])
+            stat_block["sections"][section] = dict()
+            for part in stat_block[section]:
+                # print("just before entry: ", stat_block[section][part])
+                stat_block["sections"][section][part] = self.get_auto_values(stat_block[section][part], scores)
+                # print("Just after entry: ", stat_block[section][part])
         
-        # draw all the data into this over all template
+        # use this template to show the data
         stat_block_text = template.render(data=stat_block, sc=scores)
 
         self.ui.textEdit_stat_block.blockSignals(True)
@@ -319,70 +284,6 @@ class TheShopDialog(QDialog):
         self.ui.textEdit_stat_block.blockSignals(False)
         # updates the vault item in the database and other pages.
         self.save_stat_block_Changes()
-
-
-
-#     @db_session
-#     def update_stat_block(self):
-#         'responsible for creating stat blocks'
-#         print("updating stat block")
-#         db = self.vault.main.db
-#         head_templ = self.vault.main.system_config['header']['template']
-#         sect_templ = self.vault.main.system_config['sections']['template']
-#         tail_templ = self.vault.main.system_config['footer']['template']
-#         dbObj = db.Vault[self.target.id]
-#         dice_tower = Dice_factory()
-# 
-#         stat_block = self.compile_templates()
-#         scores = self.load_scores(stat_block)
-# 
-#         # calculate hp
-#         HP = self.compile_attr(cr_info["hp"] // group_of,
-#         #                 stat_block['stat'].get('Hit Points'))
-# 
-#         dbObj.hp = HP
-#         HP_view = f'{HP} ({dice_tower.to_dice(HP)})'
-# 
-#         # calculate AC
-#         AC = self.compile_attr(cr_info["ac"],
-#                         stat_block['stat'].get('Armor Class'))
-# 
-#         # get the name
-#         name = self.ui.lineEdit_name.text()
-# 
-#         mods = ''
-#         for key, value in stat_block['stat'].items():
-#            mods += f'{key}: {value}\n'
-# 
-#         # get stat_block template filled
-#         stat_block_text = (f'{name}\n'
-#                            f'CR: {cr}\n'
-#                            f'AC: {AC}\n'
-#                            f'HP: {HP_view}\n'
-#                            f'{final_scores}\n'
-#                            f'{mods}')
-# 
-#         sections = ('lore', 'attribute',
-#                     'item', 'action',
-#                     'rtable' )
-# 
-#         for section in sections:
-#             if stat_block[section]:
-#                 # print(f"stat_block: {sections[section]}")
-#                 stat_block_text += f'\n====[ {section} ]====\n'
-#                 for key, text in stat_block[section].items():
-#                     # print(f'{key}:{text}:{group_of}:{cr_info}:{scores}:{dice_tower}')
-#                     text = self.get_auto_values(text, group_of,
-#                                                 cr_info, scores,
-#                                                 dice_tower)
-#                     stat_block_text += f'\n{text}\n'
-#                 stat_block_text += '\n'
-# 
-#         self.ui.textEdit_stat_block.blockSignals(True)
-#         self.ui.textEdit_stat_block.setPlainText(stat_block_text)
-#         self.ui.textEdit_stat_block.blockSignals(False)
-#         # updates the vault item in the database and other pages.
-#         self.save_stat_block_Changes()
 
 
     def read_match(self, matchList):
