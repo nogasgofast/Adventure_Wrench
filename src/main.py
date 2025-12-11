@@ -463,7 +463,7 @@ class MainWindow(QMainWindow):
 
 
         # If item is selected
-        print("targeting :", target_group, initiative_groups)
+        # print("targeting :", target_group, initiative_groups)
         if target_group:
            isTop = True
            # find the next item in target group.

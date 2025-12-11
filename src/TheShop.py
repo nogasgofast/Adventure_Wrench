@@ -181,20 +181,18 @@ class TheShopDialog(QDialog):
             m = re.search(divmask, text)
             if m:
                 if m.group(2):
-                    HP = (score_keys[m.group(1)] // int(m.group(2)))
-                    HP_view = (f'{m.group(1)} '
-                               f'({self.dice_tower.to_dice(HP)})')
-                    text = re.sub(divmask, str(HP_view), text, count=1)
+                    quotient = (score_keys[m.group(1)] // int(m.group(2)))
+                    view = (f'{m.group(1)}')
+                    text = re.sub(divmask, str(view), text, count=1)
                     continue
             # Detect Multiplication 2-9
             multmask = r'%([a-za-z-]+)([2-9])?'
             m = re.search(multmask, text)
             if m:
                 if m.group(2):
-                    HP = (score_keys[m.group(1)] * int(m.group(2)))
-                    HP_view = (f'{m.group(1)} '
-                               f'({self.dice_tower.to_dice(HP)})')
-                    text = re.sub(divmask, str(HP_view), text, count=1)
+                    product = (score_keys[m.group(1)] * int(m.group(2)))
+                    view = (f'{m.group(1)}')
+                    text = re.sub(multmask, str(view), text, count=1)
                     continue
             break
         return text
@@ -265,6 +263,7 @@ class TheShopDialog(QDialog):
 
         #TODO, not sure if i need to calculate hp
         dbObj.hp = scores['hp']
+        scores['hp_dice'] = self.dice_tower.to_dice(scores['hp'])
 
         # read templates and replace stats and marcos
         # then compute them as well.
@@ -278,6 +277,7 @@ class TheShopDialog(QDialog):
                 stat_block["sections"][section][part] = self.get_auto_values(stat_block[section][part], scores)
                 # print("Just after entry: ", stat_block[section][part])
         
+
         # use this template to show the data
         stat_block_text = template.render(data=stat_block, sc=scores)
 

@@ -1,11 +1,13 @@
 {{data.name}}
-HP: {{sc.hp}}
+HP: {{sc.hp}} ({{sc.hp_dice}})
+hit dice: {{(sc.lvl //2) + 1}}d{{sc.hitdice}}
 AC: {{sc.ac}}
-STR: {{sc.str}} ({{sc['str-mod']}}) DEX: {{sc.dex}} ({{sc['dex-mod']}}) CON: {{sc.con}} ({{sc['con-mod']}}) 
-INT: {{sc.int}} ({{sc['int-mod']}}) WIS: {{sc.wis}} ({{sc['wis-mod']}}) CHA: {{sc.cha}} ({{sc['cha-mod']}})
+Damage Per Turn: {{sc.dpr}}
+STR: {{sc.str}} ({{sc.strmod}}) DEX: {{sc.dex}} ({{sc.dexmod}}) CON: {{sc.con}} ({{sc.conmod}}) 
+INT: {{sc.int}} ({{sc.intmod}}) WIS: {{sc.wis}} ({{sc.wismod}}) CHA: {{sc.cha}} ({{sc.chamod}})
 {%- for section in data.sections %}
 ====[ {{section}} ]====
 {% for part in data["sections"][section] -%}
-{{data["sections"][section][part] -}}
+{{data["sections"][section][part].rstrip()}}
 {% endfor %}
 {% endfor %}
