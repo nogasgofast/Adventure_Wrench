@@ -28,45 +28,20 @@ cha=10
 
 A marco is a convienince tool to allow the templates to do basic math instead of writing it out multiple times in varous templates. Like before this is just a bunch of key=value pairs where the name is on the left and the math is on the right. In a macro you can use a stats as defined in your stats section of this document. 
 
-Can use macros in templates as long as you put a ^ before the name. For instance ^con-mod is the constitution modifier in D&D 5e. And represents the stat constitution plust 10 divided by 2 rounded down. An example of this is below.
+Can use macros in templates as long as you put a % before the name. For instance %conmod is the constitution modifier in D&D 5e. And represents the stat constitution plust 10 divided by 2 rounded down. An example of this is below.
 
 ```
 [macros]
-str-mod=(%str-10)//2
-dex-mod=(%dex-10)//2
-con-mod=(%con-10)//2
-int-mod=(%int-10)//2
-wis-mod=(%wis-10)//2
-cha-mod=(%cha-10)//2
+strmod=(%str-10)//2
+dexmod=(%dex-10)//2
+conmod=(%con-10)//2
+intmod=(%int-10)//2
+wismod=(%wis-10)//2
+chamod=(%cha-10)//2
 ```
 
+### 5e.jinja
 
-
-### Header
-
-The header section has one valid key. "template" which supports both stats and macros.
-
-[header]
-template=%name
- CR: ^cr
- AC: ^ac
- HP: ^hp
- STR: %str ^str-mod DEX: %dex ^dex-mod CON: %con ^con-mod 
- INT: %int ^int-mod WIS: %wis ^wis-mod CHA: %cha ^cha-mod
-
-
-### Section Headings
-
-For now these are very simple headings to each section. Not much to see here other then I am using "\n" which will later 
-be read as a new-line character and add one line of spacing before and after the sections.
-
-[sections]
-template="\n====[ %section ]====\n"
-
-
-### Footer
-
-The last thing to be printed on a stat sheet. 
-
-[footer]
-template=\n
+This file has a jinja template that broadly describes how the stat block should look. I use a compact(ish) template format because I have small laptop
+screens but you do you. Any macros or stats defind in the 5e.ini file can be used in this template they should show up under the sc object. There should be some examples of that. As well as a few additional parameters being passed in through the data object. Feel free to experiment and try new things. Or 
+make stat blocks that work for the ttrpg you prefer. 

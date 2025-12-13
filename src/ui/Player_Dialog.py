@@ -78,23 +78,6 @@ class Ui_Player(object):
 
         self.horizontalLayout_head.addLayout(self.verticalLayout_inititive)
 
-        self.verticalLayout_2 = QVBoxLayout()
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.label_alarm = QLabel(Player)
-        self.label_alarm.setObjectName(u"label_alarm")
-        sizePolicy1.setHeightForWidth(self.label_alarm.sizePolicy().hasHeightForWidth())
-        self.label_alarm.setSizePolicy(sizePolicy1)
-
-        self.verticalLayout_2.addWidget(self.label_alarm)
-
-        self.checkBox_initiative_alarm = QCheckBox(Player)
-        self.checkBox_initiative_alarm.setObjectName(u"checkBox_initiative_alarm")
-
-        self.verticalLayout_2.addWidget(self.checkBox_initiative_alarm)
-
-
-        self.horizontalLayout_head.addLayout(self.verticalLayout_2)
-
         self.verticalLayout_hp = QVBoxLayout()
         self.verticalLayout_hp.setObjectName(u"verticalLayout_hp")
         self.label_hp = QLabel(Player)
@@ -114,6 +97,23 @@ class Ui_Player(object):
 
 
         self.horizontalLayout_head.addLayout(self.verticalLayout_hp)
+
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.label_alarm = QLabel(Player)
+        self.label_alarm.setObjectName(u"label_alarm")
+        sizePolicy1.setHeightForWidth(self.label_alarm.sizePolicy().hasHeightForWidth())
+        self.label_alarm.setSizePolicy(sizePolicy1)
+
+        self.verticalLayout_2.addWidget(self.label_alarm)
+
+        self.checkBox_initiative_alarm = QCheckBox(Player)
+        self.checkBox_initiative_alarm.setObjectName(u"checkBox_initiative_alarm")
+
+        self.verticalLayout_2.addWidget(self.checkBox_initiative_alarm)
+
+
+        self.horizontalLayout_head.addLayout(self.verticalLayout_2)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_head)
@@ -164,6 +164,7 @@ class Ui_Player(object):
         Player.setWindowTitle(QCoreApplication.translate("Player", u"Add/Remove Players or Simple NPCs", None))
         self.label_name.setText(QCoreApplication.translate("Player", u"Name", None))
         self.label_inititive.setText(QCoreApplication.translate("Player", u"Initiative", None))
+        self.label_hp.setText(QCoreApplication.translate("Player", u"HP", None))
 #if QT_CONFIG(tooltip)
         self.label_alarm.setToolTip(QCoreApplication.translate("Player", u"When advancing initiative creates a pop-up for this item.", None))
 #endif // QT_CONFIG(tooltip)
@@ -172,7 +173,6 @@ class Ui_Player(object):
         self.checkBox_initiative_alarm.setToolTip(QCoreApplication.translate("Player", u"When advancing initiative creates a pop-up for this item.", None))
 #endif // QT_CONFIG(tooltip)
         self.checkBox_initiative_alarm.setText("")
-        self.label_hp.setText(QCoreApplication.translate("Player", u"HP", None))
         self.label.setText(QCoreApplication.translate("Player", u"Description", None))
         self.pushButton_delete.setText(QCoreApplication.translate("Player", u"Remove", None))
         self.pushButton_back.setText(QCoreApplication.translate("Player", u"<- Save (Esc)", None))

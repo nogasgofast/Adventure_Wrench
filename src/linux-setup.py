@@ -3,10 +3,13 @@ from version import ver
 
 # Dependencies are automatically detected, but it might need
 # fine tuning.
+includefiles = [('supported_systems/5e.ini','supported_systems/5e.ini'), 
+                ('supported_systems/5e.jinja','supported_systems/5e.jinja'),
+                ('save/default.sqlite','save/default.sqlite')]
 build_options = {'packages': [], 
                  'excludes': [], 
-                 'includes':['pony.orm.dbproviders.sqlite']
-                 }
+                 'includes':['pony.orm.dbproviders.sqlite'],
+                 'include_files':includefiles}
 
 import sys
 base = 'Win32GUI' if sys.platform=='win32' else None

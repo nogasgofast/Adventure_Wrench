@@ -46,7 +46,7 @@
           <string>add/edit templates usable in the shop.</string>
          </property>
          <property name="text">
-          <string>Templates</string>
+          <string>Acadamy</string>
          </property>
          <property name="autoDefault">
           <bool>false</bool>
@@ -59,7 +59,7 @@
           <string>Add something new to the vault using templates.</string>
          </property>
          <property name="text">
-          <string>New Item</string>
+          <string>New Item (The shop)</string>
          </property>
          <property name="autoDefault">
           <bool>false</bool>

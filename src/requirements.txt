@@ -2,3 +2,4 @@ pyside6
 pony
 pyparsing
 requests
+jinja2

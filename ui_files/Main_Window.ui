@@ -182,7 +182,7 @@ height: 40px;
            <string>A list of things you've created and more tools.</string>
           </property>
           <property name="text">
-           <string>Load</string>
+           <string>Vault</string>
           </property>
          </widget>
         </item>

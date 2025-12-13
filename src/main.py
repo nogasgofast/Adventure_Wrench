@@ -482,6 +482,10 @@ class MainWindow(QMainWindow):
                    break
         elif E.item(0):
             E.item(0).setSelected(True)
+            item = E.item(0)
+            item.dbObj = self.db.Active[item.dbObj.id]
+            if item.dbObj.isAlarm:
+                sendMessage(f"Alarm {item.dbObj.name}")
 
 
     @db_session

@@ -395,7 +395,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.pushButton_vault.setToolTip(QCoreApplication.translate("MainWindow", u"A list of things you've created and more tools.", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_vault.setText(QCoreApplication.translate("MainWindow", u"Load", None))
+        self.pushButton_vault.setText(QCoreApplication.translate("MainWindow", u"Vault", None))
         self.label_damage.setText(QCoreApplication.translate("MainWindow", u"### Selected Item:", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Initiative", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"HP", None))
