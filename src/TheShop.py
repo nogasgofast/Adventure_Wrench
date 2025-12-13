@@ -27,65 +27,10 @@ class TheShopDialog(QDialog):
         self.ui.pushButton_remove_templates.clicked.connect(self.remove_template)
         #TODO needs update
         self.ui.pushButton_reset_stat_block.clicked.connect(self.update_stat_block)
-
-        # self.ui.spinBox_cr.valueChanged.connect(self.update_cr)
-        # self.ui.spinBox_group_of.valueChanged.connect(self.update_group_of)
-        # self.ui.spinBox_STR.valueChanged.connect(lambda x: self.update_stat('STR', x))
-        # self.ui.spinBox_DEX.valueChanged.connect(lambda x: self.update_stat('DEX', x))
-        # self.ui.spinBox_CON.valueChanged.connect(lambda x: self.update_stat('CON', x))
-        # self.ui.spinBox_INT.valueChanged.connect(lambda x: self.update_stat('INT', x))
-        # self.ui.spinBox_WIS.valueChanged.connect(lambda x: self.update_stat('WIS', x))
-        # self.ui.spinBox_CHA.valueChanged.connect(lambda x: self.update_stat('CHA', x))
         self.ui.lineEdit_name.textEdited.connect(self.update_name)
         # This is fine but I have to block signals anywhere I use this textEdit
         self.ui.textEdit_stat_block.textChanged.connect(self.save_stat_block_Changes)
 
-
-
-#     @db_session
-#     def update_cr(self):
-#         if self.spinboxLock:
-#             return
-#         db = self.vault.main.db
-#         dbObj = db.Vault[self.target.id]
-#         dbObj.cr = self.ui.spinBox_cr.value()
-#         self.update_stat_block()
-
-
-#     @db_session
-#     def update_group_of(self):
-#         if self.spinboxLock:
-#             return
-#         db = self.vault.main.db
-#         dbObj = db.Vault[self.target.id]
-#         dbObj.group_of = self.ui.spinBox_group_of.value()
-#         self.update_stat_block()
-
-
-#     @db_session
-#     def update_stat(self, stat, value):
-#         # Locks updates from happening on loads or just whenever i like.
-#         # easier then using the spinbox's blocksignal function since i handle
-#         # many spinboxes here.
-#         if self.spinboxLock:
-#             return
-#         db = self.vault.main.db
-#         dbObj = db.Vault[self.target.id]
-#         match stat:
-#             case 'STR':
-#                 dbObj.ability_str = int(value)
-#             case 'DEX':
-#                 dbObj.ability_dex = int(value)
-#             case 'CON':
-#                 dbObj.ability_con = int(value)
-#             case 'WIS':
-#                 dbObj.ability_wis = int(value)
-#             case 'INT':
-#                 dbObj.ability_int = int(value)
-#             case 'CHA':
-#                 dbObj.ability_cha = int(value)
-#         commit()
-#         self.update_stat_block()
 
 
     @db_session
@@ -156,7 +101,7 @@ class TheShopDialog(QDialog):
             for name in score_keys:
                 stat += f'{name}|'
             stat += ')'
-            # print("search for: ", stat)
+            # search for stats/macros and replace them first.
             m = re.search(stat, text)
             if m:
                 which_stat = m.group(1).lower()
@@ -165,6 +110,9 @@ class TheShopDialog(QDialog):
                     # print(r'Target for Replacement: ', which_stat)
                     text = re.sub(search, str(scores[which_stat]),
                                   text)
+                    m2 = re.search('[+] -', text)
+                    if m2:
+                        text = text.replace(r'+ -', r'- ')
                     # print(r'After Replacement: ', text)
                     continue
 
@@ -403,28 +351,6 @@ class TheShopDialog(QDialog):
         return details
 
 
-#     @db_session
-#     def roll_stats(self):
-#         db = self.vault.main.db
-#         dbObj = db.Vault[self.target.id]
-#         dice_tower = Dice_factory()
-#         # roll 4d6 but keep the top 3
-#         stats = tuple([ dice_tower.roll('4d6t3') for r in range(6)])
-#         self.ui.spinBox_STR.setValue(stats[0])
-#         dbObj.ability_str = stats[0]
-#         self.ui.spinBox_DEX.setValue(stats[1])
-#         dbObj.ability_dex = stats[1]
-#         self.ui.spinBox_CON.setValue(stats[2])
-#         dbObj.ability_con = stats[2]
-#         self.ui.spinBox_WIS.setValue(stats[3])
-#         dbObj.ability_wis = stats[3]
-#         self.ui.spinBox_INT.setValue(stats[4])
-#         dbObj.ability_int = stats[4]
-#         self.ui.spinBox_CHA.setValue(stats[5])
-#         dbObj.ability_cha = stats[5]
-#         commit()
-#         self.update_stat_block()
-
     @db_session
     def update_selector_templates(self):
         db = self.vault.main.db
@@ -487,20 +413,6 @@ class TheShopDialog(QDialog):
                 break
         self.update_stat_block()
 
-
-#     @db_session
-#     def update_target_cr(self):
-#         db = self.vault.main.db
-#         self.target = vault_item = db.Vault[self.target.id]
-#         vault_item.cr = self.ui.spinBox_cr.value()
-#         self.update_stat_block()
-
-#     @db_session
-#     def update_group_of(self):
-#         db = self.vault.main.db
-#         self.target = vault_item = db.Vault[self.target.id]
-#         vault_item.count = self.ui.spinBox_group_of.value()
-#         self.update_stat_block()
 
     @db_session
     def update_type(self):
