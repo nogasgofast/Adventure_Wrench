@@ -6,8 +6,9 @@ import configparser
 from ui.Main_Window import Ui_MainWindow
 from PySide6.QtWidgets import (QApplication, QMainWindow,
                               QWidget, QListWidgetItem,
-                              QMessageBox, QFileDialog)
-from PySide6.QtGui import QBrush, QColor, QFont
+                              QMessageBox, QFileDialog,
+                              QStyle)
+from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 from PySide6.QtCore import QStandardPaths
 from pony.orm import db_session, commit
 from lib.aw_db import database_factory
@@ -24,6 +25,7 @@ class MainWindow(QMainWindow):
         self.debug = True
         self.db = database_factory()
         self.config_setup()
+        self.Initiative_Icon = QStyle.StandardPixmap.SP_MediaSeekForward
 
         # initialize views.
         self.ui_vault = VaultDialog(self)
@@ -258,6 +260,7 @@ class MainWindow(QMainWindow):
         for thing in all_Active:
             item = QListWidgetItem()
             item.dbObj = thing
+            item.isSessionInitiative = False
             self.update_encounter_text(item)
             self.ui.listWidget_Encounter.addItem(item)
 
@@ -376,6 +379,7 @@ class MainWindow(QMainWindow):
     @db_session
     def expands(self, item, row):
         item.dbObj = self.db.Active[item.dbObj.id]
+        isSessionInitiative = item.isSessionInitiative
         for hp in item.dbObj.group_hp:
             newItem = QListWidgetItem()
             newItem.dbObj = self.db.Active(
@@ -390,12 +394,20 @@ class MainWindow(QMainWindow):
                             white_star = item.dbObj.white_star,
                             from_vault = item.dbObj.from_vault)
             commit()
+            if isSessionInitiative:
+                newItem.isSessionInitiative = True
+                newItem.setIcon(self.style().standardIcon(self.Initiative_Icon))
+                # only do this once if we were in the session Initiative.
+                isSessionInitiative = False
+            else:
+                newItem.isSessionInitiative = False
             self.update_encounter_text(newItem)
             self.ui.listWidget_Encounter.insertItem((row + 1), newItem)
 
     @db_session
     def collapse(self, item, inRow):
         viewObj = self.db.Active[item.dbObj.id]
+        session_initiative = 0
         name = viewObj.name
         group = []
         encounter_view = self.ui.listWidget_Encounter
@@ -403,6 +415,8 @@ class MainWindow(QMainWindow):
             if encounter_view.item(row).isSelected():
                 rowItem = encounter_view.item(row)
                 rowObj = self.db.Active[rowItem.dbObj.id]
+                if rowItem.isSessionInitiative:
+                    session_initiative = rowObj.initiative
                 if (rowObj.name == name and
                     rowObj.count == 1   and row != inRow):
                     group.append(row)
@@ -413,6 +427,12 @@ class MainWindow(QMainWindow):
         for row in group:
             rowItem = encounter_view.item(row)
             rowObj = self.db.Active[rowItem.dbObj.id]
+            # punt the initiative down the list one if this 
+            # item is selected
+            if rowItem.isSessionInitiative:
+               nextItem = encounter_view.item(row + 1)
+               nextItem.isSessionInitiative = True
+               nextItem.setIcon(self.style().standardIcon(self.Initiative_Icon))
             groupHP.append(rowObj.hp)
             groupOf += 1
             rowObj.delete()
@@ -446,8 +466,9 @@ class MainWindow(QMainWindow):
             item.dbObj = self.db.Active[item.dbObj.id]
             if not item.dbObj.initiative in initiative_groups:
                 initiative_groups.append(item.dbObj.initiative)
-            if E.item(row).isSelected():
-                E.item(row).setSelected(False)
+            if E.item(row).isSessionInitiative:
+                E.item(row).isSessionInitiative = False
+                E.item(row).setIcon(QIcon(None))
                 selection_initiative = item.dbObj.initiative
 
         # sort items in the list
@@ -461,7 +482,6 @@ class MainWindow(QMainWindow):
         if len(initiative_groups):
             target_group = initiative_groups.pop(0)
 
-
         # If item is selected
         # print("targeting :", target_group, initiative_groups)
         if target_group:
@@ -472,7 +492,9 @@ class MainWindow(QMainWindow):
                item.dbObj = self.db.Active[item.dbObj.id]
                # if this is the top of the group set that item selected.
                if item.dbObj.initiative == target_group and isTop:
-                   E.item(row).setSelected(True)
+                   E.item(row).isSessionInitiative = True
+                   pixmap = QStyle.StandardPixmap.SP_MediaSeekForward
+                   E.item(row).setIcon(self.style().standardIcon(self.Initiative_Icon))
                    isTop = False
                # check every item in the target group for alarms to run.
                if item.dbObj.initiative == target_group and item.dbObj.isAlarm:
@@ -481,8 +503,9 @@ class MainWindow(QMainWindow):
                if item.dbObj.initiative < target_group:
                    break
         elif E.item(0):
-            E.item(0).setSelected(True)
             item = E.item(0)
+            item.isSessionInitiative = True
+            item.setIcon(self.style().standardIcon(self.Initiative_Icon))
             item.dbObj = self.db.Active[item.dbObj.id]
             if item.dbObj.isAlarm:
                 sendMessage(f"Alarm {item.dbObj.name}")

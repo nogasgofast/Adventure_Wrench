@@ -17,9 +17,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QLabel,
-    QLayout, QListWidget, QListWidgetItem, QMainWindow,
-    QPushButton, QSizePolicy, QSpacerItem, QSpinBox,
-    QVBoxLayout, QWidget)
+    QLayout, QListView, QListWidget, QListWidgetItem,
+    QMainWindow, QPushButton, QSizePolicy, QSpacerItem,
+    QSpinBox, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -38,18 +38,9 @@ class Ui_MainWindow(object):
 "   selection-background-color: #55A;\n"
 "}\n"
 "\n"
-"QListWidget::item:selected:!active{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
+"QListWidget::item:selected{\n"
+"   	border: 3px dashed white;\n"
 "}\n"
-"\n"
-"QTreeWidget::item:selected:!active{\n"
-"   color: #000;\n"
-"   selection-color: #FFF;\n"
-"   selection-background-color: #55A;\n"
-"}\n"
-"\n"
 "\n"
 "QToolTip {\n"
 "	border: 3px solid gray;\n"
@@ -79,8 +70,7 @@ class Ui_MainWindow(object):
 "    height: 20px;\n"
 "}\n"
 "\n"
-"QChec"
-                        "kBox::indicator:checked {\n"
+"QCheckBox::indicator:checked {\n"
 "     image: url(:/images/toggle_on.png); \n"
 "}\n"
 "\n"
@@ -88,7 +78,8 @@ class Ui_MainWindow(object):
 "     image: url(:/images/toggle_off.png); /* Path to your unchecked image */\n"
 "}\n"
 "\n"
-"\n"
+""
+                        "\n"
 "")
         self.actionSave = QAction(MainWindow)
         self.actionSave.setObjectName(u"actionSave")
@@ -123,6 +114,7 @@ class Ui_MainWindow(object):
         self.listWidget_Encounter.setObjectName(u"listWidget_Encounter")
         self.listWidget_Encounter.setStyleSheet(u"")
         self.listWidget_Encounter.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.listWidget_Encounter.setViewMode(QListView.ListMode)
 
         self.verticalLayout_3.addWidget(self.listWidget_Encounter)
 

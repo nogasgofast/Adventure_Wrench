@@ -76,7 +76,7 @@
    <item>
     <widget class="QStackedWidget" name="verticalStackedWidget_forms">
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page_splash">
       <layout class="QFormLayout" name="formLayout">
@@ -915,7 +915,7 @@
        <item>
         <widget class="QCheckBox" name="checkBox_interpret_roll_table">
          <property name="text">
-          <string>This is Not a template, just write this stuff into the stat block.</string>
+          <string>Prevent Rolling, write this table into the stat block.</string>
          </property>
         </widget>
        </item>

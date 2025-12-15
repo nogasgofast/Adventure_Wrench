@@ -691,7 +691,7 @@ class Ui_acadamy_dialog(object):
 
         self.retranslateUi(acadamy_dialog)
 
-        self.verticalStackedWidget_forms.setCurrentIndex(5)
+        self.verticalStackedWidget_forms.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(acadamy_dialog)
@@ -784,7 +784,7 @@ class Ui_acadamy_dialog(object):
         self.pushButton_add_item_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"+", None))
         self.pushButton_delete_item_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Remove selected from list", None))
         self.checkBox_israndom_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Select from the list randomly <Dice to Roll> times.", None))
-        self.checkBox_interpret_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"This is Not a template, just write this stuff into the stat block.", None))
+        self.checkBox_interpret_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Prevent Rolling, write this table into the stat block.", None))
         self.pushButton_add_another_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Add Another", None))
         self.pushButton_delete_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Delete", None))
         self.pushButton_next_roll_table.setText(QCoreApplication.translate("acadamy_dialog", u"Next", None))

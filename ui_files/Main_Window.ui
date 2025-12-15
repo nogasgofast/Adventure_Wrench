@@ -28,18 +28,9 @@ QListWidget QTreeWidget{
    selection-background-color: #55A;
 }
 
-QListWidget::item:selected:!active{
-   color: #000;
-   selection-color: #FFF;
-   selection-background-color: #55A;
+QListWidget::item:selected{
+   	border: 3px dashed white;
 }
-
-QTreeWidget::item:selected:!active{
-   color: #000;
-   selection-color: #FFF;
-   selection-background-color: #55A;
-}
-
 
 QToolTip {
 	border: 3px solid gray;
@@ -126,6 +117,9 @@ QCheckBox::indicator:unchecked {
           </property>
           <property name="selectionMode">
            <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+          <property name="viewMode">
+           <enum>QListView::ListMode</enum>
           </property>
          </widget>
         </item>
