@@ -196,9 +196,10 @@ class TheShopDialog(QDialog):
         template = env.get_template("5e.jinja")
         dbObj = db.Vault[self.target.id]
 
-        sections = ('lore', 'attribute',
-                    'item', 'action',
-                    'rtable' )
+        sections = {'lore': 'lore',
+                    'attribute': 'attributes',
+                    'item': 'items', 'action': 'actions',
+                    'rtable': 'Roll Tables' }
 
         # stack all templates
         stat_block = self.stack_template_data()
@@ -216,14 +217,14 @@ class TheShopDialog(QDialog):
         # read templates and replace stats and marcos
         # then compute them as well.
         stat_block["sections"] = dict()
-        for section in sections:
+        for section in sections.keys():
             # we don't have to create this section for the report if it's empty
             if stat_block[section]:
-                stat_block["sections"][section] = dict()
+                stat_block["sections"][sections[section]] = dict()
             for part in stat_block[section]:
                 # print("just before entry: ", stat_block[section][part])
-                stat_block["sections"][section][part] = self.get_auto_values(stat_block[section][part], scores)
-                # print("Just after entry: ", stat_block[section][part])
+                stat_block["sections"][sections[section]][part] = self.get_auto_values(stat_block[section][part], scores)
+                # print("Just after entry: ", stat_block[sections[section]][part])
         
 
         # use this template to show the data

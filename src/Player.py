@@ -129,6 +129,7 @@ class PlayerDialog(QDialog):
         commit()
         self.display_target = QListWidgetItem("{player.initiative} | {player.name} | hp:{player.hp}")
         self.display_target.dbObj = self.target
+        self.display_target.isSessionInitiative = False
         self.main.update_encounter_text(self.display_target)
         self.main.ui.listWidget_Encounter.addItem(self.display_target)
         # clear ui for adding a new player

@@ -104,6 +104,20 @@ QCheckBox::indicator:unchecked {
         </property>
        </spacer>
       </item>
+      <item>
+       <widget class="QLabel" name="label_alarm_notice">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font-weight: bold;
+ </string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>

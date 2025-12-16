@@ -105,6 +105,7 @@ class VaultDialog(QDialog):
                                 from_vault = item.dbObj)
                 commit()
                 new_item.isPlayer = False
+                new_item.isSessionInitiative = False
                 self.main.update_encounter_text(new_item)
                 self.main.ui.listWidget_Encounter.addItem(new_item)
 

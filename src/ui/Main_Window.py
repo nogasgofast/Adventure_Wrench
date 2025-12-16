@@ -103,6 +103,14 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_head.addItem(self.horizontalSpacer)
 
+        self.label_alarm_notice = QLabel(self.centralwidget)
+        self.label_alarm_notice.setObjectName(u"label_alarm_notice")
+        self.label_alarm_notice.setEnabled(True)
+        self.label_alarm_notice.setStyleSheet(u"font-weight: bold;\n"
+" ")
+
+        self.horizontalLayout_head.addWidget(self.label_alarm_notice)
+
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_head)
 
@@ -376,6 +384,7 @@ class Ui_MainWindow(object):
         self.actionSave.setText(QCoreApplication.translate("MainWindow", u"Save", None))
         self.actionOpen.setText(QCoreApplication.translate("MainWindow", u"Open", None))
         self.label_current_game.setText(QCoreApplication.translate("MainWindow", u"## Current Game", None))
+        self.label_alarm_notice.setText("")
 #if QT_CONFIG(tooltip)
         self.pushButton_Inititave.setToolTip(QCoreApplication.translate("MainWindow", u"sort and advannce selected item by initiative", None))
 #endif // QT_CONFIG(tooltip)

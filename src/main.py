@@ -26,6 +26,7 @@ class MainWindow(QMainWindow):
         self.db = database_factory()
         self.config_setup()
         self.Initiative_Icon = QStyle.StandardPixmap.SP_MediaSeekForward
+        self.isAlarmDisplayed = False
 
         # initialize views.
         self.ui_vault = VaultDialog(self)
@@ -449,14 +450,21 @@ class MainWindow(QMainWindow):
 
     @db_session
     def advance_initiative(self):
-        def sendMessage(text):
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Icon.Warning)
-            msg.setText(text)
-            msg.setWindowTitle("Information MesasageBox")
-            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-            msg.exec()
-        selection_initiative = 1000 
+        def toggle_alarm(text):
+            if self.isAlarmDisplayed:
+                self.ui.label_alarm_notice.setText('')
+                self.ui.pushButton_Inititave.setText('Advance Initiative')
+                self.ui.pushButton_Inititave.setStyleSheet(r'background-color: rgb(38, 60, 134);color: white;height: 40px;')
+                self.isAlarmDisplayed = False
+            else:
+                self.ui.label_alarm_notice.setText(text)
+                self.ui.pushButton_Inititave.setText("Clear Alarm")
+                self.ui.pushButton_Inititave.setStyleSheet(r'background-color: rgb(237, 51, 59);color: black; height: 40px;')
+                self.isAlarmDisplayed = True
+        selection_initiative = 1000
+        if self.isAlarmDisplayed:
+            toggle_alarm('')
+            return
 
         # Find the selection
         initiative_groups = list()
@@ -498,7 +506,7 @@ class MainWindow(QMainWindow):
                    isTop = False
                # check every item in the target group for alarms to run.
                if item.dbObj.initiative == target_group and item.dbObj.isAlarm:
-                   sendMessage(f"Alarm {item.dbObj.name}")
+                   toggle_alarm(f"Alarm {item.dbObj.name}")
                # Even if there are more to check we don't need to check them.
                if item.dbObj.initiative < target_group:
                    break
@@ -508,7 +516,7 @@ class MainWindow(QMainWindow):
             item.setIcon(self.style().standardIcon(self.Initiative_Icon))
             item.dbObj = self.db.Active[item.dbObj.id]
             if item.dbObj.isAlarm:
-                sendMessage(f"Alarm {item.dbObj.name}")
+                toggle_alarm(f"Alarm {item.dbObj.name}")
 
 
     @db_session
