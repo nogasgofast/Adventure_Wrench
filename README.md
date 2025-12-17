@@ -1,56 +1,36 @@
 
 
 # Adventure Wrench
-A no internet necessary, 5e compatible, intiative tracker and encounter builder. It focuses on fast reactions to current events. And allows Encounters to be built quickly from modular pieces. Or to help my ADHD friends keep consistant when making stat blocks.
+A no internet necessary, 5e compatible, intiative tracker.
+
+A more detailed look:   
+[Adventure Wrench How-To](https://www.nogasgofast.net/adventure-wrench/)
 
 ## Game Tracker
-The Main window for this program is the game tracker. It keeps tabs on important information, notes and marks about the current encounter. It's clean and easy to see what is going on at a glance.
-Full stat blocks are hidden by default but can be seen on mouse roll-over. You can pull them up in seperate window by double-clicking them.
+The Main window for this program is the game tracker. It keeps tabs on important information, notes and marks about the current encounter. It's clean and easy to see what is going on at a glance.  
 
+Full stat blocks are hidden by default but can be seen on mouse roll-over. You can pull them up in seperate window by double-clicking them.
+[![roll over stat sheets](https://www.nogasgofast.net/wp-content/uploads/2025/12/image-5.png)
 
 ## The Vault
 The vault is a repository of all unique things that can be copied into the current game when needed. Think varients of a monster, trap, npc, or boss. Or even pre-generated lists of information like lore, background, or geography.
+[![The Vault](https://www.nogasgofast.net/wp-content/uploads/2025/12/image-1.png)]
 
 
-# Under Construction for v2
-
-## Making A Game to distribute
-### I have the game all written up, what now?
-1. close the application.
-2. go into the "save" folder in the program directory and rename default.sqlite to anything else, keep the .sqlite end.
-3. Share that renamed file to a friend, tell them to drop it into the "save" folder and use the "switch game" button.
-4. Starting up the appication will start a new empty game named default.sqlite in the save folder.
-5. If you want to switch back to the campaign you can use the "swtich game" button.
-
-### I have a different game started already!
-1. close the application
-2. open the "save" folder and rename default.sqlite to anything else, keep the .sqlite end.
-3. re-open the application and write your campaign.
-4. Follow the instructions above for "I have the game all written up, what now?"
-5. If you want to switch back to your old game at any time use the "switch game" button.
-
-### Tips
-The awconfig.ini file should have the name of the currently used database file in it.
-The change game button just edits this file and forces the user to restart the application.
-that is all.
 
 ## Install instructions
 
-If you are running 64bit windows or linux, likely all you need
-is to look up the latest [Release]https://github.com/nogasgofast/Adventure_Wrench/releases)
-for your platform.
+If you are running windows or linux, likely all you need
+is to look up the latest [Release](https://github.com/nogasgofast/Adventure_Wrench/releases) for your platform. 
 
-Then you can simply unzip and move the folder to where you want the files to be kept, and
-if you are so inclined you can make a shortcut at that time.
+Then you can simply unzip and move the folder to where you want the files to be kept, and if you are so inclined you can make a shortcut at that time.
 
-The application and all of it's dependencies will be in a self-contained folder the executable
-file is "adventure_wrench".
+The application and all of it's dependencies will be in a self-contained folder the executable file is "adventure_wrench".
+
+As of this writing I am working on a Flatpak distrobution for linux which will have much better integration with linux systems.
 
 
 ## Python install instructions
-
-If a binary does not work or does not work on your platform you can try building
-the application for your system.
 
 This application requires at least python 3.10, all versions before that are untested.
 
