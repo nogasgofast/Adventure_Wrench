@@ -1,6 +1,6 @@
 #!/bin/env python
 
-import sys, os
+import sys, os, shutil
 import requests
 import configparser
 from ui.Main_Window import Ui_MainWindow
@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         # read config
-        self.debug = True
+        self.debug = False
         self.db = database_factory()
         self.config_setup()
         self.Initiative_Icon = QStyle.StandardPixmap.SP_MediaSeekForward
@@ -88,6 +88,14 @@ class MainWindow(QMainWindow):
         else:
             self.config_name = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation)
             self.default_save_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
+            self.default_app_path = os.path.dirname(os.path.realpath(__file__)) + '/save'
+            # A terrible way of initializing the files to the right place? I don't know.
+            if not os.path.exists(self.default_save_dir):
+                os.mkdir(self.default_save_dir)
+            for f in os.listdir(self.default_app_path):
+                full_p = os.path.join(self.default_app_path , f)
+                if os.path.isfile(full_p):
+                    shutil.copyfile( full_p, self.default_save_dir + f'/{f}')
 
         self.db_default_name = self.default_save_dir + '/default.sqlite'
         self.config_file = configparser.ConfigParser()
@@ -122,8 +130,13 @@ class MainWindow(QMainWindow):
             if not system_name:
                 system_name = self.db.Settings(name='pnp_system_name', value='5e')
             self.system_config = configparser.ConfigParser(interpolation=None)
-            self.system_config.read(f"./supported_systems/{system_name.value}.ini")
-            raw_stats = self.system_config['stats']
+            system_path = self.default_save_dir + f"/{system_name.value}.ini"
+            self.system_config.read(system_path)
+            try:
+                raw_stats = self.system_config['stats']
+            except Exception as e:
+                print(f"failed to open {system_path} or no stats present in config file")
+                raise e
             self.system_stats = dict()
             for stat in raw_stats:
                 if ':' in raw_stats[stat]:
@@ -132,11 +145,14 @@ class MainWindow(QMainWindow):
                 else:
                     name = raw_stats[stat]
                     self.system_stats[stat] = {"name": name, "value": 0 }
-            self.system_macros = dict(self.system_config['macros'])
-                    
+            try:
+                self.system_macros = dict(self.system_config['macros'])
+            except Exception as e:
+                print(f"warning: no macros loaded")
+                raise e
         # Initialize template for vault items
         self.templEnv = Environment(
-                loader=FileSystemLoader("./supported_systems"))
+                loader=FileSystemLoader(self.default_save_dir + "/save"))
 
 
 

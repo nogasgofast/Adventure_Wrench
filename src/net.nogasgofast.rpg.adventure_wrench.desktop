@@ -5,4 +5,4 @@ Terminal=false
 Type=Application
 Icon=net.nogasgofast.rpg.adventure_wrench
 Comment=A offline rpg encounter tracker and builder.
-Categories=Utility;
+Categories=Game;

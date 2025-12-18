@@ -8,37 +8,44 @@
   <project_license>GPL-3.0-or-later</project_license>
   <url type="homepage">https://github.com/nogasgofast/Adventure_Wrench</url>
   <content_rating type="oars-1.1" />
+  <catagories>
+	  <category>Game</category>
+	  <category>GameTool</category>
+  </catagories>
+  <keywords>
+	  <keyword>ttrpg</keyword>
+	  <keyword>game</keyword>
+	  <keyword>tracker</keyword>
+	  <keyword>encounter</keyword>
+	  <keyword>builder</keyword>
+	  <keyword>initiative</keyword>
+  </keywords>
   <description>
-    <p>
-      Portable 5e(ish) game tracker and campaign helper. Use a laptop without wifi. Build encounters and campaigns without needing internet access. Build templates, roll-tables and encounters.
-    </p>
+	  <p>A no-internet necessary turn tracker for ttrpgs with defaults set for 5e Dungeons and Dragons. Keep all of your stat-blocks for NPCs/traps/creatures in one place. Make templates to stay on theme making content for games.</p>
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>https://www.nogasgofast.net/wp-content/uploads/2025/09/image-4.png</image>
+      <image>https://www.nogasgofast.net/wp-content/uploads/2025/12/image.png</image>
     </screenshot>
     <screenshot>
-      <image>https://www.nogasgofast.net/wp-content/uploads/2025/09/image-2.png</image>
+      <image>https://www.nogasgofast.net/wp-content/uploads/2025/12/image-5.png</image>
     </screenshot>
     <screenshot>
-      <image>https://www.nogasgofast.net/wp-content/uploads/2025/09/image-3-1024x598.png</image>
+      <image>https://www.nogasgofast.net/wp-content/uploads/2025/12/image-2-1024x731.png</image>
     </screenshot>
   </screenshots>
-    <releases>
-    <release version="1.3.0" date="2025-11-03">
+  <releases>
+    <release version="2.0.0" date="2025-12-17">
     <description>
       <p>Latest</p>
       <ul>
         <li>Notes in github release</li>
       </ul>
     </description>
-    <url>https://github.com/nogasgofast/Adventure_Wrench/releases/tag/v1.3</url>
+    <url>https://github.com/nogasgofast/Adventure_Wrench/releases/tag/v2.0</url>
     </release>
   </releases>
   <developer id="net.nogasgofast">
     <name>Gene A. Guido III</name>
   </developer>
-  <custom>
-	  <value key="flathub::manifest">https://raw.githubusercontent.com/nogasgofast/Adventure_Wrench/f832347990ee9f6039f3fd4f4a22107a08adaee3/src/net.nogasgofast.rpg.adventure_wrench.metainfo.xml</value>
-  </custom>
 </component>

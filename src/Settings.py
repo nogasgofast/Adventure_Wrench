@@ -1,6 +1,7 @@
 
 from ui.Settings_Dialog import Ui_Settings
 from PySide6.QtWidgets import QDialog, QListWidgetItem
+from PySide6.QtCore import QStandardPaths
 from pony.orm import db_session, commit
 import os
 
@@ -31,8 +32,9 @@ STR: 10    DEX: 10    CON: 10    WIS: 10    INT: 10    CHA: 10
 
         templ_setting = settings.get(name='pc_npc_template')
         pnp_system_name = settings.get(name='pnp_system_name')
+        default_save_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
 
-        for fname in os.listdir('supported_systems'):
+        for fname in os.listdir(default_save_dir):
             if '.ini' in fname[-4:]:
                 cbox_sys.addItem(fname[:-4])
 
