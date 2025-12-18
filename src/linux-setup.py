@@ -3,9 +3,7 @@ from version import ver
 
 # Dependencies are automatically detected, but it might need
 # fine tuning.
-includefiles = [('supported_systems/5e.ini','supported_systems/5e.ini'), 
-                ('supported_systems/5e.jinja','supported_systems/5e.jinja'),
-                ('save/default.sqlite','save/default.sqlite')]
+includefiles = [('save','save')] 
 build_options = {'packages': [], 
                  'excludes': [], 
                  'includes':['pony.orm.dbproviders.sqlite'],

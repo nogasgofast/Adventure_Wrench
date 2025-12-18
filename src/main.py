@@ -92,6 +92,10 @@ class MainWindow(QMainWindow):
             # A terrible way of initializing the files to the right place? I don't know.
             if not os.path.exists(self.default_save_dir):
                 os.mkdir(self.default_save_dir)
+            if 'library.zip' in self.default_app_path:
+                self.default_app_path = 'save'
+            # this does not work in cx_freeze deployment. It points to a ziped up area. 
+            # but in the cx_freeze deoployment there is already a copy of files in save/ ? it just poitns to an odd place.
             for f in os.listdir(self.default_app_path):
                 full_p = os.path.join(self.default_app_path , f)
                 if os.path.isfile(full_p):
@@ -151,8 +155,12 @@ class MainWindow(QMainWindow):
                 print(f"warning: no macros loaded")
                 raise e
         # Initialize template for vault items
-        self.templEnv = Environment(
-                loader=FileSystemLoader(self.default_save_dir + "/save"))
+        if self.debug:
+            self.templEnv = Environment(
+                loader=FileSystemLoader("save/"))
+        else:
+            self.templEnv = Environment(
+                loader=FileSystemLoader(self.default_save_dir))
 
 
 

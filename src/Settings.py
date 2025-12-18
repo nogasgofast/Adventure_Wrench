@@ -9,6 +9,7 @@ class SettingsDialog(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.main = parent
+        self.debug = False
         self.ui = Ui_Settings()
         self.ui.setupUi(self)
         self.ui.pushButton_back.clicked.connect(self.save_and_close)
@@ -32,7 +33,10 @@ STR: 10    DEX: 10    CON: 10    WIS: 10    INT: 10    CHA: 10
 
         templ_setting = settings.get(name='pc_npc_template')
         pnp_system_name = settings.get(name='pnp_system_name')
-        default_save_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
+        if self.debug:
+            default_save_dir = 'save/'
+        else:
+            default_save_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
 
         for fname in os.listdir(default_save_dir):
             if '.ini' in fname[-4:]:
