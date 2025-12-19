@@ -3,6 +3,6 @@ Name=Adventure Wrench
 Exec=adventure_wrench
 Terminal=false
 Type=Application
-Icon=net.nogasgofast.rpg.adventure_wrench
+Icon=net.nogasgofast.adventure_wrench
 Comment=A offline rpg encounter tracker and builder.
 Categories=Game;

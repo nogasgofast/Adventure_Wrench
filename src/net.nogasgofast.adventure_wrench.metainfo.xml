@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>net.nogasgofast.rpg.adventure_wrench</id>
+  <id>net.nogasgofast.adventure_wrench</id>
   <name>Adventure Wrench</name>
   <summary>Portable 5e tracker/builder</summary>
-  <launchable type="desktop-id">net.nogasgofast.rpg.adventure_wrench.desktop</launchable>
+  <launchable type="desktop-id">net.nogasgofast.adventure_wrench.desktop</launchable>
   <metadata_license>MIT</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <url type="homepage">https://github.com/nogasgofast/Adventure_Wrench</url>
