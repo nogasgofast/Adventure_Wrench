@@ -5,7 +5,7 @@ import sys
 # Dependencies are automatically detected, but it might need
 # fine tuning.
 includefiles = [('save', 'save')]
-build_options = {'packages': [], 'excludes':: [], 'includes':['pony.orm.dbproviders.sqlite'], 'include_files':includefiles}
+build_options = {'packages': [], 'excludes': [], 'includes':['pony.orm.dbproviders.sqlite'], 'include_files':includefiles}
 
 base = 'Win32GUI' if sys.platform == 'win32' else None
 
