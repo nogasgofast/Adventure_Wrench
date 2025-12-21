@@ -8,10 +8,10 @@
   <project_license>GPL-3.0-or-later</project_license>
   <url type="homepage">https://github.com/nogasgofast/Adventure_Wrench</url>
   <content_rating type="oars-1.1" />
-  <catagories>
+  <categories>
 	  <category>Game</category>
 	  <category>GameTool</category>
-  </catagories>
+  </categories>
   <keywords>
 	  <keyword>ttrpg</keyword>
 	  <keyword>game</keyword>
@@ -35,14 +35,14 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="2.0.1" date="2025-12-19">
+    <release version="2.0.3" date="2025-12-20">
     <description>
       <p>Latest</p>
       <ul>
         <li>Notes in github release</li>
       </ul>
     </description>
-    <url>https://github.com/nogasgofast/Adventure_Wrench/releases/tag/v2.0</url>
+    <url>https://github.com/nogasgofast/Adventure_Wrench/releases/tag/v2.0.3</url>
     </release>
   </releases>
   <developer id="net.nogasgofast">
