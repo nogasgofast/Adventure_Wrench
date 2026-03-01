@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QGroupBox,
-    QHBoxLayout, QLabel, QLineEdit, QListWidget,
-    QListWidgetItem, QPushButton, QSizePolicy, QSpacerItem,
-    QTextEdit, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QDialog, QGroupBox,
+    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+    QPushButton, QSizePolicy, QSpacerItem, QTextEdit,
+    QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_TheShop(object):
     def setupUi(self, TheShop):
@@ -110,33 +110,15 @@ class Ui_TheShop(object):
         self.groupBox_templates.setFlat(True)
         self.verticalLayout = QVBoxLayout(self.groupBox_templates)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.comboBox_selector_templates = QComboBox(self.groupBox_templates)
-        self.comboBox_selector_templates.setObjectName(u"comboBox_selector_templates")
+        self.treeWidget_templates = QTreeWidget(self.groupBox_templates)
+        __qtreewidgetitem = QTreeWidgetItem()
+        __qtreewidgetitem.setText(0, u"1");
+        self.treeWidget_templates.setHeaderItem(__qtreewidgetitem)
+        self.treeWidget_templates.setObjectName(u"treeWidget_templates")
+        self.treeWidget_templates.setSelectionMode(QAbstractItemView.MultiSelection)
+        self.treeWidget_templates.header().setVisible(False)
 
-        self.verticalLayout.addWidget(self.comboBox_selector_templates)
-
-        self.pushButton_add_templates = QPushButton(self.groupBox_templates)
-        self.pushButton_add_templates.setObjectName(u"pushButton_add_templates")
-        self.pushButton_add_templates.setAutoDefault(False)
-
-        self.verticalLayout.addWidget(self.pushButton_add_templates)
-
-        self.label_templates = QLabel(self.groupBox_templates)
-        self.label_templates.setObjectName(u"label_templates")
-
-        self.verticalLayout.addWidget(self.label_templates)
-
-        self.listWidget_templates = QListWidget(self.groupBox_templates)
-        self.listWidget_templates.setObjectName(u"listWidget_templates")
-        self.listWidget_templates.setSortingEnabled(True)
-
-        self.verticalLayout.addWidget(self.listWidget_templates)
-
-        self.pushButton_remove_templates = QPushButton(self.groupBox_templates)
-        self.pushButton_remove_templates.setObjectName(u"pushButton_remove_templates")
-        self.pushButton_remove_templates.setAutoDefault(False)
-
-        self.verticalLayout.addWidget(self.pushButton_remove_templates)
+        self.verticalLayout.addWidget(self.treeWidget_templates)
 
 
         self.horizontalLayout_2.addWidget(self.groupBox_templates)
@@ -162,11 +144,5 @@ class Ui_TheShop(object):
         self.pushButton_back.setText(QCoreApplication.translate("TheShop", u"<- Save (Esc)", None))
         self.pushButton_delete_shop.setText(QCoreApplication.translate("TheShop", u"Delete from vault", None))
         self.groupBox_templates.setTitle(QCoreApplication.translate("TheShop", u"Templates", None))
-#if QT_CONFIG(tooltip)
-        self.comboBox_selector_templates.setToolTip(QCoreApplication.translate("TheShop", u"Templates are created in The Acadamy. Navigate there from the Vault.", None))
-#endif // QT_CONFIG(tooltip)
-        self.pushButton_add_templates.setText(QCoreApplication.translate("TheShop", u"Add", None))
-        self.label_templates.setText(QCoreApplication.translate("TheShop", u"Applied templates", None))
-        self.pushButton_remove_templates.setText(QCoreApplication.translate("TheShop", u"Remove template", None))
     # retranslateUi
 

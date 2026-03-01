@@ -79,27 +79,23 @@ class MainWindow(QMainWindow):
 
 
     def config_setup(self):
+        # quit("program debug halt -3")
         # ~/.config/<app id>.ini
         if self.debug == True:
             self.config_name = './awconfig.ini'
-            # print(self.config_name)
             self.default_save_dir = './save'
-            # print(self.default_save_dir)
         else:
             self.config_name = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation)
             self.default_save_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
             self.default_app_path = os.path.dirname(os.path.realpath(__file__)) + '/save'
-            # A terrible way of initializing the files to the right place? I don't know.
             if not os.path.exists(self.default_save_dir):
                 os.mkdir(self.default_save_dir)
             if 'library.zip' in self.default_app_path:
                 self.default_app_path = 'save'
-            # this does not work in cx_freeze deployment. It points to a ziped up area. 
-            # but in the cx_freeze deoployment there is already a copy of files in save/ ? it just poitns to an odd place.
             for f in os.listdir(self.default_app_path):
                 full_p = os.path.join(self.default_app_path , f)
-                if os.path.isfile(full_p):
-                    shutil.copyfile( full_p, self.default_save_dir + f'/{f}')
+                if os.path.isfile(full_p) and not os.path.isfile(f'{self.default_save_dir}/{f}'):
+                    shutil.copyfile(full_p, f'{self.default_save_dir}/{f}')
 
         self.db_default_name = self.default_save_dir + '/default.sqlite'
         self.config_file = configparser.ConfigParser()
@@ -245,16 +241,27 @@ class MainWindow(QMainWindow):
 
 
     @db_session
-    def remove(self):
+    def remove(self, selection=False):
         remove_these = []
         E = self.ui.listWidget_Encounter
-        for row in range(0, E.count()):
-            if E.item(row).isSelected():
-                remove_these.append(row)
-                E.item(row).setSelected(False)
-        remove_these.sort()
-        remove_these.reverse()
+        if not selection:
+            for row in range(0, E.count()):
+                if E.item(row).isSelected():
+                    remove_these.append(row)
+                    E.item(row).setSelected(False)
+            remove_these.sort()
+            remove_these.reverse()
+        else:
+            remove_these = selection
         for row in remove_these:
+            if E.item(row).isSessionInitiative:
+                print('advance_initiative')
+                self.advance_initiative()
+                print('entering remove')
+                self.remove(remove_these)
+                print('exiting remove')
+                break
+            print('deleting')
             deletion = E.takeItem(row)
             dbObj = self.db.Active[deletion.dbObj.id]
             dbObj.delete()
@@ -393,6 +400,7 @@ class MainWindow(QMainWindow):
                 item = E.item(row)
                 if item.dbObj.count > 1:
                     self.expands(item, row)
+                    print('func toggle expand')
                     item.dbObj.delete()
                     E.item(row).setSelected(False)
                     E.takeItem(row)
@@ -460,6 +468,7 @@ class MainWindow(QMainWindow):
                nextItem.setIcon(self.style().standardIcon(self.Initiative_Icon))
             groupHP.append(rowObj.hp)
             groupOf += 1
+            print('toggle collapse')
             rowObj.delete()
             encounter_view.takeItem(row)
         # include the item slected as well.

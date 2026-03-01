@@ -1,5 +1,6 @@
 # This Python file uses the following encoding: utf-8
-from PySide6.QtWidgets import (QDialog, QListWidgetItem, QMessageBox)
+from PySide6.QtWidgets import (QDialog, QListWidgetItem,
+                               QTreeWidgetItem, QMessageBox)
 from PySide6.QtCore import Qt
 from ui.TheShop_Dialog import Ui_TheShop
 from pony.orm import db_session, commit
@@ -22,15 +23,50 @@ class TheShopDialog(QDialog):
 
         # self.ui.pushButton_roll_stats.clicked.connect(self.roll_stats)
         self.ui.pushButton_back.clicked.connect(self.close)
-        self.ui.pushButton_add_templates.clicked.connect(self.add_template)
         self.ui.pushButton_delete_shop.clicked.connect(self.delete_vault_item)
-        self.ui.pushButton_remove_templates.clicked.connect(self.remove_template)
-        #TODO needs update
         self.ui.pushButton_reset_stat_block.clicked.connect(self.update_stat_block)
         self.ui.lineEdit_name.textEdited.connect(self.update_name)
         # This is fine but I have to block signals anywhere I use this textEdit
         self.ui.textEdit_stat_block.textChanged.connect(self.save_stat_block_Changes)
+        self.ui.treeWidget_templates.itemSelectionChanged.connect(self.change_template_selection)
 
+
+    @db_session
+    def load_template_list(self):
+        'initialize templates view'
+        db = self.vault.main.db
+        templates_view = self.ui.treeWidget_templates
+
+        self.ui.treeWidget_templates.blockSignals(True)
+        templates_view.clear()
+        self.ui.treeWidget_templates.blockSignals(False)
+
+        def add_level(parent):
+            for dbObj in parent.dbObj.under_me.select():
+                item = QTreeWidgetItem(parent)
+                item.dbObj = dbObj
+                if dbObj.is_folder:
+                    item.setText(0, f"Folder: {dbObj.name}")
+                else:
+                    item.setText(0, self.vault.ui_acadamy.construct_detail_name(dbObj))
+                if len(dbObj.under_me) > 0:
+                    add_level(item)
+        # Build the tree
+        for dbObj in db.Templates.select(detail_type='template'):
+            if len(dbObj.over_me) == 0:
+                item = QTreeWidgetItem(templates_view)
+                item.dbObj = dbObj
+                if dbObj.is_folder:
+                    item.setText(0, f"Folder: {dbObj.name}")
+                else:
+                    item.setText(0, dbObj.name)
+                if len(dbObj.under_me) > 0:
+                    add_level(item)
+        templates_view.sortItems(0, Qt.AscendingOrder)
+        # templates_view.blockSignals(True)
+        # templates_view.setCurrentItem(templates_view.topLevelItem(0))
+        # templates_view.blockSignals(False)
+        return templates_view
 
 
     @db_session
@@ -47,31 +83,37 @@ class TheShopDialog(QDialog):
         db = self.vault.main.db
         vault = self.vault.ui.listWidget_vault
         self.display_target = vault.itemFromIndex(display_target_index)
-        self.target = self.display_target.dbObj
-        self.target = db.Vault[self.target.id]
+        targetobj = self.display_target.dbObj
+        self.target = db.Vault[targetobj.id]
+        def select_applied_templates():
+            # only selects for loading this item.
+            # db = self.vault.main.db
+            # This is equivilant to a clear() call
+            templates_view = self.load_template_list()
+            vault_item = db.Vault[self.target.id]
+            for template in vault_item.templates:
+                # print(template.name)
+                # print(dir(template))
+                self.ui.treeWidget_templates.blockSignals(True)
+                for item in self.ui.treeWidget_templates.findItems(template.name, Qt.MatchFixedString|Qt.MatchCaseSensitive):
+                    # print(item.dbObj.name)
+                    item.setSelected(True)
+                self.ui.treeWidget_templates.blockSignals(False)
 
         # Load Name
         self.ui.lineEdit_name.blockSignals(True)
         self.ui.lineEdit_name.setText(self.target.name)
         self.ui.lineEdit_name.blockSignals(False)
 
+        # Load Stat Block from save
         self.ui.textEdit_stat_block.blockSignals(True)
         self.ui.textEdit_stat_block.setPlainText(self.target.stat_block)
         self.ui.textEdit_stat_block.blockSignals(False)
 
-        self.update_applied_templates()
-        self.update_selector_templates()
+        select_applied_templates()
+        # self.update_selector_templates()
         self.show()
 
-    @db_session
-    def update_applied_templates(self):
-        db = self.vault.main.db
-        self.ui.listWidget_templates.clear()
-        vault_item = db.Vault[self.target.id]
-        for template in vault_item.templates:
-            item  = QListWidgetItem(template.name)
-            item.dbObj = template
-            self.ui.listWidget_templates.addItem(item)
 
     @db_session
     def new_vault_item(self):
@@ -84,9 +126,10 @@ class TheShopDialog(QDialog):
         # Add Items
         self.vault.ui.listWidget_vault.addItem(item)
         self.display_target = item
-        self.update_selector_templates()
+        # self.update_selector_templates()
         self.update_stat_block()
-        self.ui.listWidget_templates.clear()
+        self.ui.treeWidget_templates.clear()
+        self.load_template_list()
         self.show()
 
 
@@ -362,10 +405,36 @@ class TheShopDialog(QDialog):
                 self.ui.comboBox_selector_templates.addItem(template.name,
                                                             template)
 
+
+    @db_session
+    def change_template_selection(self):
+        db = self.vault.main.db
+        # take a passed in item and check if it is added 
+        all_selected = self.ui.treeWidget_templates.selectedItems()
+        setA = {item.dbObj.id for item in all_selected}
+        # print(setA)
+        vault_item = db.Vault[self.target.id]
+        setB = {item.id for item in vault_item.templates}
+        template_diff = []
+        # print(setB)
+        for a in setA:
+            if not a in setB:
+                print(f"adding {db.Templates[a].name}")
+                vault_item.templates.add(db.Templates[a])
+        for b in setB:
+            if not b in setA:
+                print(f"removing {db.Templates[b].name}")
+                vault_item.templates.remove(db.Templates[b])
+        db.commit()
+        print([item.name for item in vault_item.templates])
+        self.update_stat_block()
+
+
+    # connect to treeWidget_tmplates.clicked() signal
     @db_session
     def add_template(self):
         db = self.vault.main.db
-        templates_list = self.ui.listWidget_templates
+        templates_list = self.ui.treeWidget_templates
         vault_item = db.Vault[self.target.id]
         selected_template = self.ui.comboBox_selector_templates.currentData()
         dbObj = db.Templates[selected_template.id]
@@ -373,9 +442,9 @@ class TheShopDialog(QDialog):
         if not templates_list.findItems(dbObj.name, Qt.MatchStartsWith):
             # print("add_template func")
             vault_item.templates.add(dbObj)
-            item = QListWidgetItem(dbObj.name)
+            item = QTreeWidgetItem(dbObj.name)
             item.dbObj = dbObj
-            templates_list.addItem(item)
+            templates_list.addItem(item, '/')
             self.update_stat_block()
         else:
             msgBox = QMessageBox()
@@ -399,11 +468,13 @@ class TheShopDialog(QDialog):
                 break
         self.close()
 
+    
+    # connect to treeWidge_templates.clicked() signal
     @db_session
     def remove_template(self):
         db = self.vault.main.db
         self.target = vault_item = db.Vault[self.target.id]
-        template_view = self.ui.listWidget_templates
+        template_view = self.ui.treeWidget_templates
         for row in range(0, template_view.count()):
             item = template_view.item(row)
             if item.isSelected():

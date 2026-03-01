@@ -142,44 +142,18 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QComboBox" name="comboBox_selector_templates">
-        <property name="toolTip">
-         <string>Templates are created in The Acadamy. Navigate there from the Vault.</string>
+       <widget class="QTreeWidget" name="treeWidget_templates">
+        <property name="selectionMode">
+         <enum>QAbstractItemView::MultiSelection</enum>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_add_templates">
-        <property name="text">
-         <string>Add</string>
-        </property>
-        <property name="autoDefault">
+        <attribute name="headerVisible">
          <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_templates">
-        <property name="text">
-         <string>Applied templates</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QListWidget" name="listWidget_templates">
-        <property name="sortingEnabled">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_remove_templates">
-        <property name="text">
-         <string>Remove template</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
+        </attribute>
+        <column>
+         <property name="text">
+          <string notr="true">1</string>
+         </property>
+        </column>
        </widget>
       </item>
      </layout>
