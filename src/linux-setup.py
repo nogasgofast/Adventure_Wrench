@@ -18,7 +18,7 @@ executables = [
 
 setup(name='adventure_wrench',
       version = ver,
-      description = 'offline encounter tracker and builder for laptops.',
+      description = 'encounter tracker and builder for laptops',
       options = {'build_exe': build_options},
       executables = executables,
       includes = ['pony.orm.dbproviders'])
