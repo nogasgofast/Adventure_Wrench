@@ -3,6 +3,7 @@
 import sys, os, shutil
 import requests
 import configparser
+import sqlite3
 from ui.Main_Window import Ui_MainWindow
 from PySide6.QtWidgets import (QApplication, QMainWindow,
                               QWidget, QListWidgetItem,
@@ -10,8 +11,10 @@ from PySide6.QtWidgets import (QApplication, QMainWindow,
                               QStyle)
 from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 from PySide6.QtCore import QStandardPaths
-from pony.orm import db_session, commit
+# from pony.orm import db_session, commit
+from pony.orm import *
 from lib.aw_db import database_factory
+from lib.schema_upgrades import upgrade_db
 from Player import PlayerDialog
 from Vault import VaultDialog
 from Settings import SettingsDialog
@@ -23,7 +26,6 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         # read config
         self.debug = False
-        self.db = database_factory()
         self.config_setup()
         self.Initiative_Icon = QStyle.StandardPixmap.SP_MediaSeekForward
         self.isAlarmDisplayed = False
@@ -81,6 +83,9 @@ class MainWindow(QMainWindow):
     def config_setup(self):
         # quit("program debug halt -3")
         # ~/.config/<app id>.ini
+
+        self.db = database_factory()
+
         if self.debug == True:
             self.config_name = './awconfig.ini'
             self.default_save_dir = './save'
@@ -112,7 +117,14 @@ class MainWindow(QMainWindow):
             # connect to database and try to create missing items if needed.
             self.db.bind(provider="sqlite", filename=db_file, create_db=True)
             self.db.generate_mapping(create_tables=True)
-            # print(db_file)
+        except pony.orm.dbapiprovider.OperationalError as e:
+            print("entered Exception")
+            print(db_file)
+            # detected a currupt or out of date database, attempting upgrade.
+            del(self.db)
+            upgrade_db(e, db_file)
+            self.config_setup()
+            return
         except Exception as e:
             print(f"Save file failed to load: {db_file}")
             raise e
@@ -180,6 +192,14 @@ class MainWindow(QMainWindow):
                                filename=file_path,
                                create_db=False)
                     self.db.generate_mapping(create_tables=False)
+                except pony.orm.dbapiprovider.OperationalError as e:
+                    # We have detected a currupt or old database schema
+                    # disconnect from database and perform upgrade.
+                    del(self.db)
+                    upgrade_db(e, file_path)
+                    raise(e)
+                    self.switch_game()
+                    return
                 except Exception as e:
                     print("aw_db.sqlite Failed to load: {e}")
                     raise e
