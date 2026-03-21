@@ -221,7 +221,7 @@ class MainWindow(QMainWindow):
             update_version = None
             for release in r.json():
                 remote_ver = [ int(x) for x in release["tag_name"][1:].split('.') ]
-                local_ver = [ int(x) for x in ver.split('.') ]
+                local_ver = [ int(x) for x in ver[1:].split('.') ]
                 for i in range(0, 2):
                     if remote_ver[i] > local_ver[i]:
                         update_version = f'''New Version: <a href="{release["html_url"]}">
@@ -234,9 +234,9 @@ class MainWindow(QMainWindow):
                         # Our version is better go ahead and stop.
                         break
                 if not update_version:
-                    self.ui.label_version.setText(f"On latest version: v{ver}")
+                    self.ui.label_version.setText(f"On latest version: {ver}")
         except:
-            self.ui.label_version.setText(f"Current Version: v{ver}")
+            self.ui.label_version.setText(f"Current Version: {ver}")
 
 
     @db_session
