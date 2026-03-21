@@ -3,6 +3,7 @@ TODO.txt
 *.pickle
 env/*
 .flatpak-builder/*
+.qtc_clangd/*
 repo/*
 src/awdb.sqlite
 src/build*
