@@ -253,7 +253,6 @@ class TheShopDialog(QDialog):
         # Load default stat values
         scores = self.load_scores(stat_block)
 
-        #TODO, not sure if i need to calculate hp
         dbObj.hp = scores['hp']
         scores['hp_dice'] = self.dice_tower.to_dice(scores['hp'])
 

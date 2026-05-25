@@ -1,11 +1,13 @@
 from pony.orm import db_session, commit
 from ui.Vault_Dialog import Ui_Vault
-from PySide6.QtWidgets import QDialog, QListWidgetItem
+from PySide6.QtWidgets import (QDialog, QListWidgetItem,
+                               QProgressBar, QLabel)
 from PySide6.QtGui import QBrush, QColor, QFont
 from Acadamy import AcadamyDialog
 from Legend import LegendDialog
 from TheShop import TheShopDialog
 from lib.dice import Dice_factory
+from myWidgets import GProgressBar, GDisplayWidget
 
 class VaultDialog(QDialog):
     def __init__(self, parent=None):
@@ -88,19 +90,28 @@ class VaultDialog(QDialog):
         dice_caddy = Dice_factory()
         for row in range(0, Vault.count()):
             if Vault.item(row).isSelected():
+                # collect old item
                 item = Vault.item(row)
                 item.dbObj = self.main.db.Vault[item.dbObj.id]
+
+                # create new display in mainWindow
+                pbar = QProgressBar()
+                description = QLabel()
                 new_item = QListWidgetItem()
+                new_item.vbox = GDisplayWidget()
+                new_item.setSizeHint(new_item.vbox.sizeHint())
+
+                group_hp = []
                 if item.dbObj.count > 1:
-                    item.dbObj.group_hp = [ item.dbObj.hp for x in range(0, item.dbObj.count) ]
-                    commit()
+                    group_hp = [ item.dbObj.hp for x in range(0, item.dbObj.count) ]
+                    
                 new_item.dbObj = self.main.db.Active(
                                 name = item.dbObj.name,
                                 stat_block = item.dbObj.stat_block,
                                 initiative = item.dbObj.initiative,
                                 hp = item.dbObj.hp,
-                                max_hp = item.dbObj.max_hp,
-                                group_hp = item.dbObj.group_hp,
+                                max_hp = item.dbObj.hp,
+                                group_hp = group_hp,
                                 count = item.dbObj.count,
                                 from_vault = item.dbObj)
                 commit()
@@ -108,6 +119,7 @@ class VaultDialog(QDialog):
                 new_item.isSessionInitiative = False
                 self.main.update_encounter_text(new_item)
                 self.main.ui.listWidget_Encounter.addItem(new_item)
+                self.main.ui.listWidget_Encounter.setItemWidget(new_item, new_item.vbox)
 
 
     @db_session

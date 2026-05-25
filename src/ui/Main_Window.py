@@ -27,7 +27,20 @@ class Ui_MainWindow(object):
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(800, 777)
         MainWindow.setAutoFillBackground(False)
-        MainWindow.setStyleSheet(u"QWidget {\n"
+        MainWindow.setStyleSheet(u"\n"
+"GDisplayWidget GProgressBar {\n"
+"  border: 0px;\n"
+"  text-align: top-center;\n"
+"  color: white;\n"
+"  height: 14px;\n"
+"}\n"
+"\n"
+"GDisplayWidget QLabel {\n"
+"	font: 700 16pt \"Times\";\n"
+"}\n"
+"\n"
+"\n"
+"QWidget {\n"
 "  color: black;\n"
 "  background-color: rgb(89, 92, 123);\n"
 "}\n"
@@ -39,8 +52,20 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QListWidget::item:selected{\n"
-"   	border: 3px dashed white;\n"
+"    background-color: rgb(69, 72, 103);\n"
 "}\n"
+"\n"
+"QListWidget::focus{\n"
+"    outline: none;\n"
+"    border: none;\n"
+"}\n"
+"\n"
+"QListWidget::item{\n"
+" height: 2em;\n"
+" padding-left: 25px;\n"
+" border-radius: 1em;\n"
+"}\n"
+"\n"
 "\n"
 "QToolTip {\n"
 "	border: 3px solid gray;\n"
@@ -49,7 +74,7 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QLabel {\n"
-"color: rgb(222, 221, 218);\n"
+" color: rgb(222, 221, 218);\n"
 "}\n"
 "\n"
 "QPushButton {\n"
@@ -58,7 +83,8 @@ class Ui_MainWindow(object):
 "padding: 5px;\n"
 "border-color: rgb(75, 82, 143);\n"
 "border-width: 2px;\n"
-"border-radius: 5px;\n"
+"bo"
+                        "rder-radius: 5px;\n"
 "}\n"
 "\n"
 "QPushButton:pressed {\n"
@@ -76,11 +102,7 @@ class Ui_MainWindow(object):
 "\n"
 "QCheckBox::indicator:unchecked {\n"
 "     image: url(:/images/toggle_off.png); /* Path to your unchecked image */\n"
-"}\n"
-"\n"
-""
-                        "\n"
-"")
+"}:")
         self.actionSave = QAction(MainWindow)
         self.actionSave.setObjectName(u"actionSave")
         self.actionOpen = QAction(MainWindow)
@@ -119,7 +141,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.listWidget_Encounter = QListWidget(self.centralwidget)
+        QListWidgetItem(self.listWidget_Encounter)
+        QListWidgetItem(self.listWidget_Encounter)
         self.listWidget_Encounter.setObjectName(u"listWidget_Encounter")
+        font = QFont()
+        font.setPointSize(20)
+        self.listWidget_Encounter.setFont(font)
         self.listWidget_Encounter.setStyleSheet(u"")
         self.listWidget_Encounter.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.listWidget_Encounter.setViewMode(QListView.ListMode)
@@ -385,6 +412,15 @@ class Ui_MainWindow(object):
         self.actionOpen.setText(QCoreApplication.translate("MainWindow", u"Open", None))
         self.label_current_game.setText(QCoreApplication.translate("MainWindow", u"## Current Game", None))
         self.label_alarm_notice.setText("")
+
+        __sortingEnabled = self.listWidget_Encounter.isSortingEnabled()
+        self.listWidget_Encounter.setSortingEnabled(False)
+        ___qlistwidgetitem = self.listWidget_Encounter.item(0)
+        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u">> Player 1  HP: 300", None));
+        ___qlistwidgetitem1 = self.listWidget_Encounter.item(1)
+        ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Player 2 HP: 300 ****xxxoooooyyy", None));
+        self.listWidget_Encounter.setSortingEnabled(__sortingEnabled)
+
 #if QT_CONFIG(tooltip)
         self.pushButton_Inititave.setToolTip(QCoreApplication.translate("MainWindow", u"sort and advannce selected item by initiative", None))
 #endif // QT_CONFIG(tooltip)

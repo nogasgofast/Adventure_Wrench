@@ -2,6 +2,8 @@
 from ui.Player_Dialog import Ui_Player
 from PySide6.QtWidgets import QDialog, QListWidgetItem
 from pony.orm import db_session, commit
+from myWidgets import GProgressBar, GDisplayWidget
+ 
 
 class PlayerDialog(QDialog):
     def __init__(self, parent=None):
@@ -125,13 +127,34 @@ class PlayerDialog(QDialog):
     def add_player(self):
         'adds a new entery to the initiative tracker'
         settings = self.main.db.Settings
+        E = self.main.ui.listWidget_Encounter
         self.target = self.main.db.Active(player=True)
         commit()
-        self.display_target = QListWidgetItem("{player.initiative} | {player.name} | hp:{player.hp}")
-        self.display_target.dbObj = self.target
-        self.display_target.isSessionInitiative = False
-        self.main.update_encounter_text(self.display_target)
-        self.main.ui.listWidget_Encounter.addItem(self.display_target)
+
+        self.display_target = item = QListWidgetItem()
+        item.dbObj = self.target
+        item.vbox = GDisplayWidget()
+        if self.target.max_hp:
+            item.vbox.pbar.setRange(0, self.target.max_hp)
+        else:
+            item.vbox.pbar.setRange(0, self.target.hp)
+        self.main.update_encounter_text(item)
+
+        item.setSizeHint(item.vbox.sizeHint())
+        item.isSessionInitiative = False
+
+        E.addItem(item)
+        E.setItemWidget(item, item.vbox)
+
+
+        # self.display_target = QListWidgetItem("{player.initiative} | {player.name} | hp:{player.hp}")
+        # self.display_target.dbObj = self.target
+        # self.display_target.isSessionInitiative = False
+        # self.display_target.vbox = GDisplayWidget()
+
+        # self.main.update_encounter_text(self.display_target)
+        # self.main.ui.listWidget_Encounter.addItem(self.display_target)
+
         # clear ui for adding a new player
         self.ui.lineEdit_name.setText('')
         self.ui.lineEdit_name.setFocus()
@@ -143,7 +166,7 @@ class PlayerDialog(QDialog):
             self.ui.textEdit_description.setText(pc_npc_templ.value)
         else:    
             self.ui.textEdit_description.setText(self.main.ui_s.default_templ)
-        self.show()
+        self.show()  
 
     @db_session
     def remove_player(self):

@@ -6,11 +6,12 @@ import configparser
 import sqlite3
 from ui.Main_Window import Ui_MainWindow
 from PySide6.QtWidgets import (QApplication, QMainWindow,
-                              QWidget, QListWidgetItem,
+                              QListWidgetItem,
+                              QProgressBar,
                               QMessageBox, QFileDialog,
-                              QStyle)
-from PySide6.QtGui import QBrush, QColor, QFont, QIcon
-from PySide6.QtCore import QStandardPaths
+                              QStyle,QLabel)
+from PySide6.QtGui import QBrush, QColor, QIcon
+from PySide6.QtCore import QStandardPaths 
 # from pony.orm import db_session, commit
 from pony.orm import *
 from lib.aw_db import database_factory
@@ -19,6 +20,9 @@ from Player import PlayerDialog
 from Vault import VaultDialog
 from Settings import SettingsDialog
 from jinja2 import Environment, FileSystemLoader
+from myWidgets import GProgressBar, GDisplayWidget
+
+
 
 
 class MainWindow(QMainWindow):
@@ -35,7 +39,6 @@ class MainWindow(QMainWindow):
         self.ui_p = PlayerDialog(self)
         self.ui_s = SettingsDialog(self)
         self.ui_s.update()
-        self.suppress_spinbox_update = False
         # Window Modal is set in the designer. Or should be
         # self.ui_p.setModal(True)
 
@@ -69,12 +72,12 @@ class MainWindow(QMainWindow):
 
         self.ui.listWidget_Encounter.itemDoubleClicked.connect(self.ui_p.update_player)
         self.ui.listWidget_Encounter.itemSelectionChanged.connect(
-                                    self.spinBox_update)
+                                    self.selection_update)
 
         self.ui.spinBox_main_initiative.valueChanged.connect(
                                     self.update_initiative)
         self.ui.spinBox_main_hp.valueChanged.connect(
-                                    self.update_hp)
+                                    self.spinbox_update_hp)
 
         self.check_version()
         self.load_session()
@@ -241,6 +244,7 @@ class MainWindow(QMainWindow):
 
     @db_session
     def update_icon(self, kind, cycle):
+        # print("update_icon")
         for row in range(0, self.ui.listWidget_Encounter.count()):
             if self.ui.listWidget_Encounter.item(row).isSelected():
                 item = self.ui.listWidget_Encounter.item(row)
@@ -266,7 +270,7 @@ class MainWindow(QMainWindow):
         E = self.ui.listWidget_Encounter
         if not selection:
             for row in range(0, E.count()):
-                if E.item(row).isSelected():
+                if E.item(row) and E.item(row).isSelected():
                     remove_these.append(row)
                     E.item(row).setSelected(False)
             remove_these.sort()
@@ -274,18 +278,20 @@ class MainWindow(QMainWindow):
         else:
             remove_these = selection
         for row in remove_these:
-            if E.item(row).isSessionInitiative:
-                print('advance_initiative')
+            # print("removing ", row)
+            if E.item(row) and E.count() > 1 and E.item(row).isSessionInitiative:
+                # print('advance_initiative')
                 self.advance_initiative()
-                print('entering remove')
+                # print('entering remove')
                 self.remove(remove_these)
-                print('exiting remove')
+                # print('exiting remove')
                 break
-            print('deleting')
-            deletion = E.takeItem(row)
-            dbObj = self.db.Active[deletion.dbObj.id]
-            dbObj.delete()
-            del(deletion)
+            # print('deleting')
+            if E.item(row):
+                deletion = E.takeItem(row)
+                dbObj = self.db.Active[deletion.dbObj.id]
+                dbObj.delete()
+                del(deletion)
 
 
     @db_session
@@ -307,87 +313,108 @@ class MainWindow(QMainWindow):
 
     @db_session
     def load_session(self):
+        # print("load_session")
         all_Active = self.db.Active.select()
-        self.ui.listWidget_Encounter.clear()
+        E = self.ui.listWidget_Encounter
+        E.clear()
         for thing in all_Active:
             item = QListWidgetItem()
             item.dbObj = thing
-            item.isSessionInitiative = False
+            item.vbox = GDisplayWidget()
+            if thing.max_hp:
+                item.vbox.pbar.setRange(0, thing.max_hp)
+            else:
+                item.vbox.pbar.setRange(0, thing.hp)
             self.update_encounter_text(item)
-            self.ui.listWidget_Encounter.addItem(item)
+
+            item.setSizeHint(item.vbox.sizeHint())
+            item.isSessionInitiative = False
+
+            E.addItem(item)
+            E.setItemWidget(item, item.vbox)
 
 
     @db_session
-    def spinBox_update(self):
-        # print("spinBox_update")
+    def selection_update(self):
+        # print("selection_update")
         # TODO switch to signal blocking here.
-        self.suppress_spinbox_update = True
         for row in range(0, self.ui.listWidget_Encounter.count()):
+            item = self.ui.listWidget_Encounter.item(row)
+            item.dbObj = self.db.Active[item.dbObj.id]
             if self.ui.listWidget_Encounter.item(row).isSelected():
-                item = self.ui.listWidget_Encounter.item(row)
-                item.dbObj = self.db.Active[item.dbObj.id]
+                # update spinboxes
                 if item.dbObj.count > 1:
                     hp = sum(item.dbObj.group_hp)
                 else:
                     hp = item.dbObj.hp
+                self.ui.spinBox_main_initiative.blockSignals(True)
+                self.ui.spinBox_main_hp.blockSignals(True)
+
                 self.ui.spinBox_main_initiative.setValue(
                     item.dbObj.initiative)
                 self.ui.spinBox_main_hp.setValue(hp)
-        self.suppress_spinbox_update = False
+                
+                self.ui.spinBox_main_initiative.blockSignals(False)
+                self.ui.spinBox_main_hp.blockSignals(False)
+
+                # update style for sub-components
+                SelectedColor = r'background-color: rgb(69, 72, 103); size: ' 
+                item.vbox.icon.setStyleSheet(SelectedColor)
+                item.vbox.description.setStyleSheet(SelectedColor)
+            else:
+                NotSelectedColor = r'background-color: rgb(89, 92, 123);'
+                item.vbox.icon.setStyleSheet(NotSelectedColor)
+                item.vbox.description.setStyleSheet(NotSelectedColor)
 
 
     @db_session
     def update_initiative(self):
-        if self.suppress_spinbox_update:
-            pass
-        else:
-            E = self.ui.listWidget_Encounter
-            for row in range(0, E.count()):
-                if E.item(row).isSelected():
-                    init_value = self.ui.spinBox_main_initiative.value()
-                    item = E.item(row)
-                    item.dbObj = self.db.Active[item.dbObj.id]
-                    item.dbObj.initiative = init_value
-                    commit()
-                    self.update_encounter_text(item)
+        # print("update_initiative")
+        E = self.ui.listWidget_Encounter
+        for row in range(0, E.count()):
+            if E.item(row).isSelected():
+                init_value = self.ui.spinBox_main_initiative.value()
+                item = E.item(row)
+                item.dbObj = self.db.Active[item.dbObj.id]
+                item.dbObj.initiative = init_value
+                commit()
+                self.update_encounter_text(item)
 
 
     @db_session
-    def update_hp(self):
-        if self.suppress_spinbox_update:
-            pass
-        else:
-            E = self.ui.listWidget_Encounter
-            newHP = self.ui.spinBox_main_hp.value()
-            for row in range(0, E.count()):
-                if E.item(row).isSelected():
-                    item = E.item(row)
-                    item.dbObj = self.db.Active[item.dbObj.id]
-                    if item.dbObj.count > 1:
-                       all_hp = item.dbObj.group_hp
-                       hp_sum = sum(all_hp)
-                       while hp_sum != newHP:
-                           if hp_sum < newHP:
-                               min_value = all_hp.index(min(all_hp))
-                               value = all_hp.pop(min_value)
-                               value += 1
-                               hp_sum += 1
-                               all_hp.append(value)
-                           else:
-                               max_value = all_hp.index(max(all_hp))
-                               value = all_hp.pop(max_value)
-                               value -= 1
-                               hp_sum -= 1
-                               all_hp.append(value)
-                       all_hp = [ hp for hp in all_hp if hp > 0 ]
-                       item.dbObj.count = len(all_hp)
-                       item.dbObj.group_hp = all_hp
-                    else:
-                        item.dbObj.hp = newHP
-                    if item.dbObj.max_hp < newHP:
-                        item.dbObj.max_hp = newHP
-                    commit()
-                    self.update_encounter_text(item)
+    def spinbox_update_hp(self):
+        # print("spinbox_update_hp")
+        E = self.ui.listWidget_Encounter
+        newHP = self.ui.spinBox_main_hp.value()
+        for row in range(0, E.count()):
+            if E.item(row).isSelected():
+                item = E.item(row)
+                item.dbObj = self.db.Active[item.dbObj.id]
+                if item.dbObj.count > 1:
+                   all_hp = item.dbObj.group_hp
+                   hp_sum = sum(all_hp)
+                   while hp_sum != newHP:
+                       if hp_sum < newHP:
+                           min_value = all_hp.index(min(all_hp))
+                           value = all_hp.pop(min_value)
+                           value += 1
+                           hp_sum += 1
+                           all_hp.append(value)
+                       else:
+                           max_value = all_hp.index(max(all_hp))
+                           value = all_hp.pop(max_value)
+                           value -= 1
+                           hp_sum -= 1
+                           all_hp.append(value)
+                   all_hp = [ hp for hp in all_hp if hp > 0 ]
+                   item.dbObj.count = len(all_hp)
+                   item.dbObj.group_hp = all_hp
+                else:
+                    item.dbObj.hp = newHP
+                if newHP > item.dbObj.max_hp:
+                    item.dbObj.max_hp = newHP
+                commit()
+                self.update_encounter_text(item)
 
 
     @db_session
@@ -403,11 +430,15 @@ class MainWindow(QMainWindow):
                     groupHP = [x for x in groupHP if x > 0]
                     item.dbObj.group_hp = groupHP
                     item.dbObj.count = len([ x for x in groupHP if x > 0])
+                    if sum(groupHP) > item.dbObj.max_hp:
+                        item.dbObj.max_hp = sum(groupHP)
                 else:
                     hp = item.dbObj.hp + diff
                     if hp < 0:
                         hp = 0
                     item.dbObj.hp = hp
+                    if hp > item.dbObj.max_hp:
+                        item.dbObj.max_hp = hp
                 commit()
                 self.update_encounter_text(item)
 
@@ -420,10 +451,10 @@ class MainWindow(QMainWindow):
                 item = E.item(row)
                 if item.dbObj.count > 1:
                     self.expands(item, row)
-                    print('func toggle expand')
-                    item.dbObj.delete()
+                    # print('func toggle expand')
                     E.item(row).setSelected(False)
                     E.takeItem(row)
+                    item.dbObj.delete()
                     break
                 else:
                     self.collapse(item, row)
@@ -431,22 +462,34 @@ class MainWindow(QMainWindow):
 
     @db_session
     def expands(self, item, row):
+        # print("start expands")
         item.dbObj = self.db.Active[item.dbObj.id]
         isSessionInitiative = item.isSessionInitiative
+        # print("for each hp in group_hp")
         for hp in item.dbObj.group_hp:
+            # print("creating QprogressBar")
+            pbar = QProgressBar()
+            description = QLabel()
             newItem = QListWidgetItem()
+            newItem.vbox = GDisplayWidget()
+            newItem.setSizeHint(newItem.vbox.sizeHint())
+            # pre-calculate max hp in a sensible way
+            max_hp = item.dbObj.max_hp//item.dbObj.count
+            if max_hp < hp:
+                max_hp = hp
             newItem.dbObj = self.db.Active(
                             name = item.dbObj.name,
                             stat_block = item.dbObj.stat_block,
                             initiative = item.dbObj.initiative,
                             hp = hp,
-                            max_hp = hp,
+                            max_hp = max_hp,
                             death_save_fail = item.dbObj.death_save_fail,
                             death_save_success = item.dbObj.death_save_success,
                             black_star = item.dbObj.black_star,
                             white_star = item.dbObj.white_star,
                             from_vault = item.dbObj.from_vault)
             commit()
+            # print("checking isSessionInitiative")
             if isSessionInitiative:
                 newItem.isSessionInitiative = True
                 newItem.setIcon(self.style().standardIcon(self.Initiative_Icon))
@@ -454,55 +497,73 @@ class MainWindow(QMainWindow):
                 isSessionInitiative = False
             else:
                 newItem.isSessionInitiative = False
+            # print("Update item text")
             self.update_encounter_text(newItem)
+            # print("insert item into list")
             self.ui.listWidget_Encounter.insertItem((row + 1), newItem)
+            # print("set item widget")
+            self.ui.listWidget_Encounter.setItemWidget(newItem, newItem.vbox)
+        # print("finish expands")
 
     @db_session
     def collapse(self, item, inRow):
+        # print("starting collapse")
         viewObj = self.db.Active[item.dbObj.id]
         session_initiative = 0
         name = viewObj.name
         group = []
+        isSessionInitiative = False
         encounter_view = self.ui.listWidget_Encounter
+        # print("for each item in init list")
         for row in range(0, encounter_view.count()):
             if encounter_view.item(row).isSelected():
+                # print("if it is selected")
                 rowItem = encounter_view.item(row)
                 rowObj = self.db.Active[rowItem.dbObj.id]
                 if rowItem.isSessionInitiative:
+                    # print("and is on initiative, copy session_initiative")
                     session_initiative = rowObj.initiative
                 if (rowObj.name == name and
                     rowObj.count == 1   and row != inRow):
+                    # print("and name match and it's a single item, and not viewObj. Add to group.")
                     group.append(row)
         group.sort()
         group.reverse()
         groupHP = []
-        groupOf = 0
+        # print("for each item in group")
         for row in group:
+            # print("record item and send stats to viewObj")
             rowItem = encounter_view.item(row)
             rowObj = self.db.Active[rowItem.dbObj.id]
-            # punt the initiative down the list one if this 
-            # item is selected
+            # punt the initiative up the list one if this 
+            # item has the Initiative and will be deleted.
             if rowItem.isSessionInitiative:
-               nextItem = encounter_view.item(row + 1)
-               nextItem.isSessionInitiative = True
-               nextItem.setIcon(self.style().standardIcon(self.Initiative_Icon))
+                nextItem = encounter_view.item(row - 1)
+                if nextItem:
+                    nextItem.isSessionInitiative = True
+                    nextItem.setIcon(self.style().standardIcon(self.Initiative_Icon))
             groupHP.append(rowObj.hp)
-            groupOf += 1
-            print('toggle collapse')
-            rowObj.delete()
+            # print('remove each item')
             encounter_view.takeItem(row)
+            rowObj.delete()
+            # print(f'removed {row}')
         # include the item slected as well.
-        commit()
+        # print("add viewObj to group stats")
         groupHP.append(viewObj.hp)
+        # print("set stats for view object")
         viewObj.hp = sum(groupHP)
-        viewObj.max_hp = sum(groupHP)
         viewObj.count = len(groupHP)
+        viewObj.max_hp = sum(groupHP)
         viewObj.group_hp = groupHP
+        commit()
+        # print('update text')
         self.update_encounter_text(item)
+        # print('collapes done')
 
 
     @db_session
     def advance_initiative(self):
+        # print("advance initiative")
         def toggle_alarm(text):
             if self.isAlarmDisplayed:
                 self.ui.label_alarm_notice.setText('')
@@ -526,50 +587,70 @@ class MainWindow(QMainWindow):
             item = E.item(row)
             item.dbObj = self.db.Active[item.dbObj.id]
             if not item.dbObj.initiative in initiative_groups:
+                # print("not in: ", item.dbObj.initiative)
                 initiative_groups.append(item.dbObj.initiative)
+            # turn Off the current session initiative.
             if E.item(row).isSessionInitiative:
+                # print("last initiative:",  item.dbObj.initiative)
                 E.item(row).isSessionInitiative = False
-                E.item(row).setIcon(QIcon(None))
+                E.item(row).vbox.setIcon(None)
                 selection_initiative = item.dbObj.initiative
+
+        # beyond this point we can assume 
+        # the list is not empty
+        if not initiative_groups:
+            return
 
         # sort items in the list
         self.sort_initiative()
         # remove all initiatives above the selection
+        # print("section 1")
         initiative_groups = [x for x in initiative_groups if x < selection_initiative]
         initiative_groups.sort(reverse=True)
         target_group = None
 
-        # advance to next group
+        # advance to next group or loop to top.
         if len(initiative_groups):
             target_group = initiative_groups.pop(0)
+        else:
+            self.advance_initiative()
+            return
 
         # If item is selected
         # print("targeting :", target_group, initiative_groups)
         if target_group:
            isTop = True
            # find the next item in target group.
+           # print(E.count())
            for row in range(0, E.count()):
                item = E.item(row)
                item.dbObj = self.db.Active[item.dbObj.id]
+               # print(f"db object aquired: {item.dbObj.initiative}")
                # if this is the top of the group set that item selected.
                if item.dbObj.initiative == target_group and isTop:
+                   # print("top of the group:")
                    E.item(row).isSessionInitiative = True
-                   pixmap = QStyle.StandardPixmap.SP_MediaSeekForward
-                   E.item(row).setIcon(self.style().standardIcon(self.Initiative_Icon))
+                   icon = self.style().standardIcon(self.Initiative_Icon)
+                   E.item(row).vbox.setIcon(icon)
                    isTop = False
                # check every item in the target group for alarms to run.
                if item.dbObj.initiative == target_group and item.dbObj.isAlarm:
+                   # print("is alarm")
                    toggle_alarm(f"Alarm {item.dbObj.name}")
                # Even if there are more to check we don't need to check them.
                if item.dbObj.initiative < target_group:
+                   # print("below initiative")
                    break
         elif E.item(0):
+            # print("why am i here?")
             item = E.item(0)
             item.isSessionInitiative = True
-            item.setIcon(self.style().standardIcon(self.Initiative_Icon))
+            # icon = self.style().standardIcon(None)
+            item.vbox.setIcon(None)
             item.dbObj = self.db.Active[item.dbObj.id]
             if item.dbObj.isAlarm:
                 toggle_alarm(f"Alarm {item.dbObj.name}")
+        # print("exiting function")
 
 
     @db_session
@@ -589,14 +670,32 @@ class MainWindow(QMainWindow):
                 item = E.item(row)
                 item.dbObj = self.db.Active[item.dbObj.id]
                 if item.dbObj.initiative == init:
+                    widget = E.itemWidget(E.item(row)) 
+                    E.removeItemWidget(E.item(row))
                     item = E.takeItem(row)
-                    order.append(item)
+                    tup = (item, widget)
+                    order.append(tup)
                     break
-        for item in order:
+        for tup in order:
+            thing = tup[0].dbObj
+            item = QListWidgetItem()
+            item.dbObj = thing
+            item.vbox = GDisplayWidget()
+            if thing.max_hp:
+                item.vbox.pbar.setRange(0, thing.max_hp)
+            else:
+                item.vbox.pbar.setRange(0, thing.hp)
+            self.update_encounter_text(item)
+
+            item.setSizeHint(item.vbox.sizeHint())
+            item.isSessionInitiative = tup[0].isSessionInitiative
+
             E.addItem(item)
+            E.setItemWidget(item, item.vbox)
 
 
     def get_health_color(self, item):
+        # print("get_health_color")
         hp = item.dbObj.hp
         if item.dbObj.count > 1:
             all_hp = item.dbObj.group_hp
@@ -617,10 +716,10 @@ class MainWindow(QMainWindow):
 
     @db_session
     def update_encounter_text(self, item):
+        # print("update_encounter_text")
         item.dbObj = self.db.Active[item.dbObj.id]
         if item.dbObj.count > 1:
-            format = '''%s | %s
-    %s left with hp Sum: %s High: %s Low: %s
+            format_str = '''%s | %s (%s) hp Sum: %s High: %s Low: %s
     %s%s%s%s''' % (
                     item.dbObj.initiative,
                     item.dbObj.name,
@@ -632,8 +731,12 @@ class MainWindow(QMainWindow):
                     u'\u2714' * item.dbObj.death_save_success,
                     u'\u2605' * item.dbObj.black_star,
                     u'\u2606' * item.dbObj.white_star)
+            # print("range max ", item.dbObj.max_hp)
+            item.vbox.pbar.setRange(0, item.dbObj.max_hp)
+            # print("value group ", sum(item.dbObj.group_hp))
+            item.vbox.pbar.setValue(sum(item.dbObj.group_hp))
         else:
-            format = "%s | %s | hp:%s | %s%s%s%s" % (
+            format_str = "%s | %s | hp:%s | %s%s%s%s" % (
                     item.dbObj.initiative,
                     item.dbObj.name,
                     item.dbObj.hp,
@@ -641,15 +744,35 @@ class MainWindow(QMainWindow):
                     u'\u2714' * item.dbObj.death_save_success,
                     u'\u2605' * item.dbObj.black_star,
                     u'\u2606' * item.dbObj.white_star)
-        item.setText(format)
+            if item.dbObj.max_hp:
+                # print("setting max_hp range ", item.dbObj.max_hp)
+                item.vbox.pbar.setRange(0, item.dbObj.max_hp)
+            else:
+                # print("setting hp range ", item.dbObj.hp)
+                item.vbox.pbar.setRange(0, item.dbObj.hp)
+            item.vbox.pbar.setValue(item.dbObj.hp)
+        # print(item.vbox.pbar.value(), item.vbox.pbar.maximum())
+        self.update_pbar_color(item)
+        item.vbox.description.setText(format_str)
+        item.setToolTip(item.dbObj.stat_block)
+        # print("END update_encounter_text")
+
+
+    def update_pbar_color(self, item):
+        # print("update_pbar_color")
+        # this also adds the mask on top of the progress bar to give it the 
+        # right shape.
         (red,green,blue) = self.get_health_color(item)
         painter = QBrush(QColor(red,green,blue))
-        item.setBackground(painter)
+        # print(red,green,blue)
+        stylesheet = r'QProgressBar::chunk {' + f'background-color: rgba({red},{green},{blue},180);' + r'}'
+        stylesheet += r'QProgressBar {background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #990000, stop: 1 #111111);}'
+        # print(stylesheet)
+        item.vbox.pbar.setStyleSheet(stylesheet)
         (red,green,blue) = (0,0,0)
         painter = QBrush(QColor(red,green,blue))
         item.setForeground(painter)
-        item.setFont(QFont("Times", 16, QFont.Bold))
-        item.setToolTip(item.dbObj.stat_block)
+        # print("end update_pbar_color")
 
 
 if __name__ == "__main__":

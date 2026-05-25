@@ -17,7 +17,20 @@
    <bool>false</bool>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget {
+   <string notr="true">
+GDisplayWidget GProgressBar {
+  border: 0px;
+  text-align: top-center;
+  color: white;
+  height: 14px;
+}
+
+GDisplayWidget QLabel {
+	font: 700 16pt &quot;Times&quot;;
+}
+
+
+QWidget {
   color: black;
   background-color: rgb(89, 92, 123);
 }
@@ -29,8 +42,20 @@ QListWidget QTreeWidget{
 }
 
 QListWidget::item:selected{
-   	border: 3px dashed white;
+    background-color: rgb(69, 72, 103);
 }
+
+QListWidget::focus{
+    outline: none;
+    border: none;
+}
+
+QListWidget::item{
+ height: 2em;
+ padding-left: 25px;
+ border-radius: 1em;
+}
+
 
 QToolTip {
 	border: 3px solid gray;
@@ -39,7 +64,7 @@ QToolTip {
 }
 
 QLabel {
-color: rgb(222, 221, 218);
+ color: rgb(222, 221, 218);
 }
 
 QPushButton {
@@ -66,10 +91,7 @@ QCheckBox::indicator:checked {
 
 QCheckBox::indicator:unchecked {
      image: url(:/images/toggle_off.png); /* Path to your unchecked image */
-}
-
-
-</string>
+}:</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -126,6 +148,11 @@ QCheckBox::indicator:unchecked {
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <widget class="QListWidget" name="listWidget_Encounter">
+          <property name="font">
+           <font>
+            <pointsize>20</pointsize>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true"/>
           </property>
@@ -135,6 +162,16 @@ QCheckBox::indicator:unchecked {
           <property name="viewMode">
            <enum>QListView::ListMode</enum>
           </property>
+          <item>
+           <property name="text">
+            <string>&gt;&gt; Player 1  HP: 300</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Player 2 HP: 300 ****xxxoooooyyy</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
