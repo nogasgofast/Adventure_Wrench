@@ -30,4 +30,4 @@ modules:
       - type: git
         url: https://github.com/nogasgofast/Adventure_Wrench
         tag: v3.0.0
-        commit: 517d03c2358df452e0566ffbef9222fa4421ff20
+        commit: 022c348737bb9d58ea53af652fe153db7d7e1c48

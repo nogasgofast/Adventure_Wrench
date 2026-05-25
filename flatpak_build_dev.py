@@ -6,14 +6,18 @@ import requests
 import subprocess
 from src.version import ver
 
-def check_github(ver):
+def check_github(query):
     'Checking for latest version'
     print(f"src/version.py target: {ver}")
     r = requests.get("https://api.github.com/repos/nogasgofast/Adventure_Wrench/tags")
     version = None
+    if len(query) > 10:
+        noun = 'commit'
+    else:
+        noun = 'tag'
     for release in r.json():
         if release['name'] == ver:
-            print(f"Tag found on Github")
+            print(f"{noun} found on Github")
             return ver, release['commit']['sha']
     exit('Error: src/version.py not latest tag in github!')
 
