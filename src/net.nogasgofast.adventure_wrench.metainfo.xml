@@ -46,15 +46,14 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="3.0.5" date="2026-10-11">
+    <release version="3.0.6" date="2026-10-11">
     <description>
       <p>Latest</p>
       <ul>
         <li>Notes in github release</li>
-        <li>- Fixed flatpak automatic breakage</li>
       </ul>
     </description>
-    <url>https://github.com/nogasgofast/Adventure_Wrench/releases/tag/v3.0.5</url>
+    <url>https://github.com/nogasgofast/Adventure_Wrench/releases/tag/v3.0.6</url>
     </release>
   </releases>
   <developer id="net.nogasgofast">

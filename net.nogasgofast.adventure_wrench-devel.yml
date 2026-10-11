@@ -1,13 +1,10 @@
 id: net.nogasgofast.adventure_wrench
 runtime: org.kde.Platform
 runtime-version: '6.11'
-runtime-commit: 'fe192771c0992ad873e6a9ccc6e4f087c76314ce5ced165650cc7ea045a6bbaa'
 sdk: org.kde.Sdk
-sdk-commit: '305b8ec8d506448558798256bd9afcfd856c7e62357a42e320a6678a08f81465'
 command: adventure_wrench
 base: io.qt.PySide.BaseApp
 base-version: '6.11'
-base-commit: 'a6cddcbcf58032e3f22c66a98779cc07685d376e52718e5aee307ad9aeb1bb8e'
 build-options:
   env:
     - BASEAPP_REMOVE_WEBENGINE=1
